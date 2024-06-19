@@ -28,11 +28,11 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $user = auth()->user();
-        return view('setting.profile',['user'=>$user]);
-    }
+    // public function index()
+    // {
+    //     $user = auth()->user();
+    //     return view('setting.profile',['user'=>$user]);
+    // }
 
 
     public function update(Request $request)
