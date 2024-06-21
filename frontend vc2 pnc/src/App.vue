@@ -1,5 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterView } from 'vue-router';
+// import ContactUs from '@/Components/ContactUs.vue';
+</script>
 
 <template>
-  <RouterView />
+  <div id="app">
+    <RouterView />
+    <!-- <ContactUs /> -->
+  </div>
 </template>
