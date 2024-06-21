@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "serve": "npm run dev", 
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "element-plus": "^2.7.4",
