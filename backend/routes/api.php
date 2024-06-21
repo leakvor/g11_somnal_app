@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AuthController;
@@ -30,3 +31,6 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->middleware
 Route::post('/comment/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
 Route::put('/comment/update/{id}', [CommentController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/comment/destory/{id}', [CommentController::class, 'destroy'])->middleware('auth:sanctum');
+
+
+Route::post('/comment/user/like', [LikeController::class, 'user_like'])->middleware('auth:sanctum');
