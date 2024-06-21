@@ -16,9 +16,7 @@
 								<input type="text" class="form-control my-3" placeholder="Search...">
 							</div>
 						</div>
-					</div>
-
-					
+					</div>				
 					<a href="#" class="list-group-item list-group-item-action border-0">
 						<div class="badge bg-success float-right">2</div>
 						<div class="d-flex align-items-start">
