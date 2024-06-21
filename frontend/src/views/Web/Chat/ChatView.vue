@@ -265,4 +265,7 @@ body{margin-top:5px; height: 80vh;}
 .border-top {
     border-top: 1px solid #dee2e6!important;
 }
+.list-group-item{
+  margin:5px ;
+}
 </style>
