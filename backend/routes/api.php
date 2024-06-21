@@ -24,8 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
-Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('auth:sanctum');
+
+Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
+Route::get('show/user/post', [PostController::class, 'show_post'])->middleware('auth:sanctum');
 
 
 Route::post('/comment/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
