@@ -27,6 +27,18 @@ class PostController extends Controller
         }    
         return response()->json(['success' => true, 'data' => $posts]);
     }
+
+    //create post
+    public function store(Request $request){
+        $user = $request->user();
+        if(!$user){
+            return response()->json(['success' => false,'message' => 'User not authenticated'], 401);
+        }
+        $data = $request->all();
+        $data['user_id'] = $user->id;
+        $post = Post::store($data);
+        return response()->json(['success' => true,'message' => 'Post created','data' => $post], 200);
+    }
     
 
 }

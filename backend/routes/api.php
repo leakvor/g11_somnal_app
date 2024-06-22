@@ -28,6 +28,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->middleware
 
 Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
 Route::get('show/user/post', [PostController::class, 'show_post'])->middleware('auth:sanctum');
+Route::post('create/user/post', [PostController::class, 'store'])->middleware('auth:sanctum');
 
 
 Route::post('/comment/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
