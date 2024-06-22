@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div class="contact-us">
     <main>
       <div class="contact-form-container">
@@ -44,6 +44,7 @@
 
 <script>
 export default {
+  name: 'ContactUs',
   data() {
     return {
       form: {
@@ -65,7 +66,7 @@ export default {
 .contact-us {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 .contact-form-container {
@@ -77,18 +78,17 @@ export default {
   width: 100%;
   height: auto;
   display: block;
-  margin: 0 auto;
 }
 
 .contact-form {
   position: absolute;
-  top: 45%;
+  top: 50%;
   left: 70%;
   transform: translate(-50%, -50%);
   background-color: rgba(255, 255, 255, 0.95);
   padding: 20px 30px;
   border-radius: 10px;
-  box-shadow: 0px -10px 1px orange;
+  box-shadow: 0px -10px 1px orange; 
   max-width: 400px;
   width: 100%;
   text-align: left;
@@ -97,7 +97,8 @@ export default {
 .contact-form h2 {
   margin-top: 0;
   color: #444;
-  display: flex;
+  display:  flex;
+  /* align-items: center; */
   justify-content: center;
 }
 
@@ -135,6 +136,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  /* width: 100px; */
 }
 
 .contact-form button:hover {
@@ -161,28 +163,26 @@ footer {
   background: white;
   border: 1px solid #a8a3a3;
   border-radius: 10px;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
   margin: 10px;
   width: 250px;
-}
-
-.info-item {
-  box-shadow: 0 10px 1px rgb(26, 104, 26);
-  margin-top: -10px;
-}
-.info-item1 {
-  box-shadow: 0 10px 1px rgb(247, 167, 49);
-}
-
-.info-item i {
-  font-size: 24px;
-  color: #007bff;
-  margin-bottom: 10px;
-}
-
-.info-item span {
-  text-align: center;
-}
-</style> -->
+  }
+  
+  .info-item {
+    box-shadow: 0 10px 1px rgb(26, 104, 26);
+  }
+  .info-item1 {
+    box-shadow: 0 10px 1px rgb(212, 158, 7);
+  }
+  .info-item i {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 10px;
+  }
+  
+  .info-item span {
+    text-align: center;
+  }
+  </style>
