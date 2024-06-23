@@ -14,6 +14,9 @@
                 <a class="nav-link" href="#">About Us</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="#">Service</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#">Contact</a>
               </li>
             </ul>
