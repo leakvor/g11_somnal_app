@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\API\PostController;
@@ -37,3 +38,12 @@ Route::delete('/comment/destory/{id}', [CommentController::class, 'destroy'])->m
 
 
 Route::post('/comment/user/like', [LikeController::class, 'user_like'])->middleware('auth:sanctum');
+
+
+//send message
+Route::post('/chat/send/message', [ChatController::class, 'store'])->middleware('auth:sanctum');
+Route::delete('/chat/delete/message/{id}', [ChatController::class, 'destroy'])->middleware('auth:sanctum');
+Route::get('/chat/get/message/{receiverId}', [ChatController::class, 'getConversation'])->middleware('auth:sanctum');
+Route::post('/chat/update/message/{id}', [ChatController::class, 'updateMessage'])->middleware('auth:sanctum');
+
+

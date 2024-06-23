@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = ['title','description','user_id','publish'];
+    protected $fillable = ['title','description','user_id','image'];
 
     //user
     public function user():BelongsTo{
@@ -25,6 +25,7 @@ class Post extends Model
     }
 
     //create or update post 
+
     public static function store($request, $id = null)
     {
         // Ensure $request is an instance of Request
@@ -37,8 +38,9 @@ class Post extends Model
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'publish' => 'required|boolean',
+            'image' => 'sometimes|file|image|max:2048',  // Optional image validation rule
         ];
-        $validator = Validator::make($request->only('title', 'description', 'publish'), $rules);
+        $validator = Validator::make($request->only('title', 'description', 'publish', 'image'), $rules);
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
@@ -47,6 +49,7 @@ class Post extends Model
         $data = $validator->validated();
         $data['user_id'] = $userId;
 
+        // Use updateOrCreate to either update the existing record or create a new one
         return self::updateOrCreate(['id' => $id], $data);
     }
 }
