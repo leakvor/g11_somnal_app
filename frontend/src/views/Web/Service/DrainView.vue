@@ -15,6 +15,7 @@
       />
       <!-- <h2>We are helpful for who are have problem in daily to living in confortable</h2> -->
     </div>
+    <h1 text-center mt-20>OUR SERVICE</h1>
   </div>
   <div class="container mt-20 d-flex justify-content-between gap-5">
     <div class="card" style="width: 400px; height: 450px">
