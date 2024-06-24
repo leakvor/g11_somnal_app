@@ -26,30 +26,12 @@ class Post extends Model
 
     //create or update post 
 
-    public static function store($request, $id = null)
+   
+
+    private function saveImage($file, $directory)
     {
-        // Ensure $request is an instance of Request
-        if (!$request instanceof Request) {
-            $request = new Request($request);
-        }
-
-        $userId = auth()->id();
-        $rules = [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'publish' => 'required|boolean',
-            'image' => 'sometimes|file|image|max:2048',  // Optional image validation rule
-        ];
-        $validator = Validator::make($request->only('title', 'description', 'publish', 'image'), $rules);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-
-        $data = $validator->validated();
-        $data['user_id'] = $userId;
-
-        // Use updateOrCreate to either update the existing record or create a new one
-        return self::updateOrCreate(['id' => $id], $data);
+        $imageName = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path($directory), $imageName);
+        return $imageName;
     }
 }

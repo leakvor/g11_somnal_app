@@ -36,43 +36,48 @@ class PostController extends Controller
 
     // create post
     public function store(Request $request)
-    {
-        // return $request;
-        // Validation
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
+{
+    // Validation
+    return $request;
+    $validator = Validator::make($request->all(), [
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        // Handle image upload using the uploadImage trait
-        $imageName = $this->saveImage($request->file('image'), 'uploads');
-
-        // Prepare data
-        $data = $request->all();
-        $data['image'] = $imageName;
-        $data['user_id'] = auth()->id();
-
-        try {
-            $post = Post::create($data); // Use create instead of updateOrCreate for creating new posts
-            return response()->json([
-                'success' => true,
-                'data' => $post,
-                'message' => 'Post saved successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
-        }
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation error',
+            'errors' => $validator->errors()
+        ], 422);
     }
+
+    // Handle image upload if an image is provided
+    if ($request->hasFile('image')) {
+        $imageName = $this->saveImage($request->file('image'), 'uploads');
+    } else {
+        $imageName = null; // Set image name to null if no image is provided
+    }
+
+    // Prepare data
+    $data = $request->all();
+    $data['image'] = $imageName;
+    $data['user_id'] = auth()->id();
+
+    try {
+        $post = Post::create($data);
+        return response()->json([
+            'success' => true,
+            'data' => $post,
+            'message' => 'Post saved successfully'
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
 }

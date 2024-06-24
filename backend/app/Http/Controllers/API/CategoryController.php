@@ -48,6 +48,4 @@ class CategoryController extends Controller
         $category=Category::store($request,$id);
         return response()->json(['success'=>true,'message'=>'Category updated'],200);
     }
-
-
 }
