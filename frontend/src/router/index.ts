@@ -27,14 +27,9 @@ const router = createRouter({
       component: () => import('../views/Web/HomeView.vue')
     },
     {
-      path: '/post',
-      name: 'post',
-      component: () => import('../views/Web/Post/ListView.vue')
-    },
-    {
-      path:'/team',
-      name:'team',
-      component:()=> import('../views/Web/Service/ServiceView.vue')
+      path: '/service',
+      name: 'service',
+      component: () => import('../views/Web/Service/ServiceView.vue')
     },
     {
       path:'/adjay',
@@ -45,7 +40,12 @@ const router = createRouter({
       path:'/drain',
       name:'drain',
       component:() => import('../views/Web/Service/DrainView.vue')
-    }
+    },
+    // {
+    //   path:'/post',
+    //   name:'post',
+    //   component:() => import('../views/Web/User/ListView.vue')
+    // }
   ]
 })
 

@@ -15,8 +15,8 @@
     />
   </div>
   <div class="container mt-20 d-flex justify-content-between gap-5 pb-30">
-    <div class="card" style="width: 400px; height: 400px">
-      <img src="../../../assets/image/bottle.jpg" class="card-img-top" alt="..." style="width:279px; height: 200px"/>
+    <div class="card" style="width: 400px; height: 350px">
+      <img src="../../../assets/image/bottle.jpg" class="card-img-top" alt="..."/>
       <div class="card-body">
         <div class="title text-center">
           <h1 class="card-title">ដបទឹក</h1>
@@ -29,8 +29,8 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 400px; height: 400px">
-      <img src="../../../assets/image/can.jpg" class="card-img-top" alt="..." style="width:279px; height: 200px"/>
+    <div class="card" style="width: 400px; height: 350px">
+      <img src="../../../assets/image/can.jpg" class="card-img-top" alt="..." />
       <div class="card-body">
         
         <div class="title text-center">
@@ -44,8 +44,8 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 400px; height: 400px">
-      <img src="../../../assets/image/dump.jpg" class="card-img-top" alt="..." style="width:279px; height: 200px"/>
+    <div class="card" style="width: 400px; height: 350px">
+      <img src="../../../assets/image/dump.jpg" class="card-img-top" alt="..." />
       <div class="card-body">
         <div class="title text-center">
           <h1 class="card-title">សំបកកេះ</h1>
@@ -58,8 +58,8 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 400px; height: 400px">
-      <img src="../../../assets/image/magazin.jpg" class="card-img-top" alt="..." style="width:279px; height: 200px"/>
+    <div class="card" style="width: 400px; height: 350px">
+      <img src="../../../assets/image/magazin.jpg" class="card-img-top" alt="..." />
       <div class="card-body">
         <div class="title text-center">
           <h1 class="card-title">ទស្សនាវត្តី</h1>
@@ -95,6 +95,12 @@ i {
 }
 i:hover{
   background:orange;
+}
+.card img{
+  height:45%;
+}
+.card:hover{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>
   
