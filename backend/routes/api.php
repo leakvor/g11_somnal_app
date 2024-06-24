@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\AdjayController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\MaketPriceofAdjayController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AuthController;
+use App\Models\MarketofAdjay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,3 +51,9 @@ Route::get('/chat/get/message/{receiverId}', [ChatController::class, 'getConvers
 Route::post('/chat/update/message/{id}', [ChatController::class, 'updateMessage'])->middleware('auth:sanctum');
 
 
+//Category
+Route::post('/category/create', [CategoryController::class, 'store']);
+Route::get('/category/list', [CategoryController::class, 'index']);
+Route::get('/category/show/{id}', [CategoryController::class, 'show']);
+Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
+Route::post('/category/update/{id}', [CategoryController::class, 'update']);
