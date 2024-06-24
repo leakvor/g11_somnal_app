@@ -39,19 +39,21 @@ class Item extends Model
     
         $data = $request->only('name', 'category_id');
     
+        // Check if the request has an image
         if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extension;
-            // Store the image in the 'public/uploads/images' directory
-            $path = $file->storeAs('uploads/images', $filename, 'public');
-            // Update the 'image' field in the data array with the path to the stored image
-            $data['image'] = $path;
+            $img = $request->file('image');
+            $ext = $img->getClientOriginalExtension();
+            $imageName = time() . '.' . $ext;
+            $img->move(public_path('uploads'), $imageName);
+    
+            // Add the image name to the data array
+            $data['image'] = $imageName;
         }
     
         // Create or update the item
         return self::updateOrCreate(['id' => $id], $data);
     }
+    
     
 
 

@@ -37,47 +37,28 @@ class PostController extends Controller
     // create post
     public function store(Request $request)
 {
-    // Validation
-    return $request;
-    $validator = Validator::make($request->all(), [
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Validation error',
-            'errors' => $validator->errors()
-        ], 422);
-    }
-
-    // Handle image upload if an image is provided
-    if ($request->hasFile('image')) {
-        $imageName = $this->saveImage($request->file('image'), 'uploads');
-    } else {
-        $imageName = null; // Set image name to null if no image is provided
-    }
-
-    // Prepare data
-    $data = $request->all();
-    $data['image'] = $imageName;
-    $data['user_id'] = auth()->id();
-
     try {
-        $post = Post::create($data);
+        $post = Post::store($request); 
         return response()->json([
-            'success' => true,
-            'data' => $post,
-            'message' => 'Post saved successfully'
-        ], 200);
+            'post' => $post,
+            'message' => $post->wasRecentlyCreated ? 'Post created successfully' : 'Post updated successfully',
+        ], 201);
     } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
+        return response()->json(['error' => $e->getMessage()], 400);
     }
+}
+
+//update
+public function update(Request $request, $id){
+    $post=Post::find($id);
+    if(!$post){
+        return response()->json(['success'=>false,'message'=>'Post not found'],404);
+    }
+    if ($post->user_id !== auth()->id()) {
+        return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+    }
+    $post=Post::store($request,$id);
+    return response()->json(['success'=>true,'message'=>'Post updated successfully']);
 }
 
 }

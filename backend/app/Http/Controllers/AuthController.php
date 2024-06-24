@@ -54,6 +54,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // return $request;
         try {
             $validateUser = Validator::make(
                 $request->all(),
@@ -72,7 +73,7 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = Frontuser::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
@@ -103,5 +104,43 @@ class AuthController extends Controller
             'message' => 'Logged out successfully'
         ]);
     }
+
+    
+public function uploadProfile(Request $request)
+{
+    // return $request->user()->id;
+    $validateUser = Validator::make($request->all(), [
+        'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+    ]);
+    if ($validateUser->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => 'validation error',
+            'errors' => $validateUser->errors()
+        ], 422);
+    }
+    $img = $request->profile;
+    $ext = $img->getClientOriginalExtension();
+    $imageName = time() . '.' . $ext;
+    $img->move(public_path() . '/uploads/', $imageName);
+
+    try {
+        $user = $request->user();
+        $user->update([
+            'profile' => $imageName
+        ]);
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+            'message' => 'Profile updated successfully'
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 404);
+    }
+}
+
 
 }

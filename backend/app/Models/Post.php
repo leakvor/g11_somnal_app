@@ -25,13 +25,38 @@ class Post extends Model
     }
 
     //create or update post 
+    public static function store($request, $id = null)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        // Ensure user_id is coming from the authenticated user
+        $data = $request->only('title', 'description');
+        $data['user_id'] = auth()->id();
+    
+        // Check if the request has an image
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+    
+            // Store the image in the storage directory
+            $image->storeAs('public/uploads', $imageName);
+    
+            // Add the image name to the data array
+            $data['image'] = $imageName;
+        }
+    
+        // Create or update the post
+        $post = self::updateOrCreate(['id' => $id], $data);
+    
+        return $post;
+    }
+    
 
    
 
-    private function saveImage($file, $directory)
-    {
-        $imageName = time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path($directory), $imageName);
-        return $imageName;
-    }
+    
 }

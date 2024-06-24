@@ -31,11 +31,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/updateProfilePicture', [AuthController::class, 'uploadProfile'])->middleware('auth:sanctum');
 
 Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
 Route::get('show/user/post', [PostController::class, 'show_post'])->middleware('auth:sanctum');
 Route::post('create/user/post', [PostController::class, 'store'])->middleware('auth:sanctum');
+Route::post('update/user/post/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
 
 
 Route::post('/comment/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
@@ -66,7 +69,7 @@ Route::post('/item/create', [ItemController::class, 'store']);
 Route::get('/item/list', [ItemController::class, 'index']);
 Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
 Route::get('/item/show/{id}', [ItemController::class, 'show']);
-Route::put('/item/update/{id}', [ItemController::class, 'update']);
+Route::post('/item/update/{id}', [ItemController::class, 'update']);
 
 
-Route::post('imgupload', [ImageController::class, 'imageUpload']);
+Route::post('/imgupload', [ImageController::class, 'imageUpload']);

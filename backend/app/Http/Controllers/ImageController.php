@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Validator;
 class ImageController extends Controller
 {
     public function imageUpload(Request $request) {
-        
+        // dd($request->all());
+        return $request;
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = $file->getClientOriginalName();

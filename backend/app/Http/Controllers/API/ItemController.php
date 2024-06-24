@@ -17,7 +17,7 @@ class ItemController extends Controller
     //create new item
     public function store(Request $request, $id = null)
     {
-        dd($request->all());
+        // dd($request->all());
         try {
             $item = Item::store($request);
             return response()->json([
