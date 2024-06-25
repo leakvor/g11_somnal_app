@@ -14,6 +14,8 @@ class CategoryController extends Controller
     public function index(){
         $categories= Category::list();
         return response()->json(['success'=>true,'data'=>$categories]);
+   
+        
     }
 
     //create

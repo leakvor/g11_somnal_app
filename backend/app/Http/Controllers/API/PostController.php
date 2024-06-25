@@ -11,7 +11,7 @@ use App\Traits\uploadImage; // Import the uploadImage trait
 
 class PostController extends Controller
 {
-    use uploadImage; // Use the uploadImage trait
+    use uploadImage; 
 
     // all post
     public function index()
