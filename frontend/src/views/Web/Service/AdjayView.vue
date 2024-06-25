@@ -1,5 +1,5 @@
 <template>
-  <NavComponent />
+  <NavBar />
   <head>
     <link
       rel="stylesheet"
@@ -14,8 +14,9 @@
       alt=""
     />
   </div>
-  <div class="container mt-20 d-flex justify-content-between gap-5 pb-30">
-    <div class="card" style="width: 400px; height: 350px">
+  <h1 class="mt-20 color-dark text-center">OUR SERVICE</h1>
+  <div class="container mt-10 p-10 d-flex justify-content-evenly">
+    <div class="card" style="width: 300px; height: 350px">
       <img src="../../../assets/image/bottle.jpg" class="card-img-top" alt="..."/>
       <div class="card-body">
         <div class="title text-center">
@@ -29,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 400px; height: 350px">
+    <div class="card" style="width: 300px; height: 350px">
       <img src="../../../assets/image/can.jpg" class="card-img-top" alt="..." />
       <div class="card-body">
         
@@ -44,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 400px; height: 350px">
+    <div class="card" style="width: 300px; height: 350px">
       <img src="../../../assets/image/dump.jpg" class="card-img-top" alt="..." />
       <div class="card-body">
         <div class="title text-center">
@@ -58,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 400px; height: 350px">
+    <div class="card" style="width: 300px; height: 350px">
       <img src="../../../assets/image/magazin.jpg" class="card-img-top" alt="..." />
       <div class="card-body">
         <div class="title text-center">
@@ -73,14 +74,22 @@
       </div>
     </div>
   </div>
+  <a
+    href="/service"
+    class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 no-underline ml-25"
+    >Back</a
+  >
+  <Footer class="mt-5" />
 </template>
   
   <script>
-import NavComponent from '@/Components/NavComponent.vue'
+import NavBar from '@/Components/NavBar.vue'
+import Footer from '@/Components/Footer.vue'
 
 export default {
   components: {
-    NavComponent
+    NavBar,
+    Footer
   }
 }
 </script>
@@ -94,7 +103,7 @@ i {
   padding: 10px;
 }
 i:hover{
-  background:orange;
+  background:orangered;
 }
 .card img{
   height:45%;

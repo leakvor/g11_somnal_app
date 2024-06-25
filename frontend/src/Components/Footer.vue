@@ -10,7 +10,7 @@ import { Icon } from '@iconify/vue'
         </div>
         <p>Whether it's a residential property, a commercial establishment, or scrap materials, [Your Company Name] is your go-to solution for all drain-related and scrap buying concerns. Contact us today through our website and experience the best in drain services.</p>
     </div>
-    <div class="navigation mr-50">
+    <div class="navigation ml-30 mr-50">
         <h5>Navigation</h5>
         <a href="#" class="color-white no-underline">Home</a> <br/>
         <a href="#" class="color-white no-underline">Service</a><br/>
