@@ -27,20 +27,25 @@ const router = createRouter({
       component: () => import('../views/Web/HomeView.vue')
     },
     {
-      path: '/post',
-      name: 'post',
-      component: () => import('../views/Web/Post/ListView.vue')
+      path: '/service',
+      name: 'service',
+      component: () => import('../views/Web/Service/ServiceView.vue')
     },
     {
-      path: '/chat',
-      name: 'chat',
-      component: () => import('../views/Web/Chat/ChatView.vue')
+      path:'/adjay',
+      name:'adjay',
+      component:() => import('../views/Web/Service/AdjayView.vue')
     },
     {
-      path: '/company',
-      name: 'company',
-      component: () => import('../views/Web/Company/CompanyView.vue')
+      path:'/drain',
+      name:'drain',
+      component:() => import('../views/Web/Service/DrainView.vue')
     },
+    // {
+    //   path:'/post',
+    //   name:'post',
+    //   component:() => import('../views/Web/User/ListView.vue')
+    // }
   ]
 })
 

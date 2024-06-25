@@ -50,4 +50,20 @@ class AuthController extends Controller
             'data' =>$user,
         ]);
     }
+
+    public function register(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     =>'required|string|max:255',
+            'email'    =>'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed'
+          ]);
+        $user = User::register($request);
+        $token = $user->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'message'       => 'Registration success',
+            'access_token'  => $token,
+            'token_type'    => 'Bearer',
+        ]);
+    }
 }

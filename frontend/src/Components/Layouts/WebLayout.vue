@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import WebHeaderMenu from '@/Components/WebHeaderMenu.vue'
+import NavBar from '@/Components/NavBar.vue'
 </script>
 <template>
-  <WebHeaderMenu />
+  <NavBar />
   <div class="md:px-50 h-full">
     <div class="h-full">
       <slot />
