@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 class Item extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name','image','category_id'];
+    protected $fillable = ['name','image','category_id','price'];
 
     //relationship with category (one item belong to one category)
     public function category():BelongsTo{
@@ -32,12 +32,27 @@ class Item extends Model
         ];
     
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'sometimes|required|string|max:255',
+            'category_id' => 'sometimes|required|exists:categories,id',
+            'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'price' => 'sometimes|nullable|string|max:255',
         ], $messages);
     
-        $data = $request->only('name', 'category_id');
+        // Find the item by ID or create a new instance
+        $item = self::find($id) ?? new self();
+    
+        // Update only the specified columns if they are present in the request
+        if ($request->has('name')) {
+            $item->name = $request->name;
+        }
+    
+        if ($request->has('category_id')) {
+            $item->category_id = $request->category_id;
+        }
+    
+        if ($request->has('price')) {
+            $item->price = $request->price;
+        }
     
         // Check if the request has an image
         if ($request->hasFile('image')) {
@@ -47,12 +62,15 @@ class Item extends Model
             $img->move(public_path('uploads'), $imageName);
     
             // Add the image name to the data array
-            $data['image'] = $imageName;
+            $item->image = $imageName;
         }
     
-        // Create or update the item
-        return self::updateOrCreate(['id' => $id], $data);
+        // Save the changes to the database
+        $item->save();
+    
+        return $item;
     }
+    
     
     
 

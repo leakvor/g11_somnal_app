@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,6 @@ class ItemController extends Controller
         $item=Item::destroy($id);
         return response()->json(['success'=>true,'message'=>'Item deleted successfully']);
     }
-
     //get specific item
     public function show($id){
         $item=Item::find($id);
@@ -46,6 +46,7 @@ class ItemController extends Controller
             return response()->json(['success'=>false,'message'=>'Item not found'],404);
         }
         $item=Item::show($item);
+        $item=ItemResource::collection($item);
         return response()->json(['success'=>true,'data'=>$item]);
     }
     //update item
@@ -57,5 +58,6 @@ class ItemController extends Controller
         $item=Item::store($request,$id);
         return response()->json(['success'=>true,'message'=>'Item updated successfully']);
     }
+    
 
 }

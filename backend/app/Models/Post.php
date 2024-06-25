@@ -26,34 +26,52 @@ class Post extends Model
 
     //create or update post 
     public static function store($request, $id = null)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-    
-        // Ensure user_id is coming from the authenticated user
-        $data = $request->only('title', 'description');
-        $data['user_id'] = auth()->id();
-    
-        // Check if the request has an image
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-    
-            // Store the image in the storage directory
-            $image->storeAs('public/uploads', $imageName);
-    
-            // Add the image name to the data array
-            $data['image'] = $imageName;
-        }
-    
-        // Create or update the post
-        $post = self::updateOrCreate(['id' => $id], $data);
-    
-        return $post;
+{
+    $messages = [
+        'title.required' => 'The title is required',
+        'description.required' => 'The description is required',
+    ];
+
+    $validatedData = $request->validate([
+        'title' => 'sometimes|required|string|max:255',
+        'description' => 'sometimes|required|string',
+        'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ], $messages);
+
+    // Find the post by ID or create a new instance
+    $post = self::find($id) ?? new self();
+
+    // Ensure user_id is coming from the authenticated user
+    $post->user_id = auth()->id();
+
+    // Update only the specified columns if they are present in the request
+    if ($request->has('title')) {
+        $post->title = $request->title;
     }
+
+    if ($request->has('description')) {
+        $post->description = $request->description;
+    }
+
+    // Check if the request has an image
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+
+        // Store the image in the storage directory
+        $image->storeAs('public/uploads', $imageName);
+
+        // Update the image field only if an image is provided in the request
+        $post->image = $imageName;
+    }
+
+    // Save the changes to the database
+    $post->save();
+
+    return $post;
+}
+
+    
     
 
    

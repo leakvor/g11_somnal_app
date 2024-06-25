@@ -11,8 +11,15 @@ class ChatController extends Controller
 {
     //send chat message
     public function store(Request $request){
-        $chat=Chat::send_message($request);
-        return response()->json(['success'=>true,'message'=>'Send chat successfully']);
+        try {
+            $chat = Chat::store($request);
+            return response()->json([
+                'Chat' => $chat,
+                'message' => $chat->wasRecentlyCreated ? 'Chat created successfully' : ' updated successfully',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
     }
     //delete chat
     public function destroy($id)
@@ -43,19 +50,29 @@ public function updateMessage(Request $request, $id)
         return response()->json(['error' => 'Message not found'], 404);
     }
     if ($chat->user_id !== Auth::id()) {
-        return response()->json(['error' => 'You are not a person who send this chat.'], 403);
+        return response()->json(['error' => 'You are not the person who sent this chat.'], 403);
     }
+
     $request->validate([
         'message' => 'required|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
-    $newMessage = $request->input('message');
-    $updatedChat = Chat::updateMessage($newMessage, $id);
+    // Update message
+    $chat->message = $request->input('message');
 
-    if ($updatedChat) {
-        return response()->json($updatedChat, 200);
-    } else {
-        return response()->json(['error' => 'Unauthorized or message not found'], 403);
+    // Update image if provided
+    if ($request->hasFile('image')) {
+        $img = $request->file('image');
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time() . '.' . $ext;
+        $img->move(public_path('uploads'), $imageName);
+        $chat->image = $imageName;
     }
+
+    $chat->save();
+
+    return response()->json(['success' => true, 'message' => 'Chat updated successfully']);
 }
+
 }

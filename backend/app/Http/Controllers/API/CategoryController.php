@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ShowCategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -26,6 +28,7 @@ class CategoryController extends Controller
             return response()->json(['success'=>false,'message'=>'Category not found'],404);
         }
         $category=Category::show($category);
+        $category=CategoryResource::collection($category);
         return response()->json(['success'=>true,'data'=>$category]);
     }
 
