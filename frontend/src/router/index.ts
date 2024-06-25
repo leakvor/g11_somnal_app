@@ -41,11 +41,16 @@ const router = createRouter({
       name:'drain',
       component:() => import('../views/Web/Service/DrainView.vue')
     },
-    // {
-    //   path:'/post',
-    //   name:'post',
-    //   component:() => import('../views/Web/User/ListView.vue')
-    // }
+    {
+      path:"/profile",
+      name:"profile",
+      component:() => import('../views/User/UserProfileView.vue')
+    },
+    {
+      path:"/post",
+      name:"posts",
+      component:() => import('../views/Web/User/ListView.vue')
+    }
   ]
 })
 
