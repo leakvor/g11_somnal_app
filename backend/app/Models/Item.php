@@ -51,7 +51,14 @@ class Item extends Model
         }
     
         if ($request->has('price')) {
+            $history=HistoryMarketPrice::create([
+                'adjay_id' => $id,
+                'old_price' => $item->price,
+                'date'=>$item->created_at,
+            ]);
+
             $item->price = $request->price;
+
         }
     
         // Check if the request has an image
@@ -71,10 +78,6 @@ class Item extends Model
         return $item;
     }
     
-    
-    
-
-
     //show specific item
     public static function show($id){
         $item=self::find($id);

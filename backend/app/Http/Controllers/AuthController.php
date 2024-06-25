@@ -169,8 +169,6 @@ public function forgotPassword(Request $request): JsonResponse
             'token' => $token,
             'expires_at' => now()->addHours(1), // Example: Token expires in 1 hour
         ]);
-    
-    
         return response()->json(['message' => 'Password reset link sent to your email','tokend' => $token]);
     }
 

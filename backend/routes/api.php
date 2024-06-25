@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AdjayController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\HistoryMarketPriceController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\MaketPriceofAdjayController;
@@ -74,4 +75,5 @@ Route::get('/item/show/{id}', [ItemController::class, 'show']);
 Route::post('/item/update/{id}', [ItemController::class, 'update']);
 
 
-Route::post('/imgupload', [ImageController::class, 'imageUpload']);
+Route::get('/history/list', [HistoryMarketPriceController::class, 'index']);
+Route::delete('/history/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
