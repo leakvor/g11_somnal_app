@@ -34,6 +34,8 @@ Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/updateProfilePicture', [AuthController::class, 'uploadProfile'])->middleware('auth:sanctum');
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword'])->middleware('auth:sanctum');
+Route::post('/resetPassword', [AuthController::class, 'resetPassword'])->middleware('auth:sanctum');
 
 Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
 Route::get('show/user/post', [PostController::class, 'show_post'])->middleware('auth:sanctum');

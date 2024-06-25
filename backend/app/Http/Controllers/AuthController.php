@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Frontuser;
+use App\Models\Password;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
@@ -92,7 +95,7 @@ class AuthController extends Controller
             ], 500);
         }
     }
-
+//logout
     public function logout(Request $request)
     {
         try {
@@ -141,6 +144,70 @@ public function uploadProfile(Request $request)
         ], 404);
     }
 }
+// forgot password
+public function forgotPassword(Request $request): JsonResponse
+    {
+        // Validate the incoming request
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+    
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+    
+        $token = Str::random(60);
+    
+        Password::create([
+            'email' => $user->email,
+            'token' => $token,
+            'expires_at' => now()->addHours(1), // Example: Token expires in 1 hour
+        ]);
+    
+    
+        return response()->json(['message' => 'Password reset link sent to your email','tokend' => $token]);
+    }
 
+    //reset password======
+    public function resetPassword(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'token' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $passwordReset = Password::where('email', $request->email)
+            ->where('token', $request->token)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$passwordReset) {
+            return response()->json(['message' => 'Invalid or expired token'], 400);
+        }
+
+        $user = User::where('email', $passwordReset->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        $passwordReset->delete(); 
+
+        return response()->json(['message' => 'Password reset successfully']);
+    }
 
 }
