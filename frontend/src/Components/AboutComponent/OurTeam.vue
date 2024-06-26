@@ -37,8 +37,8 @@ export default {
 
 <style scoped>
 .our-team {
-  margin-top: 80px;
-  padding: 30px 20px;
+  margin-top: 100px;
+  padding: 30px 0 120px 0;
   border-radius: 10px;
   text-align: center;
 }
@@ -68,7 +68,7 @@ export default {
 .team-cards {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 60px;
   flex-wrap: wrap;
 }
 

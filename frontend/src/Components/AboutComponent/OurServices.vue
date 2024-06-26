@@ -47,7 +47,7 @@
   
   <style scoped>
   .our-services {
-    padding: 80px 80px 0px 80px;
+    padding: 100px 80px 0px 80px;
     text-align: start;
   }
   
@@ -95,7 +95,7 @@
   }
   
   .why-choose-us {
-    padding-top: 20px;
+    padding-top: 60px;
     text-align: left;
   }
   
@@ -106,17 +106,18 @@
     border-radius: 5px;
     border-bottom: 4px solid #FCA401 ;
     padding: 5px 10px;
-    margin-bottom: 40px;
   }
   
   .why-choose-us ul {
-    padding: 20px;
+    padding: 40px;
     text-align: left;
     max-width: 100%;
     border-radius: 10px;
     background: #f9f9f9;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    margin-top: 33px;
+
   }
   .why-choose-us ul:hover {
     transform: translateY(-10px);
