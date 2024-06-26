@@ -34,11 +34,11 @@
         class="font-bold px-3 py-2 text-slate-700 rounded-lg hover:bg-orange-400 hover:text-slate-900 color-white no-underline"
         >Contact Us</a
       >
-      <!-- <a
+      <a
         href="/post"
         class="font-bold px-3 py-2 text-slate-700 rounded-lg hover:bg-orange-400 hover:text-slate-900 color-white no-underline"
         >User Post</a
-      > -->
+      >
     </nav>
 
     <!-- Sign In -->
@@ -56,7 +56,7 @@
         />
         <div
           v-if="showDropdown"
-          class="absolute right-0 bg-white rounded-lg py-4 mt-3 shadow-lg w-64"
+          class="absolute right-0 bg-white rounded-lg py-2 mt-2 shadow-lg w-40"
         >
         <a href="/profile" class="block px-4 py-2 hover:bg-orange-600 hover:color-white flex items-center space-x-2">
           <i class="fas fa-user"></i>

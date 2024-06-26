@@ -7,6 +7,7 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
       />
     </head>
+
     <div class="items-center justify-center bg-white" style="height: 700px">
       <img
         class="w-full"
