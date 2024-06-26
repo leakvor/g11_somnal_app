@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
     MailSettingController,
-    CategoryController
+    CategoryController,
+    ItemController,
+    HistoryMarketprices
 };
 
 
@@ -62,6 +64,9 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('users','UserController');
         Route::resource('posts','PostController');
         Route::resource('categories',CategoryController::class);
+        Route::resource('items',ItemController::class);
+        Route::resource('history',HistoryMarketprices::class);
+
  
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
@@ -69,6 +74,13 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::get('/mail',[MailSettingController::class,'index'])->name('mail.index');
         Route::put('/mail-update/{mailsetting}',[MailSettingController::class,'update'])->name('mail.update');
 
+
         
         
 });
+Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
+    ->middleware(['auth']) // Add necessary middleware here
+    ->group(function() {
+        Route::resource('items', ItemController::class);
+    });
+

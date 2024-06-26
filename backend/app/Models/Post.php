@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -18,6 +18,15 @@ class Post extends Model
     //user
     public function user():BelongsTo{
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    //comment
+    public function comment():HasMany{
+        return $this->hasMany(Comment::class,'post_id');
+    }
+    //like
+    public function like():HasMany{
+        return $this->hasMany(Like::class,'post_id');
     }
     //see all my post==
     public static function get_post($id){
@@ -64,10 +73,7 @@ class Post extends Model
         // Update the image field only if an image is provided in the request
         $post->image = $imageName;
     }
-
-    // Save the changes to the database
     $post->save();
-
     return $post;
 }
 

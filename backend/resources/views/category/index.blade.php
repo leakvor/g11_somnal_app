@@ -1,7 +1,7 @@
 
     <x-app-layout>
         <div class="shadow-lg rounded-lg overflow-hidden mx-4 md:mx-10 mt-10">
-            <div class="text-right">
+            <div class="text-right m-5">
                 @can('category create')
                   <a href="{{route('admin.categories.create')}}" class="bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">New post</a>
                 @endcan
@@ -25,7 +25,7 @@
 
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @can('category edit')
-                                <a href="{{route('admin.categories.edit',$category->id)}}"class="px-4 py-2 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
+                                <a href="{{route('admin.categories.edit',$category->id)}}"class="px-4 py-2 font-medium text-white bg-green-700 rounded-md hover:bg-blue-500 focus:outline-none focus:shadow-outline-blue active:bg-blue-600 transition duration-150 ease-in-out">Edit</a>
                                  @endcan
                             
                                 @can('category delete')
@@ -55,4 +55,4 @@
             button.closest('form').submit();
         }
     }
-</script>
+    </script>

@@ -42,7 +42,7 @@ Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:san
 Route::get('show/user/post', [PostController::class, 'show_post'])->middleware('auth:sanctum');
 Route::post('create/user/post', [PostController::class, 'store'])->middleware('auth:sanctum');
 Route::post('update/user/post/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
-
+// TODO: delete post
 
 Route::post('/comment/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
 Route::put('/comment/update/{id}', [CommentController::class, 'update'])->middleware('auth:sanctum');

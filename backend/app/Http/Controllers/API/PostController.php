@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ShowPostCommentResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,16 +24,33 @@ class PostController extends Controller
     // see all of my post
     public function show_post(Request $request)
     {
+        
+        // Ensure user is authenticated
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Retrieve authenticated user
         $user = $request->user();
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'User not authenticated'], 401);
-        }
-        $posts = Post::get_post($user->id);
+
+        // Retrieve all posts for the authenticated user with the 'user' relationship loaded
+        $posts = Post::where('user_id', $user->id)
+            ->with('user')
+            ->with('like')
+            ->with('comment')
+            ->get();
+        // If no posts found, return 404 error
         if ($posts->isEmpty()) {
-            return response()->json(['success' => false, 'message' => 'You haven\'t created any posts yet'], 404);
+            return response()->json(['message' => 'Posts not found'], 404);
         }
-        return response()->json(['success' => true, 'data' => $posts]);
+
+        // Transform each post using ShowPostCommentResource
+        $transformedPosts = ShowPostCommentResource::collection($posts);
+
+        // Return success response with transformed data
+        return response()->json(['success' => true, 'data' => $transformedPosts], 200);
     }
+
 
     // create post
     public function store(Request $request)
