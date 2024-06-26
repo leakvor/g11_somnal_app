@@ -78,9 +78,5 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         
         
 });
-Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
-    ->middleware(['auth']) // Add necessary middleware here
-    ->group(function() {
-        Route::resource('items', ItemController::class);
-    });
+
 
