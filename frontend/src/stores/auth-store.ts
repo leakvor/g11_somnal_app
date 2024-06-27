@@ -6,11 +6,11 @@ interface UserData {
   user: {
     id: number;
     name: string;
-    profilePicture: string | null;
-    // Define other necessary properties
+    profile: string | null;
+
   };
   // Define other necessary properties
-  token: string;
+  access_token: string;
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = userData.user;
     isAuthenticated.value = true;
     // Store token in localStorage
-    localStorage.setItem('access_token', userData.token);
+    localStorage.setItem('access_token', userData.access_token);
     // Store user data in cookies
     Cookies.set('user', JSON.stringify(userData.user));
   };

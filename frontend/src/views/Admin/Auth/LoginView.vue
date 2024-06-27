@@ -36,7 +36,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import axios from 'axios';
-// import Cookies from 'js-cookie'; 
 import { useField, useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useRouter } from 'vue-router';
@@ -69,11 +68,8 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', values);
     const data = response.data; 
-    // console.log(data.user);
-    // localStorage.setItem('access_token', data.token);
-    // Cookies.set('user', JSON.stringify(data.user)); // Store user data in a cookie
-    authStore.login(data.user);
-    router.push('/');
+    authStore.login(data); 
+    router.push('/'); 
   } catch (error) {
     const axiosError = error as AxiosError<ErrorResponse>;
     if (axiosError.response && axiosError.response.data) {

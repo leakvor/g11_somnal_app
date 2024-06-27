@@ -10,37 +10,33 @@
       <router-link to="/" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Home</router-link>
       <router-link to="/service" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Service</router-link>
       <router-link to="/about" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">About Us</router-link>
-      <router-link  to="/profile" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Profile</router-link>
       <router-link to="/contact" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Contact Us</router-link>
+      <router-link v-if="authStore.isAuthenticated" to="/profile" class="flex items-center space-x-2 font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">
+        <img v-if="authStore.user?.profile" :src="`${backendUrl}/uploads/${authStore.user?.profile}`" alt="Profile" class="w-8 h-8 rounded-full hover:bg-orange-400 hover:text-slate-900 no-underline">
+        <span>{{ authStore.user?.name }}</span>
+      </router-link>
+      <router-link v-else to="/login" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Login</router-link>
+      <button v-if="authStore.isAuthenticated" @click="authStore.logout()" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Logout</button>
     </nav>
-
-    <!-- Sign In / Profile Link -->
-    <div>
-      <router-link to="/login" class="px-4 py-2 rounded font-semibold">Login</router-link>
-      <button  class="px-4 py-2 rounded font-semibold">Logout</button>
-    </div>
-
   </header>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useAuthStore } from '../stores/auth-store';
-import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
-const router = useRouter();
+const backendUrl = 'http://127.0.0.1:8000'; // Replace with your backend URL
 
-const handleLogout = () => {
-  console.log(1);
-  authStore.logout(); 
-  router.push('/'); 
-};
+onMounted(() => {
+  authStore.loadUserFromCookie();
+});
 </script>
 
 <style scoped>
- button{
+button {
   background-color: transparent;
   border: none;
   color: #fff;
- }
+}
 </style>

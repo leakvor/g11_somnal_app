@@ -7,6 +7,7 @@ use App\Models\Password;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,34 +15,40 @@ use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
-{
-    public function login(Request $request): JsonResponse
+{ public function login(Request $request): JsonResponse
     {
+        // Validate incoming request data
         $validator = Validator::make($request->all(), [
-            'email'     => 'required|string|max:255',
+            'email'     => 'required|string|email|max:255',
             'password'  => 'required|string'
-          ]);
+        ]);
 
+        // Return validation errors if validation fails
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 422);
         }
 
-        $credentials = $request->only('email', 'password');
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 401);
+        // Attempt to authenticate the user
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $user   = User::where('email', $request->email)->firstOrFail();
-        $token  = $user->createToken('auth_token')->plainTextToken;
+        // Retrieve the authenticated user
+        $user = Auth::user();
 
+        // Generate a plain text token for the user
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Create a cookie with the user details
+        $userCookie = Cookie::make('user', json_encode($user), 60); // Cookie valid for 60 minutes
+
+        // Return a JSON response with the token and user details, and set the cookie
         return response()->json([
             'message'       => 'Login success',
             'access_token'  => $token,
-            'token_type'    => 'Bearer'
-        ]);
+            'token_type'    => 'Bearer',
+            'user'          => $user
+        ])->withCookie($userCookie);
     }
     
     public function index(Request $request)
@@ -109,41 +116,43 @@ class AuthController extends Controller
     }
 
     
-public function uploadProfile(Request $request)
-{
-    // return $request->user()->id;
-    $validateUser = Validator::make($request->all(), [
-        'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-    ]);
-    if ($validateUser->fails()) {
-        return response()->json([
-            'success' => false,
-            'message' => 'validation error',
-            'errors' => $validateUser->errors()
-        ], 422);
-    }
-    $img = $request->profile;
-    $ext = $img->getClientOriginalExtension();
-    $imageName = time() . '.' . $ext;
-    $img->move(public_path() . '/uploads/', $imageName);
-
-    try {
-        $user = $request->user();
-        $user->update([
-            'profile' => $imageName
+    public function uploadProfile(Request $request)
+    {
+        $validateUser = Validator::make($request->all(), [
+            'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-        return response()->json([
-            'success' => true,
-            'data' => $user,
-            'message' => 'Profile updated successfully'
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 404);
+    
+        if ($validateUser->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validateUser->errors()
+            ], 422);
+        }
+    
+        $img = $request->profile;
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time() . '.' . $ext;
+        $img->move(public_path() . '/uploads/', $imageName);
+    
+        try {
+            $user = $request->user();
+            $user->profile = '/uploads/' . $imageName; // Assuming 'profile' is the column name in your users table
+            $user->save();
+    
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+                'message' => 'Profile updated successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
-}
+    
 // forgot password
 public function forgotPassword(Request $request): JsonResponse
     {

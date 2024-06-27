@@ -1,8 +1,10 @@
 <x-app-layout>
     <div class="container mx-auto">
         <div class="text-right mt-5">
+        @can('item create')
         <a href="{{ route('admin.items.create') }}" class="btn bg-blue-500 text-white font-bold px-5 py-2 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors mt-10">New Item</a>
         </div>
+        @endcan
         <div class="flex flex-wrap justify-center mt-6">
             @can('item access')
                 @foreach ($items as $item)
