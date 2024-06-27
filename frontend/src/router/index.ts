@@ -50,6 +50,11 @@ const router = createRouter({
       path:'/register',
       name:'post',
       component:() => import('../views/Admin/Auth/RegisterView.vue')
+    },
+    {
+      path: '/contact',
+      name: 'contactus',
+      component: () => import('../views/Web/Post/ContactusView.vue')
     }
   ]
 })

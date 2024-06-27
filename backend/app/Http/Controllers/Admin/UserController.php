@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+<<<<<<< HEAD
 
+=======
+>>>>>>> contact_us
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -20,9 +23,15 @@ class UserController extends Controller
      */
     function __construct()
     {
+<<<<<<< HEAD
         $this->middleware('role_or_permission:User access|User create|User edit|User delete', ['only' => ['index', 'show']]);
         $this->middleware('role_or_permission:User create', ['only' => ['create', 'store']]);
         $this->middleware('role_or_permission:User edit', ['only' => ['edit', 'update']]);
+=======
+        $this->middleware('role_or_permission:User access|User create|User edit|User delete', ['only' => ['index','show']]);
+        $this->middleware('role_or_permission:User create', ['only' => ['create','store']]);
+        $this->middleware('role_or_permission:User edit', ['only' => ['edit','update']]);
+>>>>>>> contact_us
         $this->middleware('role_or_permission:User delete', ['only' => ['destroy']]);
     }
 
@@ -33,9 +42,15 @@ class UserController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $user = User::latest()->get();
 
         return view('setting.user.index', ['users' => $user]);
+=======
+        $user= User::latest()->get();
+
+        return view('setting.user.index',['users'=>$user]);
+>>>>>>> contact_us
     }
 
     /**
@@ -46,7 +61,11 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
+<<<<<<< HEAD
         return view('setting.user.new', ['roles' => $roles]);
+=======
+        return view('setting.user.new',['roles'=>$roles]);
+>>>>>>> contact_us
     }
 
     /**
@@ -59,6 +78,7 @@ class UserController extends Controller
     {
 
         $request->validate([
+<<<<<<< HEAD
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'phone' => 'required',
@@ -77,6 +97,19 @@ class UserController extends Controller
             'message' => 'User created successfully!'
         ]);
         return redirect()->route('admin.users.index');
+=======
+            'name'=>'required',
+            'email' => 'required|email|unique:users',
+            'password'=>'required|confirmed'
+        ]);
+        $user = User::create([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'password'=> bcrypt($request->password),
+        ]);
+        $user->syncRoles($request->roles);
+        return redirect()->back()->withSuccess('User created !!!');
+>>>>>>> contact_us
     }
 
     /**
@@ -100,7 +133,11 @@ class UserController extends Controller
     {
         $role = Role::get();
         $user->roles;
+<<<<<<< HEAD
         return view('setting.user.edit', ['user' => $user, 'roles' => $role]);
+=======
+       return view('setting.user.edit',['user'=>$user,'roles' => $role]);
+>>>>>>> contact_us
     }
 
     /**
@@ -113,6 +150,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
+<<<<<<< HEAD
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id . ',id',
             'phone' => 'required',
@@ -120,12 +158,20 @@ class UserController extends Controller
         ]);
 
         if ($request->password != null) {
+=======
+            'name'=>'required',
+            'email' => 'required|email|unique:users,email,'.$user->id.',id',
+        ]);
+
+        if($request->password != null){
+>>>>>>> contact_us
             $request->validate([
                 'password' => 'required|confirmed'
             ]);
             $validated['password'] = bcrypt($request->password);
         }
 
+<<<<<<< HEAD
         try {
             $user->update($validated);
             $user->syncRoles($request->roles);
@@ -144,6 +190,12 @@ class UserController extends Controller
         }
 
         return redirect()->route('admin.users.index');
+=======
+        $user->update($validated);
+
+        $user->syncRoles($request->roles);
+        return redirect()->back()->withSuccess('User updated !!!');
+>>>>>>> contact_us
     }
 
     /**
@@ -152,6 +204,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function destroy(User $user)
     {
         try {
@@ -180,4 +233,11 @@ class UserController extends Controller
     }
 
 
+=======
+    public function destroy(Role $role)
+    {
+        $role->delete();
+        return redirect()->back()->withSuccess('Role deleted !!!');
+    }
+>>>>>>> contact_us
 }

@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\Api\AdjayController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ChatController;
@@ -13,6 +14,10 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageController;
 use App\Models\MarketofAdjay;
+=======
+use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\AuthController;
+>>>>>>> contact_us
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+<<<<<<< HEAD
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
@@ -78,3 +84,8 @@ Route::post('/item/update/{id}', [ItemController::class, 'update']);
 
 Route::get('/history/list', [HistoryMarketPriceController::class, 'index']);
 Route::delete('/history/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
+=======
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
+>>>>>>> contact_us

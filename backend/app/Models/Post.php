@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+=======
+>>>>>>> contact_us
 
 class Post extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
     protected $fillable = ['title','description','user_id','image'];
 
     //user
@@ -83,4 +87,8 @@ class Post extends Model
    
 
     
+=======
+
+    protected $fillable = ['title','description','user_id','publish'];
+>>>>>>> contact_us
 }

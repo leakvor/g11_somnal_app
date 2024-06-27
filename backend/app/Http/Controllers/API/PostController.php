@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+<<<<<<< HEAD
 use App\Http\Resources\ShowPostCommentResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -79,4 +80,20 @@ public function update(Request $request, $id){
     return response()->json(['success'=>true,'message'=>'Post updated successfully']);
 }
 
+=======
+use App\Models\Post;
+use Illuminate\Http\Request;
+
+class PostController extends Controller
+{
+    public function index()
+    {
+        // dd(1);
+        // Retrieve all posts
+        $posts = Post::all();
+
+        // Return posts as a JSON response
+        return response()->json($posts);
+    }
+>>>>>>> contact_us
 }
