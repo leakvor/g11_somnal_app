@@ -15,13 +15,13 @@
     />
   </div>
   <h1 class="mt-20 color-dark text-center">OUR SERVICE</h1>
-  <div class="container mt-10 p-10 d-flex justify-content-evenly">
-    <div class="card" style="width: 300px; height: 350px">
-      <img src="../../../assets/image/bottle.jpg" class="card-img-top" alt="..."/>
+  <div class="container mt-10 p-10 d-flex justify-content-evenly" >
+    <div class="card" style="width: 300px; height: 350px" v-for="item in items" :key="item.id">
+      <img :src="`${backendUrl}/uploads/${item.image}`" class="card-img-top" alt="..." />
       <div class="card-body">
         <div class="title text-center">
-          <h1 class="card-title">ដបទឹក</h1>
-          <h5 class="card-text">តម្លៃ: ៣០០៛</h5>
+          <h1 class="card-title">{{ item.name }}</h1>
+          <h5 class="card-text">{{ price }} ៛</h5>
         </div>
         <div class="icon d-flex justify-content-around m-5">
           <a href="#"><i class="bi bi-telephone"></i></a>
@@ -30,70 +30,56 @@
         </div>
       </div>
     </div>
-    <div class="card" style="width: 300px; height: 350px">
-      <img src="../../../assets/image/can.jpg" class="card-img-top" alt="..." />
-      <div class="card-body">
-        
-        <div class="title text-center">
-          <h1 class="card-title">កំប៉ុង</h1>
-          <h5 class="card-text">តម្លៃ: ៤០០០៛</h5>
-        </div>
-        <div class="icon d-flex justify-content-around m-5">
-          <a href="#"><i class="bi bi-telephone"></i></a>
-          <a href="#"><i class="bi bi-chat-dots"></i></a>
-          <a href="#"><i class="bi bi-cart-plus"></i></a>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="width: 300px; height: 350px">
-      <img src="../../../assets/image/dump.jpg" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <div class="title text-center">
-          <h1 class="card-title">សំបកកេះ</h1>
-          <h5 class="card-text">តម្លៃ: ៥០០៛</h5>
-        </div>
-        <div class="icon d-flex justify-content-around m-5">
-          <a href="#"><i class="bi bi-telephone"></i></a>
-          <a href="#"><i class="bi bi-chat-dots"></i></a>
-          <a href="#"><i class="bi bi-cart-plus"></i></a>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="width: 300px; height: 350px">
-      <img src="../../../assets/image/magazin.jpg" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <div class="title text-center">
-          <h1 class="card-title">ទស្សនាវត្តី</h1>
-          <h5 class="card-text">តម្លៃ: ៥០០៛</h5>
-        </div>
-        <div class="icon d-flex justify-content-around m-5">
-          <a href="#"><i class="bi bi-telephone"></i></a>
-          <a href="#"><i class="bi bi-chat-dots"></i></a>
-          <a href="#"><i class="bi bi-cart-plus"></i></a>
-        </div>
-      </div>
-    </div>
+  
   </div>
-  <a
-    href="/service"
-    class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 no-underline ml-25"
-    >Back</a
-  >
+  <router-link to="/about"  class="bg-green-600 text-white font-bold py-2 px-4 rounded hover:bg-orange-600 no-underline ml-25">Back</router-link>
   <Footer class="mt-5" />
 </template>
   
-  <script>
-import NavBar from '@/Components/NavBar.vue'
-import Footer from '@/Components/Footer.vue'
+<script>
+import axios from 'axios';
+import NavBar from '@/Components/NavBar.vue';
+import Footer from '@/Components/Footer.vue';
 
 export default {
   components: {
     NavBar,
     Footer
-  }
-}
+  },
+  props: ['id'],
+  name: 'AdjayView',
+  data() {
+    return {
+      category: null,
+      items: [],
+      backendUrl : 'http://127.0.0.1:8000'
+    };
+  },
+  mounted() {
+    this.fetchCategoryDetails();
+  },
+  methods: {
+    async fetchCategoryDetails() {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/category/show/${this.id}`);
+        if (response.data.data && response.data.data.length > 0) {
+          this.category = response.data.data[0];
+          this.items = this.category.items;
+          console.log(this.items);
+          this.items.forEach(item => {
+        console.log('ID:', item.id);
+        console.log('Name:', item.name);
+        console.log('Image:', item.image);
+      }); 
+        }
+      } catch (error) {
+        console.error('Error fetching category details:', error);
+      }
+    },
+  },
+};
 </script>
-  
+
   <style>
 
 i {

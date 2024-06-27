@@ -1,25 +1,20 @@
 <template>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
-    <section class="our-services">
-      <h2 class="our-services-title">Our Services</h2>
-      <div class="service-cards d-flex justify-content-start">
-        <div class="service-card card p-3 m-2">
-          <img src="@/assets/buy-scrap.jpg" alt="Buy Scrap" class="card-img-top">
-          <div class="card-body">
-            <h3 class="card-title">Buy Scrap</h3>
-            <p class="card-text">We offer competitive prices for your scrap materials.</p>
-          </div>
-        </div>
-        <div class="service-card card p-3 m-2">
-          <img src="@/assets/drain-services.jpg" alt="Drain Services" class="card-img-top">
-          <div class="card-body">
-            <h3 class="card-title">Drain</h3>
-            <p class="card-text">Our team provides efficient and reliable drain services.</p>
-          </div>
+  <section class="our-services">
+    <h2 class="our-services-title">Our Services</h2>
+
+    <!-- Service Cards -->
+    <div class="service-cards d-flex justify-content-start">
+      <!-- Use v-for to iterate over categories -->
+      <div v-for="category in categories" :key="category.id" class="service-card card p-3 m-2">
+        <div class="card-body">
+          <h3 class="card-title">{{ category.name }}</h3>
+          <router-link :to="{ name: 'adjay', params: { id: category.id } }">See more</router-link>
         </div>
       </div>
-  
-      <div class="why-choose-us mt-5">
+    </div>
+
+    <!-- Why Choose Us Section -->
+    <div class="why-choose-us mt-5">
         <h2 class="mb-4">Why Choose Us</h2>
         <ul class="list-unstyled">
           <li class="mb-3">
@@ -36,16 +31,43 @@
           </li>
         </ul>
       </div>
-    </section>
-  </template>
-  
-  <script>
-  export default {
-    name: 'OurServices'
-  };
-  </script>
-  
-  <style scoped>
+  </section>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'OurServices',
+
+  data() {
+    return {
+      backendUrl: 'http://127.0.0.1:8000', // Replace with your Laravel backend URL
+      categories: [],
+    };
+  },
+
+  mounted() {
+    // Fetch categories from Laravel backend
+    this.fetchServiceCategories();
+  },
+
+  methods: {
+    async fetchServiceCategories() {
+      try {
+        const response = await axios.get(`${this.backendUrl}/api/category/list`);
+        this.categories = response.data.data;
+        console.log(this.categories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Handle error or show a message to the user
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
   .our-services {
     padding: 100px 80px 0px 80px;
     text-align: start;

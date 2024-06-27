@@ -37,9 +37,10 @@ const router = createRouter({
       component: () => import('../views/Web/About/AboutUs.vue')
     },
     {
-      path:'/adjay',
+      path:'/service/:id',
       name:'adjay',
-      component:() => import('../views/Web/Service/AdjayView.vue')
+      component:() => import('../views/Web/Service/AdjayView.vue'),
+      props: true,
     },
     {
       path:'/drain',

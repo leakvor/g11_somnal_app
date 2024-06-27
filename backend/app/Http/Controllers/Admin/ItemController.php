@@ -40,7 +40,7 @@ class ItemController extends Controller
     $validatedData = $request->validate([
         'name' => 'sometimes|required|string|max:255',
         'category_id' => 'sometimes|required|exists:categories,id',
-        'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // 'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'price' => 'sometimes|nullable|numeric',
     ]);
 
