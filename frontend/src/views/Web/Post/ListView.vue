@@ -1,55 +1,70 @@
 <template>
-  <WebLayout>
-    <div class="container mt-4 p-4 bg-white shadow rounded">
-      <div class="text-center mb-4">
-        <p class="fs-4 fw-bold">Your journey to excellence starts here.</p>
-        <p>Join Us Today and Get Started</p>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Title</th>
-              <th scope="col">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="post in store.posts" :key="post.id">
-              <th scope="row">{{ post.id }}</th>
-              <td>{{ post.title }}</td>
-              <td>{{ post.description }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <NavBar />
+  <div class="ml-12 mb-4 mt-5">
+    <p class="fs-4 fw-bold color-dark">List Post</p>
+    <a
+      href="/post_create"
+      class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 no-underline"
+    >
+      Create Post
+    </a>
+  </div>
+  <div class="container mt-4 p-4 bg-white shadow rounded">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+          </tr> -->
+        </tbody>
+      </table>
     </div>
-  </WebLayout>
-  <!-- {{ store.posts }} -->
-  {{ posts }}
+  </div>
 </template>
 
 <script>
-import WebLayout from '@/Components/Layouts/WebLayout.vue'
-import { usePostStore } from '@/stores/post-list'
+import NavBar from '../../../Components/NavBar.vue'
 
 export default {
-  name: 'PostList',
   components: {
-    WebLayout
+    NavBar
   },
-  data() {
-    return {
-      store: usePostStore(),
+  data(){
+    return{
+      posts:[],
+      title:'',
+      description:'',
+      user_id:null,
+      image:null,
     }
   },
-  mounted() {
-    this.fetchPosts()
-  },
-  methods: {
-    fetchPosts() {
-      this.store.fetchPosts()
+  methods:{
+    getPost(){
+      this.$axios
+      .get("/post/list")
+      .then(res=>{
+          this.users=res.data;
+          console.log(this.data);
+    
+      })
+      .catch(err=>{
+      console.log(err);
+      })
     }
+  },
+  mounted(){
+    this.getPost();
   }
+  
 }
 </script>

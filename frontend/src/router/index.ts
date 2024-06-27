@@ -55,7 +55,17 @@ const router = createRouter({
       path: '/contact',
       name: 'contactus',
       component: () => import('../views/Web/Post/ContactusView.vue')
-    }
+    },
+    {
+    path:"/profile",
+    name:"profile",
+    component:() => import('../views/User/UserProfileView.vue')
+  },
+    {
+    path:"/chat",
+    name:"chat",
+    component:() => import('../views/Web/Chat/ChatView.vue')
+  },
   ]
 })
 

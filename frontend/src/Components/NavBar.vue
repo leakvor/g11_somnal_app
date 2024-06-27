@@ -1,8 +1,8 @@
 <template>
-  <header class="sticky top-0 flex justify-between px-10 py-3 bg-green-600 text-white items-center shadow-lg z-50">
+  <header class="flex justify-between px-10 py-3 bg-green-600 items-center">
     <!-- Logo -->
     <div class="flex items-center space-x-2">
-      <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10">
+      <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10" />
       <span class="text-xl font-bold">SOMNAL</span>
     </div>
     <!-- Menu Items -->
