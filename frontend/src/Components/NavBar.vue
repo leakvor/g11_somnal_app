@@ -35,7 +35,7 @@
         >Contact Us</a
       >
       <a
-        href="/post"
+        href="/list_post"
         class="font-bold px-3 py-2 text-slate-700 rounded-lg hover:bg-orange-400 hover:text-slate-900 color-white no-underline"
         >User Post</a
       >

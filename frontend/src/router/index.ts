@@ -49,9 +49,14 @@ const router = createRouter({
 
 // post
     {
-      path:"/post",
-      name:"posts",
+      path:"/list_post",
+      name:"list_post",
       component:() => import('../views/Web/Post/ListView.vue')
+    },
+    {
+      path:"/post_create",
+      name:"createPost",
+      component:() => import('../views/Web/Post/CreateView.vue')
     },
     {
       path:"/update_post",
