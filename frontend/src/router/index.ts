@@ -32,6 +32,11 @@ const router = createRouter({
       component: () => import('../views/Web/Service/ServiceView.vue')
     },
     {
+      path: '/about',
+      name: 'about',
+      component: () => import('../views/Web/About/AboutUs.vue')
+    },
+    {
       path:'/adjay',
       name:'adjay',
       component:() => import('../views/Web/Service/AdjayView.vue')
@@ -99,4 +104,4 @@ const router = createRouter({
 //   }
 // })
 
-export default { router }
+export default { router}

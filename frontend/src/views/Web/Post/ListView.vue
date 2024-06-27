@@ -1,11 +1,13 @@
 <template>
-  <NavBar/>
-  <div class=" ml-12 mb-4 mt-5">
+  <NavBar />
+  <div class="ml-12 mb-4 mt-5">
     <p class="fs-4 fw-bold color-dark">List Post</p>
-    <a href="/post_create" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 no-underline">
-        Create Post
+    <a
+      href="/post_create"
+      class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 no-underline"
+    >
+      Create Post
     </a>
-    
   </div>
   <div class="container mt-4 p-4 bg-white shadow rounded">
     <div class="table-responsive">
@@ -37,6 +39,32 @@ export default {
   components: {
     NavBar
   },
+  data(){
+    return{
+      posts:[],
+      title:'',
+      description:'',
+      user_id:null,
+      image:null,
+    }
+  },
+  methods:{
+    getPost(){
+      this.$axios
+      .get("/post/list")
+      .then(res=>{
+          this.users=res.data;
+          console.log(this.data);
+    
+      })
+      .catch(err=>{
+      console.log(err);
+      })
+    }
+  },
+  mounted(){
+    this.getPost();
+  }
   
 }
 </script>

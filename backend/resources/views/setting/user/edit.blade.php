@@ -19,6 +19,11 @@
                       placeholder="Enter email" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200"
                     />
                 </div>
+
+                <div class="flex flex-col space-y-2">
+                    <label for="phone" class="text-gray-700 select-none font-medium">Phone</label>
+                    <input id="phone" type="tel" name="phone" value="{{ old('phone',$user->phone) }}" pattern="[0-9]{10}" title="Please enter a 10-digit phone number without any spaces or special characters. Example: 0123456789" placeholder="Enter phone" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200" />
+                </div>
                 
                 <div class="flex flex-col space-y-2">
                     <label for="password" class="text-gray-700 select-none font-medium">Password</label>
@@ -39,7 +44,7 @@
                       <div class="flex flex-col justify-cente">
                           <div class="flex flex-col">
                               <label class="inline-flex items-center mt-3">
-                                  <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" name="roles[]" value="{{$role->id}}"
+                                  <input type="radio" class="form-radio h-5 w-5 text-blue-600" name="roles[]" value="{{$role->id}}"
                                   @if(count($user->roles->where('id',$role->id)))
                                       checked 
                                   @endif
@@ -50,7 +55,7 @@
                   @endforeach
                 </div>
                 <div class="text-center mt-16 mb-16">
-                  <button type="submit" class="bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">Submit</button>
+                  <button type="submit" class="bg-green-700 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-green-600 transition-colors ">Submit</button>
                 </div>
               </div>
 

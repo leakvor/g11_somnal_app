@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -19,9 +20,9 @@ class UserController extends Controller
      */
     function __construct()
     {
-        $this->middleware('role_or_permission:User access|User create|User edit|User delete', ['only' => ['index','show']]);
-        $this->middleware('role_or_permission:User create', ['only' => ['create','store']]);
-        $this->middleware('role_or_permission:User edit', ['only' => ['edit','update']]);
+        $this->middleware('role_or_permission:User access|User create|User edit|User delete', ['only' => ['index', 'show']]);
+        $this->middleware('role_or_permission:User create', ['only' => ['create', 'store']]);
+        $this->middleware('role_or_permission:User edit', ['only' => ['edit', 'update']]);
         $this->middleware('role_or_permission:User delete', ['only' => ['destroy']]);
     }
 
@@ -32,9 +33,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user= User::latest()->get();
+        $user = User::latest()->get();
 
-        return view('setting.user.index',['users'=>$user]);
+        return view('setting.user.index', ['users' => $user]);
     }
 
     /**
@@ -45,7 +46,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-        return view('setting.user.new',['roles'=>$roles]);
+        return view('setting.user.new', ['roles' => $roles]);
     }
 
     /**
@@ -58,17 +59,24 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'name'=>'required',
+            'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password'=>'required|confirmed'
+            'phone' => 'required',
+            'password' => 'required|confirmed'
         ]);
         $user = User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=> bcrypt($request->password),
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => bcrypt($request->password),
         ]);
         $user->syncRoles($request->roles);
-        return redirect()->back()->withSuccess('User created !!!');
+        // return redirect()->back()->withSuccess('User created !!!');
+        session()->flash('alert', [
+            'type' => 'success',
+            'message' => 'User created successfully!'
+        ]);
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -92,7 +100,7 @@ class UserController extends Controller
     {
         $role = Role::get();
         $user->roles;
-       return view('setting.user.edit',['user'=>$user,'roles' => $role]);
+        return view('setting.user.edit', ['user' => $user, 'roles' => $role]);
     }
 
     /**
@@ -105,21 +113,37 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name'=>'required',
-            'email' => 'required|email|unique:users,email,'.$user->id.',id',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id . ',id',
+            'phone' => 'required',
+
         ]);
 
-        if($request->password != null){
+        if ($request->password != null) {
             $request->validate([
                 'password' => 'required|confirmed'
             ]);
             $validated['password'] = bcrypt($request->password);
         }
 
-        $user->update($validated);
+        try {
+            $user->update($validated);
+            $user->syncRoles($request->roles);
 
-        $user->syncRoles($request->roles);
-        return redirect()->back()->withSuccess('User updated !!!');
+            // Flash message using session for success
+            session()->flash('alert', [
+                'type' => 'success',
+                'message' => 'User updated successfully!'
+            ]);
+        } catch (\Exception $e) {
+            // Flash message using session for error
+            session()->flash('alert', [
+                'type' => 'error',
+                'message' => 'Failed to update user. Please try again.'
+            ]);
+        }
+
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -128,9 +152,32 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(User $user)
     {
-        $role->delete();
-        return redirect()->back()->withSuccess('Role deleted !!!');
+        try {
+            if ($user->id != 1) {
+                $user->delete();
+
+                // Flash message using session for success
+                session()->flash('alert', [
+                    'type' => 'success',
+                    'message' => 'User deleted successfully!'
+                ]);
+            } else {
+                session()->flash('alert', [
+                    'type' => 'error',
+                    'message' => 'Admin cannot be deleted.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            session()->flash('alert', [
+                'type' => 'error',
+                'message' => 'Failed to delete user. Please try again.'
+            ]);
+        }
+
+        return redirect()->route('admin.users.index');
     }
+
+
 }
