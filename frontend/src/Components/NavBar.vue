@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { Icon } from '@iconify/vue'
-</script>
-
 <template>
   <header class="sticky top-0 flex justify-between px-10 py-3 bg-green-600 text-white items-center shadow-lg z-50">
     <!-- Logo -->
@@ -11,39 +7,40 @@ import { Icon } from '@iconify/vue'
     </div>
     <!-- Menu Items -->
     <nav class="flex justify-center space-x-4">
-      <a
-        href="/"
-        class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline"
-        >Home</a
-      >
-      <a
-        href="/service"
-        class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline"
-        >Service</a
-      >
-      <a
-        href="/about"
-        class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline"
-        >About Us</a
-      >
-      <a
-        href="/projects"
-        class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline"
-        >Contact Us</a
-      >
+      <router-link to="/" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Home</router-link>
+      <router-link to="/service" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Service</router-link>
+      <router-link to="/about" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">About Us</router-link>
+      <router-link  to="/profile" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Profile</router-link>
+      <router-link to="/contact" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Contact Us</router-link>
     </nav>
 
-    <!-- Sign In -->
+    <!-- Sign In / Profile Link -->
     <div>
-      <div class="px-4 py-2 rounded font-semibold">Sign In</div>
+      <router-link to="/login" class="px-4 py-2 rounded font-semibold">Login</router-link>
+      <button  class="px-4 py-2 rounded font-semibold">Logout</button>
     </div>
+
   </header>
 </template>
 
+<script setup lang="ts">
+import { useAuthStore } from '../stores/auth-store';
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const handleLogout = () => {
+  console.log(1);
+  authStore.logout(); 
+  router.push('/'); 
+};
+</script>
+
 <style scoped>
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
+ button{
+  background-color: transparent;
+  border: none;
+  color: #fff;
+ }
 </style>

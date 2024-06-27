@@ -1,16 +1,51 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import Cookies from 'js-cookie';
+
+interface UserData {
+  user: {
+    id: number;
+    name: string;
+    profilePicture: string | null;
+    // Define other necessary properties
+  };
+  // Define other necessary properties
+  token: string;
+}
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref()
-  const isAuthenticated = ref()
-  const permissions = ref()
-  const roles = ref()
+  const user = ref<UserData['user'] | null>(null);
+  const isAuthenticated = ref(false);
+
+  const loadUserFromCookie = () => {
+    const userCookie = Cookies.get('user');
+    if (userCookie) {
+      user.value = JSON.parse(userCookie);
+      isAuthenticated.value = true;
+    }
+  };
+
+  const login = (userData: UserData) => {
+    user.value = userData.user;
+    isAuthenticated.value = true;
+    // Store token in localStorage
+    localStorage.setItem('access_token', userData.token);
+    // Store user data in cookies
+    Cookies.set('user', JSON.stringify(userData.user));
+  };
+
+  const logout = () => {
+    user.value = null;
+    isAuthenticated.value = false;
+    localStorage.removeItem('access_token');
+    Cookies.remove('user');
+  };
 
   return {
     user,
-    roles,
-    permissions,
-    isAuthenticated
-  }
-})
+    isAuthenticated,
+    login,
+    logout,
+    loadUserFromCookie,
+  };
+});

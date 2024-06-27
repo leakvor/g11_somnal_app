@@ -5,12 +5,12 @@
       <OurServices />
       <OurTeam />
     </div>
-    <Footer/>
+    <FooterView/>
 </template>
   
   <script>
   import NavBar from '@/Components/NavBar.vue';
-  import Footer from '@/Components/Footer.vue';
+  import FooterView from '@/Components/Footer.vue';
   import AboutUsCom from '../../../Components/AboutComponent/AboutUsCom.vue';
   import OurServices from '../../../Components/AboutComponent/OurServices.vue';
   import OurTeam from '../../../Components/AboutComponent/OurTeam.vue';  
@@ -22,7 +22,7 @@
       AboutUsCom,
       OurServices,
       OurTeam,
-      Footer
+      FooterView
     }
   };
   </script>
