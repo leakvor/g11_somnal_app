@@ -35,6 +35,11 @@ const router = createRouter({
       path: '/contactus',
       name: 'contactus',
       component: () => import('../views/Web/Post/ContactusView.vue')
+    },
+    {
+      path: '/paid-adjay',
+      name: 'paid-adjay',
+      component: () => import('../views/Web/Post/PaidAdjayView.vue')
     }
   ]
 })
