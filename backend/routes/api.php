@@ -1,21 +1,16 @@
 <?php
 
-use App\Http\Controllers\Api\AdjayController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\ChatController;
-use App\Http\Controllers\Api\CommentController;
-use App\Http\Controllers\Api\HistoryMarketPriceController;
-use App\Http\Controllers\Api\ItemController;
-use App\Http\Controllers\Api\LikeController;
-use App\Http\Controllers\Api\MaketPriceofAdjayController;
-use App\Http\Controllers\API\PostController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ImageController;
-use App\Models\MarketofAdjay;
+use App\Http\Controllers\Api\FavoriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ItemController;
+use App\Http\Controllers\Api\HistoryMarketPriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,51 +26,76 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('/updateProfilePicture', [AuthController::class, 'uploadProfile'])->middleware('auth:sanctum');
-Route::post('/forgotPassword', [AuthController::class, 'forgotPassword'])->middleware('auth:sanctum');
-Route::post('/resetPassword', [AuthController::class, 'resetPassword'])->middleware('auth:sanctum');
 
-Route::get('/post/list', [PostController::class, 'index'])->middleware('auth:sanctum');
-Route::get('show/user/post', [PostController::class, 'show_post'])->middleware('auth:sanctum');
-Route::post('create/user/post', [PostController::class, 'store'])->middleware('auth:sanctum');
-Route::post('update/user/post/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
-// TODO: delete post
+// Routes that require authentication
+Route::middleware('auth:sanctum')->group(function () {
+    // User profile routes
+    Route::get('/me', [AuthController::class, 'index']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/updateProfilePicture', [AuthController::class, 'uploadProfile']);
+    Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+    Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
-Route::post('/comment/create', [CommentController::class, 'store'])->middleware('auth:sanctum');
-Route::put('/comment/update/{id}', [CommentController::class, 'update'])->middleware('auth:sanctum');
-Route::delete('/comment/destory/{id}', [CommentController::class, 'destroy'])->middleware('auth:sanctum');
+    // Post routes
+    Route::prefix('post')->group(function () {
+        Route::get('/list', [PostController::class, 'index']);
+        Route::get('/show/user', [PostController::class, 'show_post']);
+        Route::post('/create/user', [PostController::class, 'store']);
+        Route::post('/update/user/{id}', [PostController::class, 'update']);
+        Route::delete('/delete/user/{id}', [PostController::class, 'destroy']);
+    });
+
+    // Comment routes
+    Route::prefix('comment')->group(function () {
+        Route::post('/create', [CommentController::class, 'store']);
+        Route::put('/update/{id}', [CommentController::class, 'update']);
+        Route::delete('/destroy/{id}', [CommentController::class, 'destroy']);
+        Route::post('/user/like', [LikeController::class, 'user_like']);
+    });
+
+    // Chat routes
+    Route::prefix('chat')->group(function () {
+        Route::post('/send/message', [ChatController::class, 'store']);
+        Route::delete('/delete/message/{id}', [ChatController::class, 'destroy']);
+        Route::get('/get/message/{receiverId}', [ChatController::class, 'getConversation']);
+        Route::post('/update/message/{id}', [ChatController::class, 'updateMessage']);
+    });
+
+    Route::prefix('fav')->group(function () {
+        Route::get('/list', [FavoriteController::class, 'index']);
+        Route::post('/create', [FavoriteController::class, 'store']);
+        Route::delete('/delete/{id}', [FavoriteController::class, 'destroy']);
+      
+    });
+
+});
+
+// Category routes
+Route::prefix('category')->group(function () {
+    Route::post('/create', [CategoryController::class, 'store']);
+    Route::get('/list', [CategoryController::class, 'index']);
+    Route::get('/show/{id}', [CategoryController::class, 'show']);
+    Route::delete('/delete/{id}', [CategoryController::class, 'destroy']);
+    Route::post('/update/{id}', [CategoryController::class, 'update']);
+});
+
+// Item routes
+Route::prefix('item')->group(function () {
+    Route::post('/create', [ItemController::class, 'store']);
+    Route::get('/list', [ItemController::class, 'index']);
+    Route::delete('/delete/{id}', [ItemController::class, 'destroy']);
+    Route::get('/show/{id}', [ItemController::class, 'show']);
+    Route::post('/update/{id}', [ItemController::class, 'update']);
+});
 
 
-Route::post('/comment/user/like', [LikeController::class, 'user_like'])->middleware('auth:sanctum');
 
-
-//send message
-Route::post('/chat/send/message', [ChatController::class, 'store'])->middleware('auth:sanctum');
-Route::delete('/chat/delete/message/{id}', [ChatController::class, 'destroy'])->middleware('auth:sanctum');
-Route::get('/chat/get/message/{receiverId}', [ChatController::class, 'getConversation'])->middleware('auth:sanctum');
-Route::post('/chat/update/message/{id}', [ChatController::class, 'updateMessage'])->middleware('auth:sanctum');
-
-
-//Category
-Route::post('/category/create', [CategoryController::class, 'store']);
-Route::get('/category/list', [CategoryController::class, 'index']);
-Route::get('/category/show/{id}', [CategoryController::class, 'show']);
-Route::delete('/category/delete/{id}', [CategoryController::class, 'destroy']);
-Route::post('/category/update/{id}', [CategoryController::class, 'update']);
-
-
-//Item
-Route::post('/item/create', [ItemController::class, 'store']);
-Route::get('/item/list', [ItemController::class, 'index']);
-Route::delete('/item/delete/{id}', [ItemController::class, 'destroy']);
-Route::get('/item/show/{id}', [ItemController::class, 'show']);
-Route::post('/item/update/{id}', [ItemController::class, 'update']);
-
-
-Route::get('/history/list', [HistoryMarketPriceController::class, 'index']);
-Route::delete('/history/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
+// History Market Price routes
+Route::prefix('history')->group(function () {
+    Route::get('/list', [HistoryMarketPriceController::class, 'index']);
+    Route::delete('/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
+});

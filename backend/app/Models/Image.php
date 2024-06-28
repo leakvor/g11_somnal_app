@@ -10,4 +10,5 @@ class Image extends Model
 {
     use HasFactory,SoftDeletes;
     protected $fillable = ['image'];
+    
 }
