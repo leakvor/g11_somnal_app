@@ -40,6 +40,11 @@ const router = createRouter({
       path: '/paid-adjay',
       name: 'paid-adjay',
       component: () => import('../views/Web/Post/PaidAdjayView.vue')
+    },
+    {
+      path: '/comments',
+      name: 'comments',
+      component: () => import('../views/Web/Post/CommentPostView.vue')
     }
   ]
 })
