@@ -37,15 +37,16 @@ const router = createRouter({
       component: () => import('../views/Web/Post/ContactusView.vue')
     },
     {
-      path: '/paid-adjay',
-      name: 'paid-adjay',
-      component: () => import('../views/Web/Post/PaidAdjayView.vue')
-    },
-    {
       path: '/comments',
       name: 'comments',
       component: () => import('../views/Web/Post/CommentPostView.vue')
+    },
+    {
+      path: '/partner',
+      name: 'partner',
+      component: () => import('../views/Web/Post/PartnerView.vue')
     }
+
   ]
 })
 
