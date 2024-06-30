@@ -1,16 +1,16 @@
 <template>
   <div class="container mx-auto p-4">
-    <div class="contain flex items-center justify-between">
-      <div class="text-head ml-10">
+    <div class="flex flex-col lg:flex-row items-center justify-between">
+      <div class="text-head lg:ml-10 mb-4 lg:mb-0">
         <h1 class="text-2xl font-bold mb-4"><b>បង្កើនចំណូលរបស់អ្នកជាមួយយើងខ្ញុំ</b></h1>
         <p>យើងរូមគ្នាជួយពង្រឹងអាជីវកម្មរបស់លោកអ្នកមានការរីចម្រើន​និង​ជួយបង្កើតចំណូលរបស់អ្នក។</p>
         <button class="bg-red-500 text-white px-4 py-2 rounded-full mt-5">ចុចនៅទីនេះ!</button>
       </div>
-      <div class="partner-img ml-20">
-        <img src="@/assets/partner/partner.png" alt="Partner Image">
+      <div class="partner-img lg:ml-20">
+        <img src="@/assets/partner/partner.png" alt="Partner Image" class="w-full lg:max-w-lg xl:max-w-xl">
       </div>
     </div>
-    <div class="flex ">
+    <div class="flex">
       <div class="flex-grow">
         <p class="text-green-700 mb-4">លក្ខខណ្ឌមួយចំនួនដើម្បីក្លាយជាដៃគូរបស់យើង:</p>
         <ul class="list-disc list-inside mb-4">
@@ -35,14 +35,8 @@ export default {
 </script>
 
 <style scoped>
-.contain {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .partner-img img {
   width: 100%;
-  max-width: 90%; /* Adjust based on your design */
+  max-width: 100%;
 }
 </style>
