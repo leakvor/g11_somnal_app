@@ -67,6 +67,11 @@ const router = createRouter({
     name:"chat",
     component:() => import('../views/Web/Chat/ChatView.vue')
   },
+    {
+    path:"/comment-post",
+    name:"comment-post",
+    component:() => import('../views/Web/commentPost/CommentView.vue')
+  },
   ]
 })
 
