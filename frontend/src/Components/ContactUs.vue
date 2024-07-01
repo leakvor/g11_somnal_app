@@ -1,4 +1,5 @@
 <template>
+  
   <div class="container mx-auto px-8 py-8 fadeIn">
     <div class="text-center">
       <!-- <h1 class="text-blue-500 text-3xl font-bold">Contact Us</h1> -->
@@ -7,38 +8,38 @@
     <div class="flex flex-wrap">
       <!-- Map Section -->
       <div class="w-full md:w-1/2 mb-4 md:mb-0">
-        <iframe class="w-full h-64 md:h-full border-0" frameborder="0" style="border: 0"
+        <iframe class="w-full h-64 md:h-full border-0" frameborder="0" style="border: 1px solid black"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3909.742471777524!2d104.87831131475303!3d11.556248491833105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310951a0c15b5b4f%3A0x375d614c1a50b7e2!2sPhnom%20Penh!5e0!3m2!1sen!2skh!4v1648891360110!5m2!1sen!2skh"
           allowfullscreen>
         </iframe>
       </div>
       <!-- Contact Form Section -->
-      <div class="w-full md:w-1/2 md:pl-8 bg-white p-8">
+      <div id="form-container" class="form-container w-full md:w-1/2 md:pl-8 bg-white p-8 shadow  ">
         <div class="text-blue-800 text-4xl font-bold text-center mb-4">Contact Us</div>
         <form action="https://fabform.io/f/{form-id}" method="post">
           <div class="mb-4">
             <label for="name" class="block text-lg text-gray-900">Name</label>
             <input type="text" id="name" name="name" required
-              class="form-control w-full bg-white rounded border border-slate-900 focus:border-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
+            class="form-control w-full bg-white rounded border border-slate-700 border-dark focus:border-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="mb-4">
             <label for="email" class="block text-lg text-gray-900">Email</label>
             <input type="email" id="email" name="email" required
-              class="w-full bg-white rounded border border-gray-400 focus:border-black-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
+              class="w-full bg-white rounded border border-slate-900 border-dark  focus:border-black-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="mb-4">
             <label for="phone" class="block text-lg text-gray-900">Phone</label>
             <input type="phone" id="phone" name="phone" required
-              class="w-full bg-white rounded border border-gray-400 focus:border-black-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
+              class="w-full bg-white rounded border border-slate-900 border-dark focus:border-black-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="mb-4">
             <label for="comment" class="block text-lg text-gray-900">Message/Feedback</label>
             <textarea
-              class="w-full bg-white rounded border border-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 h-32 text-base outline-none text-gray-900 py-2 px-4 resize-none leading-6 transition-colors duration-200 ease-in-out"
+              class="w-full bg-white rounded border border-slate-900 border-dark focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 h-32 text-base outline-none text-gray-900 py-2 px-4 resize-none leading-6 transition-colors duration-200 ease-in-out"
               rows="5" id="comment" name="message" placeholder="Type Your Message/Feedback here..." required></textarea>
           </div>
           <button type="submit"
-            class="w-full bg-green-500 text-white py-3 px-4 rounded hover:bg-blue-500 hover:text-white border border-green-500 transition duration-500">
+            class="w-full bg-green-700 text-white py-3 px-4 rounded hover:bg-green-600 hover:text-white border border-green-500 transition duration-500">
             <i class="fas fa-paper-plane"></i> Send
           </button>
         </form>
@@ -81,9 +82,9 @@
           <dt class="text-lg leading-6 font-medium text-gray-900">
             Phone number
           </dt>
-          <dd class="mt-2 text-base text-gray-500">
+          <a href="tel:09777799980" class="mt-2 text-base text-gray-500 text-decoration-none">
             097 777 999 80
-          </dd>
+          </a>
         </div>
       </div>
       <div class="flex items-center mt-6 sm:mt-0">
@@ -101,9 +102,9 @@
           <dt class="text-lg leading-6 font-medium text-gray-900">
             Email
           </dt>
-          <dd class="mt-2 text-base text-gray-500">
+          <a href="mailto:somnal@gmail.com" class="mt-2 text-base text-gray-500 text-decoration-none">
             somnal@gmail.com
-          </dd>
+          </a>
         </div>
       </div>
     </div>
@@ -117,6 +118,7 @@ export default {
 </script>
 
 <style scoped>
+
 input{
   border: 1px solid #000;
 }
@@ -131,6 +133,14 @@ input{
 
   100% {
     opacity: 1;
+  }
+}
+@media(max-width: 428px) {
+  .container{
+    padding: 10px;
+  }
+  #form-container{
+    width: 100%;
   }
 }
 </style>
