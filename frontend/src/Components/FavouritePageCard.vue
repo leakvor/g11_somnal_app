@@ -7,7 +7,7 @@
       </div>
       <div class="relative bg-blue-200">
         <div class="py-6 px-4 md:px-8">
-          <h3 class="text-xl md:text-2xl font-bold">{{ item.category }}</h3>
+          <h3 class="text-xl md:text-2xl font-bold text-black">{{ item.category }}</h3>
           <div class="text-gray-600 text-sm font-medium flex items-center mb-2 mt-1">
             <p>Location : &nbsp;</p>
             <a :href="item.locationLink" class="hover:text-black transition duration-300 ease-in-out mb-3">{{ item.location }}</a>
@@ -47,5 +47,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>
