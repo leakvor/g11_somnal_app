@@ -27,9 +27,9 @@ const router = createRouter({
       component: () => import('../views/Web/HomeView.vue')
     },
     {
-      path: '/service',
-      name: 'service',
-      component: () => import('../views/Web/Service/ServiceView.vue')
+      path: '/category',
+      name: 'category',
+      component: () => import('../views/Web/Category/ServiceView.vue')
     },
     {
       path: '/about',
@@ -37,15 +37,21 @@ const router = createRouter({
       component: () => import('../views/Web/About/AboutUs.vue')
     },
     {
-      path:'/service/:id',
+      path:'/adjay/:id',
       name:'adjay',
-      component:() => import('../views/Web/Service/AdjayView.vue'),
+      component:() => import('../views/Web/Category/AdjayView.vue'),
       props: true,
     },
     {
       path:'/drain',
       name:'drain',
-      component:() => import('../views/Web/Service/DrainView.vue')
+      component:() => import('../views/Web/Category/DrainView.vue')
+    },
+    {
+      path:"/service",
+      name:"service",
+      component:() => import('../views/Web/Category/ServiceView.vue')
+
     },
     {
       path:'/register',
@@ -66,6 +72,11 @@ const router = createRouter({
     path:"/chat",
     name:"chat",
     component:() => import('../views/Web/Chat/ChatView.vue')
+  },
+    {
+    path:"/homeview",
+    name:"homeview",
+    component:() => import('../views/Web/HomeView.vue')
   },
   ]
 })

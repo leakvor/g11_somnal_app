@@ -7,8 +7,8 @@
     </div>
     <!-- Menu Items -->
     <nav class="flex justify-center space-x-4">
-      <router-link to="/" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Home</router-link>
-      <router-link to="/service" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Service</router-link>
+      <router-link to="/homeview" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Home</router-link>
+      <router-link to="/category" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Service</router-link>
       <router-link to="/about" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">About Us</router-link>
       <router-link to="/contact" class="font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">Contact Us</router-link>
       <router-link v-if="authStore.isAuthenticated" to="/profile" class="flex items-center space-x-2 font-bold px-3 py-2 text-white rounded-lg hover:bg-orange-400 hover:text-slate-900 no-underline">
