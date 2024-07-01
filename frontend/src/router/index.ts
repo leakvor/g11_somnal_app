@@ -82,6 +82,11 @@ const router = createRouter({
       path: '/partner',
       name: 'partner',
       component: () => import('../views/Web/Post/PartnerView.vue')
+    },
+    {
+      path: '/favourite-page',
+      name: 'favourite-page',
+      component: () => import('../views/Web/Post/FavouritePageView.vue')
     }
 
   ]
