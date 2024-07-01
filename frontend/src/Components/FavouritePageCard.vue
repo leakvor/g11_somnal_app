@@ -1,13 +1,13 @@
 <!-- FavouritePageCard.vue -->
 <template>
   <div>
-    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+    <div class=" card rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-101">
       <div class="relative overflow-hidden pb-2/3"> <!-- Adjust pb-2/3 for 3:2 aspect ratio -->
         <img class="absolute h-full w-full object-cover object-center" :src="item.imageSrc" alt="Card Image" />
       </div>
-      <div class="relative bg-blue-200">
+      <div class="relative ">
         <div class="py-6 px-4 md:px-8">
-          <h3 class="text-xl md:text-2xl font-bold">{{ item.category }}</h3>
+          <h5 class="text-xl ">{{ item.category }}</h5>
           <div class="text-gray-600 text-sm font-medium flex items-center mb-2 mt-1">
             <p>Location : &nbsp;</p>
             <a :href="item.locationLink" class="hover:text-black transition duration-300 ease-in-out mb-3">{{ item.location }}</a>
@@ -25,7 +25,7 @@
             </a> -->
             <a :href="item.readMoreLink" class="flex items-center">
               <!-- <p class="mr-5">Read more</p> -->
-              <button class="bg-blue border-blue color-white">Delete</button>
+              <button class="btn bg-red-700  color-white hover:bg-red-700 color-white">Delete</button>
             </a>
           </div>
         </div>
@@ -47,5 +47,13 @@ export default {
 </script>
 
 <style scoped>
-
+*{
+  text-decoration: none;
+}
+  .card{
+    transition: all 0.7s ease;
+  }
+  button:hover{
+    color: white;
+  }
 </style>
