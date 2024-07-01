@@ -17,7 +17,14 @@ class ShowPostCommentResource extends JsonResource
         return [
            'id' => $this->id,
             'title' => $this->title,
-            'content' => $this->content,
+            'description' => $this->description,
+            'image' => $this->image,
+            'create' => $this->created_at->format('Y-m-d'),
+            'user' => [
+            'id' => $this->user->id,
+            'name' => $this->user->name,
+            'profile'=>$this->user->profile
+        ],
             'comment' => ShowCommentResource::collection($this->comment),
             'total_comments' => $this->comment->count(),
             'userLikes' => ShowLikeResource::collection($this->like),

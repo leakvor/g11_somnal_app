@@ -80,7 +80,7 @@ public function update(Request $request, $id){
     return response()->json(['success'=>true,'message'=>'Post updated successfully']);
 }
 //destory
-function destroy($id){
+public function destroy($id){
     $post=Post::find($id);
     if(!$post){
         return response()->json(['success'=>false,'message'=>'Post not found'],404);
@@ -90,6 +90,14 @@ function destroy($id){
     }
     $post->delete();
     return response()->json(['success'=>true,'message'=>'Post has been deleted']);
+}
+//show each post of user
+public function show_one_post($id){
+    $post=Post::find($id);
+    if(!$post){
+        return response()->json(['success'=>false,'message'=>'Post not found'],404);
+    }
+    return response()->json(['success'=>true,'data'=>$post]);
 }
 
 }

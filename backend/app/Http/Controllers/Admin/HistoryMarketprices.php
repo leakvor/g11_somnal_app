@@ -18,7 +18,7 @@ class HistoryMarketprices extends Controller
 
     public function index()
     {
-        $histories = HistoryMarketPrice::all();
+        $histories = HistoryMarketPrice::paginate(4);
         $items=Item::all();
         return view('history.index', ['histories' => $histories],['items' => $items]);
     }

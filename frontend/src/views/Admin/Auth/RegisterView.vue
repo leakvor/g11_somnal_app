@@ -59,7 +59,7 @@
   
       const onSubmit = handleSubmit(async (values) => {
         try {
-          const { data } = await axiosInstance.post(`${baseURL}register`, values)
+          const { data } = await axiosInstance.post(`http://127.0.0.1:8000/api/register`, values)
           localStorage.setItem('access_token', data.access_token)
           router.push('/login')
         } catch (error) {

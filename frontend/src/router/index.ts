@@ -67,6 +67,27 @@ const router = createRouter({
     name:"chat",
     component:() => import('../views/Web/Chat/ChatView.vue')
   },
+    {
+    path:"/post",
+    name:"post",
+    component:() => import('../views/Web/Post/PostCard.vue')
+  },
+    {
+    path:"/post/create",
+    name:"post",
+    component:() => import('../views/Web/Post/PostCreate.vue')
+  },
+    {
+    path:"/post/edit/:id",
+    name:"edit_post",
+    component:() => import('../views/Web/Post/PostEdit.vue'),
+    props: true,
+  },
+    {
+    path:"/messenger",
+    name:"messenger",
+    component:() => import('../views/Web/Chat/UserChat.vue')
+  },
   ]
 })
 

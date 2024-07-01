@@ -117,26 +117,21 @@ class AuthController extends Controller
     
     public function uploadProfile(Request $request)
     {
-        $validateUser = Validator::make($request->all(), [
-            'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-    
-        if ($validateUser->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $validateUser->errors()
-            ], 422);
-        }
-    
-        $img = $request->profile;
-        $ext = $img->getClientOriginalExtension();
-        $imageName = time() . '.' . $ext;
-        $img->move(public_path() . '/uploads/', $imageName);
     
         try {
             $user = $request->user();
-            $user->profile = '/uploads/' . $imageName; // Assuming 'profile' is the column name in your users table
+            $user->name = $request->name;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+    
+            if ($request->hasFile('profile')) {
+                $img = $request->file('profile');
+                $ext = $img->getClientOriginalExtension();
+                $imageName = time() . '.' . $ext;
+                $img->move(public_path('uploads'), $imageName);
+                $user->profile = $imageName;
+            }
+    
             $user->save();
     
             return response()->json([
@@ -148,9 +143,10 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ], 404);
+            ], 500);
         }
     }
+    
     
 // forgot password
 public function forgotPassword(Request $request): JsonResponse
@@ -215,5 +211,7 @@ public function forgotPassword(Request $request): JsonResponse
 
         return response()->json(['message' => 'Password reset successfully']);
     }
+
+   
 
 }

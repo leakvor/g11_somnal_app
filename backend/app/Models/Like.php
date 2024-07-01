@@ -12,7 +12,6 @@ class Like extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = ['user_id','post_id'];
 
-
     //post
     public function post():BelongsTo{
         return $this->belongsTo(Post::class,'post_id');

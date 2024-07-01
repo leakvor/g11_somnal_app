@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // User profile routes
     Route::get('/me', [AuthController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/updateProfilePicture', [AuthController::class, 'uploadProfile']);
+    Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
     Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
     Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create/user', [PostController::class, 'store']);
         Route::post('/update/user/{id}', [PostController::class, 'update']);
         Route::delete('/delete/user/{id}', [PostController::class, 'destroy']);
+        Route::get('/each/user/{id}', [PostController::class, 'show_one_post']);
     });
 
     // Comment routes
@@ -91,8 +92,6 @@ Route::prefix('item')->group(function () {
     Route::get('/show/{id}', [ItemController::class, 'show']);
     Route::post('/update/{id}', [ItemController::class, 'update']);
 });
-
-
 
 // History Market Price routes
 Route::prefix('history')->group(function () {
