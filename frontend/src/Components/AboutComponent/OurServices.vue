@@ -1,20 +1,25 @@
 <template>
-  <section class="our-services">
-    <h2 class="our-services-title">Our Services</h2>
-
-    <!-- Service Cards -->
-    <div class="service-cards d-flex justify-content-start">
-      <!-- Use v-for to iterate over categories -->
-      <div v-for="category in categories" :key="category.id" class="service-card card p-3 m-2">
-        <div class="card-body">
-          <h3 class="card-title">{{ category.name }}</h3>
-          <router-link :to="{ name: 'adjay', params: { id: category.id } }">See more</router-link>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <section class="our-services">
+      <h2 class="our-services-title">Our Services</h2>
+      <div class="service-cards d-flex justify-content-start">
+        <div class="service-card card p-3 m-2">
+          <img src="@/assets/buy-scrap.jpg" alt="Buy Scrap" class="card-img-top">
+          <div class="card-body">
+            <h3 class="card-title">Buy Scrap</h3>
+            <p class="card-text">We offer competitive prices for your scrap materials.</p>
+          </div>
+        </div>
+        <div class="service-card card p-3 m-2">
+          <img src="@/assets/drain-services.jpg" alt="Drain Services" class="card-img-top">
+          <div class="card-body">
+            <h3 class="card-title">Drain</h3>
+            <p class="card-text">Our team provides efficient and reliable drain services.</p>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Why Choose Us Section -->
-    <div class="why-choose-us mt-5">
+  
+      <div class="why-choose-us mt-5">
         <h2 class="mb-4">Why Choose Us</h2>
         <ul class="list-unstyled">
           <li class="mb-3">
@@ -163,5 +168,14 @@ export default {
   
   .fw-bold {
     font-weight: bold;
+  }
+  /* media 996 */
+  @media (max-width: 996px) {
+    .our-services {
+      padding: 100px 40px 0px 40px;
+    }
+    .service-card {
+      flex: 1 0 100%;
+    }
   }
   </style>
