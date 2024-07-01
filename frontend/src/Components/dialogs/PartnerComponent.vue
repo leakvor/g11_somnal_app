@@ -1,4 +1,5 @@
 <template>
+  <NavBar />
   <div class="container mx-auto p-4">
     <div class="flex flex-col lg:flex-row items-center justify-between">
       <div class="text-head lg:ml-10 mb-4 lg:mb-0">
@@ -26,11 +27,19 @@
       </div>
     </div>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
-export default {
+import NavBar from '@/Components/NavBar.vue'
+import Footer from '@/Components/Footer.vue'
+
+export default{
   name: 'PartnerView',
+components:{
+  NavBar,
+  Footer
+  },
 }
 </script>
 

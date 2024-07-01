@@ -73,6 +73,9 @@ export default {
 </script>
 
 <style scoped>
+li,p,span{
+  color:black;
+}
   .our-services {
     padding: 100px 80px 0px 80px;
     text-align: start;

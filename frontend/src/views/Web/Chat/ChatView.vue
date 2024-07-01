@@ -1,9 +1,9 @@
 <template>
     <WebLayout>
+		<NavBar/>
       <body >
         <main class="content"  >
     <div class="container p-0"  >
-
 		<h1 class="h3 mb-3">Messages</h1>
 
 		<div class="card">
@@ -226,6 +226,18 @@
   
     </WebLayout>
   </template>
+
+<script>
+import NavBar from "@/Components/NavBar.vue";
+import FooterView from "@/Components/Footer.vue";
+export default {
+	components: {
+		NavBar,
+		FooterView
+	}
+
+};
+  </script>
   
 <style scoped>
 body{margin-top:5px; height: 80vh;}

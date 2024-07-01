@@ -110,7 +110,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .bg-smoke-light {
   background-color: rgba(0, 0, 0, 0.5);
 }

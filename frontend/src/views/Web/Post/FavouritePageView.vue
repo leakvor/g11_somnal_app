@@ -1,17 +1,20 @@
 <!-- FavouritePageView.vue -->
 <template>
+  <NavBar/>
   <div>
     <FavouritePage :favouritesData="favourites" />
   </div>
 </template>
 
 <script>
+import NavBar from '@/Components/NavBar.vue';
 import FavouritePage from '../../../Components/dialogs/FavouritePage.vue';
 
 export default {
   name: 'FavouritePageView',
   components: {
-    FavouritePage
+    FavouritePage,
+    NavBar
   },
   data() {
     return {
