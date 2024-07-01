@@ -69,15 +69,15 @@ const router = createRouter({
     component:() => import('../views/Web/Chat/ChatView.vue')
   },
     {
+    path:"/comment-post",
+    name:"comment-post",
+    component:() => import('../views/Web/commentPost/CommentView.vue')
+  },
+    {
     path:"/homeview",
     name:"homeview",
     component:() => import('../views/Web/HomeView.vue')
   },
-  {
-      path: '/comments',
-      name: 'comments',
-      component: () => import('../views/Web/Post/CommentPostView.vue')
-    },
     {
       path: '/partner',
       name: 'partner',
