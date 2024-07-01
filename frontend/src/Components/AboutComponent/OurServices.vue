@@ -1,6 +1,6 @@
 <template>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
-    <section class="our-services">
+    <section class="our-services p-2">
       <h2 class="our-services-title">Our Services</h2>
       <div class="service-cards d-flex justify-content-start">
         <div class="service-card card p-3 m-2">
@@ -19,7 +19,7 @@
         </div>
       </div>
   
-      <div class="why-choose-us mt-5">
+      <div class="why-choose-us p-2 mt-5">
         <h2 class="mb-4">Why Choose Us</h2>
         <ul class="list-unstyled">
           <li class="mb-3">
@@ -141,5 +141,14 @@
   
   .fw-bold {
     font-weight: bold;
+  }
+  /* media 996 */
+  @media (max-width: 996px) {
+    .our-services {
+      padding: 100px 40px 0px 40px;
+    }
+    .service-card {
+      flex: 1 0 100%;
+    }
   }
   </style>

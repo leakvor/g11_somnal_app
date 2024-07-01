@@ -5,9 +5,9 @@
         <p>We are Somnal App, a leading provider of scrap collection, processing, and recycling services.</p>
       </div>
     </section>
-    <div class="container mt-5" >
-        <h2 class="text-start" style="margin-left: 65px;">ABOUT US</h2>
-        <p class="text-start" style="margin-left: 65px; margin-right: 30px;">
+    <div class=" p-3 mt-5" >
+        <h2 class="text-start" >ABOUT US</h2>
+        <p class="text-start" >
         We are ScrapMall, a leading provider of scrap collection, processing, and recycling services. With over 25 years of experience in the industry, we have built a reputation for providing reliable, efficient, and environmentally-friendly services to our customers. Our team is dedicated to providing the highest level of customer service and support, and we are available 24/7 to assist with any questions or concerns.
         <br>
         <br>
@@ -26,7 +26,6 @@
   .about-us {
     padding: 10% 20px; /* 10% top and bottom padding, 20px left and right padding */
     margin-top: 30px;
-    border-radius: 15px;
     text-align: center;
     background-image: url('@/assets/background.jpg');
     background-size: cover;
