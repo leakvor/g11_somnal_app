@@ -87,7 +87,12 @@ const router = createRouter({
       path: '/favorite-page',
       name: 'favorite-page',
       component: () => import('../views/Web/Post/FavouritePageView.vue')
-    }
+    },
+    {
+      path: '/company/dashboard',
+      name: 'CompanyDashboard',
+      component: () => import('../views/Company/CompanyDashboard.vue')
+    },
 
   ]
 })
