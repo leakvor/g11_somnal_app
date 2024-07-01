@@ -1,50 +1,49 @@
 <template>
   <div class="container mx-auto px-8 py-8 fadeIn">
     <div class="text-center">
-      <h1 class="text-blue-500 text-3xl font-bold">Contact Us</h1>
+      <!-- <h1 class="text-blue-500 text-3xl font-bold">Contact Us</h1> -->
       <hr class="my-4" />
     </div>
-    <div class="flex flex-wrap md:flex-nowrap">
+    <div class="flex flex-wrap">
+      <!-- Map Section -->
       <div class="w-full md:w-1/2 mb-4 md:mb-0">
         <iframe class="w-full h-64 md:h-full border-0" frameborder="0" style="border: 0"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3909.742471777524!2d104.87831131475303!3d11.556248491833105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x310951a0c15b5b4f%3A0x375d614c1a50b7e2!2sPhnom%20Penh!5e0!3m2!1sen!2skh!4v1648891360110!5m2!1sen!2skh"
           allowfullscreen>
         </iframe>
       </div>
-      <div class="w-full md:w-1/2">
-        <form action="form.php" method="post">
+      <!-- Contact Form Section -->
+      <div class="w-full md:w-1/2 md:pl-8 bg-white p-8">
+        <div class="text-blue-800 text-4xl font-bold text-center mb-4">Contact Us</div>
+        <form action="https://fabform.io/f/{form-id}" method="post">
           <div class="mb-4">
-            <label for="name" class="sr-only">Name</label>
-            <input type="text"
-              class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500" id="name"
-              name="nm" placeholder="Name" required autofocus />
+            <label for="name" class="block text-lg text-gray-900">Name</label>
+            <input type="text" id="name" name="name" required
+              class="form-control w-full bg-white rounded border border-slate-900 focus:border-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="mb-4">
-            <label for="email" class="sr-only">Email</label>
-            <input type="email"
-              class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500" id="email"
-              name="em" placeholder="Email" required />
+            <label for="email" class="block text-lg text-gray-900">Email</label>
+            <input type="email" id="email" name="email" required
+              class="w-full bg-white rounded border border-gray-400 focus:border-black-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="mb-4">
-            <label for="phone" class="sr-only">Phone</label>
-            <input type="text"
-              class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500" id="phone"
-              onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="10" placeholder="Phone"
-              required />
+            <label for="phone" class="block text-lg text-gray-900">Phone</label>
+            <input type="phone" id="phone" name="phone" required
+              class="w-full bg-white rounded border border-gray-400 focus:border-black-500 focus:bg-white focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-900 py-2 px-4 leading-8 transition-colors duration-200 ease-in-out">
           </div>
           <div class="mb-4">
-            <label for="comment" class="sr-only">Message/Feedback</label>
+            <label for="comment" class="block text-lg text-gray-900">Message/Feedback</label>
             <textarea
-              class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 resize-none"
-              rows="5" id="comment" name="FB" placeholder="Type Your Message/Feedback here..." required>
-            </textarea>
+              class="w-full bg-white rounded border border-gray-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-200 h-32 text-base outline-none text-gray-900 py-2 px-4 resize-none leading-6 transition-colors duration-200 ease-in-out"
+              rows="5" id="comment" name="message" placeholder="Type Your Message/Feedback here..." required></textarea>
           </div>
-          <button
-            class="w-full bg-blue-500 text-white py-3 px-4 rounded hover:bg-white hover:text-blue-500 border border-blue-500 transition duration-500">
+          <button type="submit"
+            class="w-full bg-green-500 text-white py-3 px-4 rounded hover:bg-blue-500 hover:text-white border border-green-500 transition duration-500">
             <i class="fas fa-paper-plane"></i> Send
           </button>
         </form>
       </div>
+
     </div>
     <div class="mt-20 flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-20 justify-center">
       <div class="flex items-center">
@@ -68,7 +67,7 @@
         </div>
       </div>
       <div class="flex items-center mt-6 sm:mt-0">
-        <div class="flex-shrink-0 ">
+        <div class="flex-shrink-0">
           <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
             <!-- Heroicon name: phone -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -108,18 +107,19 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ContactUs',
+  name: 'ContactUs'
 }
-
 </script>
 
 <style scoped>
+input{
+  border: 1px solid #000;
+}
 .fadeIn {
   animation: fadeIn 3s;
 }
