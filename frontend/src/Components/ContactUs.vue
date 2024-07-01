@@ -1,9 +1,9 @@
 <template>
-  
-  <div class="container mx-auto px-8 py-8 fadeIn">
+  <NavBar/>
+  <div class="container mx-auto px-8 fadeIn">
     <div class="text-center">
       <!-- <h1 class="text-blue-500 text-3xl font-bold">Contact Us</h1> -->
-      <hr class="my-4" />
+      <hr class="my-1" />
     </div>
     <div class="flex flex-wrap">
       <!-- Map Section -->
@@ -112,8 +112,12 @@
 </template>
 
 <script>
+import NavBar from './NavBar.vue';
 export default {
-  name: 'ContactUs'
+  name: 'ContactUs',
+  components:{
+    NavBar
+  }
 }
 </script>
 
