@@ -59,7 +59,6 @@ const router = createRouter({
       component: () => import('../views/Web/Post/ContactusView.vue')
     },
     {
-<<<<<<< HEAD
     path:"/profile",
     name:"profile",
     component:() => import('../views/User/UserProfileView.vue')
@@ -74,7 +73,7 @@ const router = createRouter({
     name:"homeview",
     component:() => import('../views/Web/HomeView.vue')
   },
-=======
+  {
       path: '/comments',
       name: 'comments',
       component: () => import('../views/Web/Post/CommentPostView.vue')
@@ -85,7 +84,6 @@ const router = createRouter({
       component: () => import('../views/Web/Post/PartnerView.vue')
     }
 
->>>>>>> partners_pages
   ]
 })
 
