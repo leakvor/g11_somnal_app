@@ -43,11 +43,6 @@ const router = createRouter({
       props: true,
     },
     {
-      path:'/drain',
-      name:'drain',
-      component:() => import('../views/Web/Category/DrainView.vue')
-    },
-    {
       path:"/service",
       name:"service",
       component:() => import('../views/Web/Category/ServiceView.vue')
