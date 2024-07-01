@@ -34,7 +34,7 @@
 
                     <input id="searchInput"
                         class="form-input w-full md:w-64 rounded-md pl-10 pr-4 focus:border-indigo-600" type="text"
-                        placeholder="Search user..." onkeyup="filterByCompanyName(this.value)">
+                        placeholder="Search company..." onkeyup="filterByCompanyName(this.value)">
 
                 </div>
             </div>
