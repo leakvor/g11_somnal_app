@@ -98,7 +98,7 @@
                             @endcan
                         </tbody>
                     </table>
-                    <div class="text-right p-4 py-10">
+                    <div class="text-right p-4 " id="pagination">
                         {{ $users->links() }}
                     </div>
                     <div id="noUsersFound" class="hidden p-10 inset-0 flex items-center justify-center">
@@ -172,6 +172,7 @@
         function searchUsers(searchTerm) {
             const rows = document.querySelectorAll('.user-row');
             const noUsersFound = document.getElementById('noUsersFound');
+            const pagination = document.getElementById('pagination');
             let foundUsers = false;
             searchTerm = searchTerm.toLowerCase();
 
@@ -186,6 +187,7 @@
             });
 
             noUsersFound.classList.toggle('hidden', foundUsers);
+            pagination.classList.toggle('hidden', !foundUsers);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
