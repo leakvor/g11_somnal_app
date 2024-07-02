@@ -21,12 +21,12 @@
           >Submit</el-button>
         </div>
         
-        <div v-if="apiError" class="mt-4 text-center text-red-500">
+        <div v-if="apiError" class="mt-4 text-center text-danger">
           {{ apiError }}
         </div>
 
         <div class="mt-4 text-center">
-          <el-link href="/register">Don't have an account? Register</el-link>
+          <router-link to="/register">Don't have an account? Register</router-link>
         </div>
       </el-form>
     </el-card>
@@ -67,9 +67,15 @@ const apiError = ref('');
 const onSubmit = handleSubmit(async (values) => {
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', values);
-    const data = response.data; 
+    const data = response.data;
     authStore.login(data); 
-    router.push('/'); 
+    if (data.user.role_id === 2) {
+      router.push('/profile'); 
+    } else if (data.user.role_id === 3) {
+      router.push('/company/dashboard');
+    } else {
+      router.push('/');
+    }
   } catch (error) {
     const axiosError = error as AxiosError<ErrorResponse>;
     if (axiosError.response && axiosError.response.data) {
@@ -85,7 +91,7 @@ const { value: email, errorMessage: emailError } = useField('email');
 </script>
 
 <style scoped>
-.min-h-screen {
-  min-height: 100vh;
+.text-danger {
+  color: #ff5b5b;
 }
 </style>

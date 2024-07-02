@@ -68,6 +68,7 @@ class PostController extends Controller
 
 //update
 public function update(Request $request, $id){
+    // return $request->user()->id;
     $post=Post::find($id);
     if(!$post){
         return response()->json(['success'=>false,'message'=>'Post not found'],404);
@@ -77,6 +78,26 @@ public function update(Request $request, $id){
     }
     $post=Post::store($request,$id);
     return response()->json(['success'=>true,'message'=>'Post updated successfully']);
+}
+//destory
+public function destroy($id){
+    $post=Post::find($id);
+    if(!$post){
+        return response()->json(['success'=>false,'message'=>'Post not found'],404);
+    }
+    if ($post->user_id!== auth()->id()) {
+        return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+    }
+    $post->delete();
+    return response()->json(['success'=>true,'message'=>'Post has been deleted']);
+}
+//show each post of user
+public function show_one_post($id){
+    $post=Post::find($id);
+    if(!$post){
+        return response()->json(['success'=>false,'message'=>'Post not found'],404);
+    }
+    return response()->json(['success'=>true,'data'=>$post]);
 }
 
 }

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Str;
 class User extends Authenticatable
@@ -23,7 +25,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
-        'profile'
+        'profile',
+        'role_id'
     ];
 
     /**
@@ -36,6 +39,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    //=======
+    public function role():BelongsTo{
+        return $this->belongsTo(Role::class,'role_id');
+    }
     /**
      * The attributes that should be cast.
      *
@@ -50,6 +57,7 @@ class User extends Authenticatable
             'name',
             'email',
             'password',
+            'role_id',
             'email_verified_at',
             'remember_token',
         ]);

@@ -21,10 +21,10 @@ class ItemController extends Controller
 
     
     public function index()
-    {
-        $items = Item::all();
-        return view('items.index', ['items' => $items]);
-    }
+{
+    $items = Item::paginate(4);
+    return view('items.index', ['items' => $items]);
+}
 
   
 

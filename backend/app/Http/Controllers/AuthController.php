@@ -15,7 +15,8 @@ use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
-{ public function login(Request $request): JsonResponse
+{ 
+    public function login(Request $request): JsonResponse
     {
         // Validate incoming request data
         $validator = Validator::make($request->all(), [
@@ -30,7 +31,7 @@ class AuthController extends Controller
 
         // Attempt to authenticate the user
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['message' => 'Please chack you email or password again'], 401);
         }
 
         // Retrieve the authenticated user
@@ -40,9 +41,8 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // Create a cookie with the user details
-        $userCookie = Cookie::make('user', json_encode($user), 60); // Cookie valid for 60 minutes
+        $userCookie = Cookie::make('user', json_encode($user), 60);
 
-        // Return a JSON response with the token and user details, and set the cookie
         return response()->json([
             'message'       => 'Login success',
             'access_token'  => $token,
@@ -64,37 +64,41 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // return $request;
         try {
             $validateUser = Validator::make(
                 $request->all(),
                 [
-                    'name' => 'required',
+                    'name' => 'required|string|max:255',
                     'email' => 'required|email|unique:users,email',
-                    'password' => 'required'
+                    'password' => 'required|string|min:8',
                 ]
             );
-
+    
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validateUser->errors()
-                ], 401);
+                ], 422);
             }
-
+    
+            // Create the user
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
+                'profile'=>'1719900794.png',
+                'role_id' => 2,
+                
             ]);
-
+    
+    
             return response()->json([
                 'status' => true,
-                'message' => 'User Created Successfully',
-                'user'=> $user,
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
+                'message' => 'User created successfully',
+                'user' => $user,
+                'token' => $user->createToken("API_TOKEN")->plainTextToken
+            ], 201);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -102,6 +106,48 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    
+    public function company_register(Request $request)
+    {
+        try {
+            $validateUser = Validator::make(
+                $request->all(),
+                [
+                    'name' => 'required',
+                    'email' => 'required|email|unique:users,email',
+                    'password' => 'required',
+                ]
+            );
+    
+            if ($validateUser->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validation error',
+                    'errors' => $validateUser->errors()
+                ], 422); // Changed HTTP status code to 422 Unprocessable Entity
+            }
+    
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => 3
+            ]);
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'User created successfully',
+                'user' => $user,
+                'token' => $user->createToken("API_TOKEN")->plainTextToken
+            ], 201); 
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500); // Internal Server Error for unexpected exceptions
+        }
+    }
+    
 //logout
     public function logout(Request $request)
     {
@@ -118,26 +164,21 @@ class AuthController extends Controller
     
     public function uploadProfile(Request $request)
     {
-        $validateUser = Validator::make($request->all(), [
-            'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);
-    
-        if ($validateUser->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation error',
-                'errors' => $validateUser->errors()
-            ], 422);
-        }
-    
-        $img = $request->profile;
-        $ext = $img->getClientOriginalExtension();
-        $imageName = time() . '.' . $ext;
-        $img->move(public_path() . '/uploads/', $imageName);
     
         try {
             $user = $request->user();
-            $user->profile = '/uploads/' . $imageName; // Assuming 'profile' is the column name in your users table
+            $user->name = $request->name;
+            $user->phone = $request->phone;
+            $user->email = $request->email;
+    
+            if ($request->hasFile('profile')) {
+                $img = $request->file('profile');
+                $ext = $img->getClientOriginalExtension();
+                $imageName = time() . '.' . $ext;
+                $img->move(public_path('uploads'), $imageName);
+                $user->profile = $imageName;
+            }
+    
             $user->save();
     
             return response()->json([
@@ -149,9 +190,10 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ], 404);
+            ], 500);
         }
     }
+    
     
 // forgot password
 public function forgotPassword(Request $request): JsonResponse
@@ -216,5 +258,17 @@ public function forgotPassword(Request $request): JsonResponse
 
         return response()->json(['message' => 'Password reset successfully']);
     }
+
+    public function checkEmailUnique(Request $request)
+    {
+        $email = $request->query('email');
+
+        // Perform your uniqueness check here
+        $isUnique = !User::where('email', $email)->exists();
+
+        return response()->json(['unique' => $isUnique]);
+    }
+
+   
 
 }
