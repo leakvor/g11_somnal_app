@@ -5,8 +5,14 @@
     </div>
   </template>
   
-  <script setup>
+  <script >
   import ManagePaidAdjay from '../../../Components/ManagePaidAdjay.vue';
+  export default{
+    name:"PaidAdjayView",
+    components: {
+      ManagePaidAdjay
+    }
+  }
   </script>
   
   <style>
