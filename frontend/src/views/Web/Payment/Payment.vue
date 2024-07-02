@@ -156,8 +156,6 @@
     .pay-button {
       width: 60% !important;
       height: 3.5rem !important;
-
-  
     }
   }
 </style>
