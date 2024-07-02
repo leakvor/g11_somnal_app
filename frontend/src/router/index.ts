@@ -44,7 +44,7 @@ const router = createRouter({
     {
       path: '/partner',
       name: 'partner',
-      component: () => import('../views/Web/Post/PartnerView.vue')
+      component: () => import('../views/Web/partners/PartnerView.vue')
     }
 
   ]

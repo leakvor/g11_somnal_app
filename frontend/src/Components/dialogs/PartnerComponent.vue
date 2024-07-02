@@ -12,17 +12,17 @@
     </div>
     <div class="flex">
       <div class="flex-grow">
-        <p class="text-green-700 mb-4">លក្ខខណ្ឌមួយចំនួនដើម្បីក្លាយជាដៃគូរបស់យើង:</p>
+        <p class="text-green-700 mb-4">Some conditions to become our partner:</p>
         <ul class="list-disc list-inside mb-4">
-          <li>លោកអ្នកជាម្ចាស់អាជីវកម្មទិញអេតចាយទាំងដុំនិងរាយ​ ឬជាម្ចាស់អាជីវកម្មបូមលូ។</li>
-          <li>លោកអ្នកមានសិទ្ធិក្នុងការផុសពីព័ត៍មានផ្សេងៗឬសេវាកម្មរបស់លោកអ្នក។</li>
-          <li>លោកអ្នកមានសិទ្ធិក្នុងការទាក់ទងទៅអតិថិជនដោយខ្លួនឯង។</li>
-          <li>ប្រសិនបើមានអតិថិជនទាក់ទងទៅកាន់លោកអ្នកដើម្បីទៅយកអេតចាយឬសេវាកម្មបូមលូ លោកអ្នកត្រូវតែទទួលទាំងអស់។</li>
-          <li>គោរពទៅតាមតម្លៃទីផ្សារដែលពួកយើងបានដាក់។</li>
-          <li>ក្នុងមួយឆ្នាំលោកអ្នកត្រូវបង់លុយឲ្យខាងយើងខ្ញុំ 500$។</li>
-          <li>សុំគោរពទៅតាមល័ក្ខខណ្ឌរបស់ពួកយើង។</li>
+          <li>You are a business owner who buys and sells materials in bulk or retail, or you own a sewer cleaning business.</li>
+          <li>You have the right to post information or services about your business.</li>
+          <li>You have the right to contact customers directly.</li>
+          <li>If a customer contacts you to request materials or sewer cleaning services, you must accept all requests.</li>
+          <li>Respect the market prices that we have set.</li>
+          <li>You must pay us $500 per year.</li>
+          <li>Please respect our terms and conditions.</li>
         </ul>
-        <p>ប្រសិនបើលោកអ្នកចាប់អារម្មណ៍ជាមួយខាងយើងខ្ញុំ សុំធ្វើការបំពេញព័ត័មានផ្សេងៗ និងបង់លុយមកខាងយើងខ្ញុំ។</p>
+        <p>If you are interested in working with us, please fill out the necessary information and make the payment to us.</p>
       </div>
     </div>
   </div>
