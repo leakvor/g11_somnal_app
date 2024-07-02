@@ -260,15 +260,13 @@ public function forgotPassword(Request $request): JsonResponse
     }
 
     public function checkEmailUnique(Request $request)
-    {
-        $email = $request->query('email');
+{
+    $email = $request->email;
 
-        // Perform your uniqueness check here
-        $isUnique = !User::where('email', $email)->exists();
+    $isUnique = !User::where('email', $email)->exists();
 
-        return response()->json(['unique' => $isUnique]);
-    }
-
-   
+    return response()->json(['unique' => $isUnique, 'message' => $isUnique ? 'Email is available' : 'Email already exists']);
+}
+  
 
 }
