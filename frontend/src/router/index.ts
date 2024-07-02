@@ -93,6 +93,11 @@ const router = createRouter({
       name: 'CompanyDashboard',
       component: () => import('../views/Company/CompanyDashboard.vue')
     },
+    {
+      path: '/paid-adjay',
+      name: 'paid-adjay',
+      component: () => import('../views/Web/Post/PaidAdjayView.vue')
+    }
 
   ]
 })
