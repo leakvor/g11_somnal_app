@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::latest()->get();
+        $user = User::paginate(4);
 
         return view('setting.user.index', ['users' => $user]);
     }
@@ -84,9 +84,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return response()->json([
+            // 'name' => $user->name,
+            // 'email' => $user->email,
+            'roles' => $user->roles->pluck('name')->toArray(),
+        ]);
     }
 
     /**

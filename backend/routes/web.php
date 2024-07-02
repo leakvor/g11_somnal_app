@@ -6,7 +6,8 @@ use App\Http\Controllers\Admin\{
     MailSettingController,
     CategoryController,
     ItemController,
-    HistoryMarketprices
+    HistoryMarketprices,
+    RevenueController
 };
 
 
@@ -63,6 +64,8 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('permissions','PermissionController');
         Route::resource('users','UserController');
         Route::resource('posts','PostController');
+        Route::resource('posts','PostController');
+        Route::resource('revenues','RevenueController');
         Route::resource('categories',CategoryController::class);
         Route::resource('items',ItemController::class);
         Route::resource('history',HistoryMarketprices::class);
