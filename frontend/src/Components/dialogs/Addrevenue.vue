@@ -1,75 +1,76 @@
 <template>
-    <div class="dialog">
-      <button @click="toggleForm" class="btn-add">+ ADD</button>
-      <!-- Modal -->
-      <div class="dialog-form" v-if="isShow" @click="toggleForm">
-        <form @submit.prevent="submitForm" @click.stop class="rounded">
-          <span class="close" @click="closeForm">&times;</span>
-          <h3 class="text-center pt-3">Add New Revenue</h3>
-          <div class="form-group">
-            <label for="item">Item:</label>
-            <input type="text" id="item" v-model="formData.item" placeholder="Enter item name" required>
-          </div>
-          <div class="form-group">
-            <label for="customer">Customer Name:</label>
-            <input type="text" id="customer" v-model="formData.customer" placeholder="Customer's full name" required>
-          </div>
-          <div class="form-group">
-            <label for="date">Date:</label>
-            <input type="date" id="date" v-model="formData.date" required>
-          </div>
-          <div class="form-group">
-            <label for="earn">Earnings ($):</label>
-            <input type="number" id="earn" v-model="formData.earn" placeholder="Enter earnings" required>
-          </div>
-          <div class="form-buttons">
-            <button type="submit" class="btn btn-primary">Add more</button>
-            <button type="button" class="btn btn-secondary" @click="closeForm">Cancel</button>
-          </div>
-        </form>
-      </div>
+  <div class="dialog">
+    <button @click="toggleForm" class="btn-add">+ ADD</button>
+    <!-- Modal -->
+    <div class="dialog-form" v-if="isShow" @click="toggleForm">
+      <form @submit.prevent="submitForm" @click.stop class="rounded">
+        <span class="close" @click="closeForm">&times;</span>
+        <h3 class="text-center pt-3">Add New Revenue</h3>
+        <div class="form-group">
+          <label for="item">Item:</label>
+          <input type="text" id="item" v-model="formData.item" placeholder="Enter item name" required>
+        </div>
+        <div class="form-group">
+          <label for="customer">Customer Name:</label>
+          <input type="text" id="customer" v-model="formData.customer" placeholder="Customer's full name" required>
+        </div>
+        <div class="form-group">
+          <label for="date">Date:</label>
+          <input type="date" id="date" v-model="formData.date" required>
+        </div>
+        <div class="form-group">
+          <label for="earn">Earnings ($):</label>
+          <input type="number" id="earn" v-model="formData.earn" placeholder="Enter earnings" required>
+        </div>
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-primary">Add more</button>
+          <button type="button" class="btn btn-secondary" @click="closeForm">Cancel</button>
+        </div>
+      </form>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  
-  const isShow = ref(false);
-  const formData = ref({
+  </div>
+</template>
+
+<script setup>
+import { ref, defineEmits } from 'vue';
+
+const isShow = ref(false);
+const formData = ref({
+  item: '',
+  customer: '',
+  date: '',
+  earn: ''
+});
+
+const emit = defineEmits(['submit']);
+
+function toggleForm() {
+  isShow.value = true;
+}
+
+function closeForm() {
+  isShow.value = false;
+  clearForm();
+}
+
+function clearForm() {
+  formData.value = {
     item: '',
     customer: '',
     date: '',
     earn: ''
-  });
-  
-  function toggleForm() {
-    isShow.value = true;
+  };
+}
+
+function submitForm() {
+  if (formData.value.item && formData.value.customer && formData.value.date && formData.value.earn) {
+    emit('submit', { ...formData.value });
+    closeForm(); // Close the modal after submission
+  } else {
+    alert("Please fill all the fields before adding an entry.");
   }
-  
-  function closeForm() {
-    isShow.value = false;
-    clearForm();
-  }
-  
-  function clearForm() {
-    formData.value = {
-      item: '',
-      customer: '',
-      date: '',
-      earn: ''
-    };
-  }
-  
-  function submitForm() {
-    if (formData.value.item && formData.value.customer && formData.value.date && formData.value.earn) {
-      // Emit the form data to the parent component
-      emit('submit', { ...formData.value });
-      closeForm(); // Close the modal after submission
-    } else {
-      alert("Please fill all the fields before adding an entry.");
-    }
-  }
-  </script>
+}
+</script>
   
   <style scoped>
   .dialog .btn-add {
