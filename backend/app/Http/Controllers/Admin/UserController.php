@@ -57,25 +57,39 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'phone' => 'required',
+            'profile' => 'file|mimes:jpeg,png,jpg|max:2048',
             'password' => 'required|confirmed'
         ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => bcrypt($request->password),
         ]);
+
+        // Handle profile image upload
+        if ($request->hasFile('profile')) {
+            $profileImage = $request->file('profile');
+            $profileImageName = time() . '_' . $profileImage->getClientOriginalName();
+            $profileImage->move('images/profiles', $profileImageName);
+            $user->profile = 'images/profiles/' . $profileImageName;
+        }
+
+        $user->save();
+
+        // Sync roles
         $user->syncRoles($request->roles);
         // return redirect()->back()->withSuccess('User created !!!');
         session()->flash('alert', [
             'type' => 'success',
             'message' => 'User created successfully!'
         ]);
+
         return redirect()->route('admin.users.index');
     }
 
@@ -120,20 +134,30 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id . ',id',
             'phone' => 'required',
-
+            'profile' => 'nullable|file|mimes:jpeg,png,jpg|max:2048',
         ]);
-
+    
         if ($request->password != null) {
             $request->validate([
                 'password' => 'required|confirmed'
             ]);
             $validated['password'] = bcrypt($request->password);
         }
-
+    
+        // Handle profile image upload or deletion
+        if ($request->hasFile('profile')) {
+            $profileImage = $request->file('profile');
+            $profileImageName = time() . '_' . $profileImage->getClientOriginalName();
+            $profileImage->move('images/profiles', $profileImageName);
+            $validated['profile'] = 'images/profiles/' . $profileImageName;
+        } elseif ($request->profile === null) { // Check if profile is explicitly set to null
+            $validated['profile'] = null; // Set profile to null
+        }
+    
         try {
             $user->update($validated);
             $user->syncRoles($request->roles);
-
+    
             // Flash message using session for success
             session()->flash('alert', [
                 'type' => 'success',
@@ -146,9 +170,10 @@ class UserController extends Controller
                 'message' => 'Failed to update user. Please try again.'
             ]);
         }
-
+    
         return redirect()->route('admin.users.index');
     }
+    
 
     /**
      * Remove the specified resource from storage.

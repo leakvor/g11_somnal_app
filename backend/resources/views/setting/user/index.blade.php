@@ -135,7 +135,7 @@
         function openUserModal(name, email, roles, phone, profile, createdAt) {
             const modal = document.getElementById('userModal');
             const modalContent = document.getElementById('userModalContent');
-            const profileImage = profile ? `{{ asset('images/${profile}') }}` : `{{ asset('images/default-profile.png') }}`;
+            const profileImage = profile ? `{{ asset('/${profile}') }}` : `{{ asset('images/default-profile.png') }}`;
 
             modalContent.innerHTML = `
             <div class="flex flex-col items-center">

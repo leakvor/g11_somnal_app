@@ -3,9 +3,26 @@
         <main class="overflow-x-hidden overflow-y-auto bg-gray-200">
             <div class="container mx-auto px-6 py-1 pb-16">
                 <div class="bg-white shadow-md rounded my-6 p-5">
-                    <form id="userForm" method="POST" action="{{ route('admin.users.store') }}">
+                    <form id="userForm" method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
                         @csrf
                         @method('post')
+                        <div class="mt-3 relative">
+                            <label for="user-image" class="d-block">
+                                <img src="{{asset('images/default-profile.png')}}"
+                                    alt="User Image" id="preview-image"
+                                    class="img-fluid rounded-circle mb-3 border border-secondary"
+                                    style="width: 200px; height: 200px; box-shadow: none; cursor: pointer;"
+                                    onmouseover="this.style.boxShadow='none';"
+                                    onmouseout="this.style.boxShadow='none';">
+                                <input type="file" class="form-control-file hidden" id="user-image" accept="image/*"
+                                    onchange="previewImage(event)" name="profile">
+                            </label>
+                            <button type="button" id="show-button" class="btn btn-primary  absolute top-0 left-44 hidden"
+                                onclick="clearFileInput()">
+                                <i class="material-icons">close</i>
+                            </button>
+                        </div>
+
 
                         <div class="mb-4">
                             <label for="name" class="text-gray-700 font-medium">User Name</label>
@@ -200,35 +217,35 @@
         }
 
         function validatePhone(phoneInput) {
-          const phoneError = document.getElementById('phoneError');
-          const phonePattern = /^0[0-9]{2} [0-9]{3} [0-9]{3,4}$/;
+            const phoneError = document.getElementById('phoneError');
+            const phonePattern = /^0[0-9]{2} [0-9]{3} [0-9]{3,4}$/;
 
-          let cleanedValue = phoneInput.value.replace(/\D/g, '');
+            let cleanedValue = phoneInput.value.replace(/\D/g, '');
 
-          // Ensure the phone number starts with zero
-          if (cleanedValue.charAt(0) !== '0') {
-              cleanedValue = '0' + cleanedValue;
-          }
+            // Ensure the phone number starts with zero
+            if (cleanedValue.charAt(0) !== '0') {
+                cleanedValue = '0' + cleanedValue;
+            }
 
-          cleanedValue = cleanedValue.slice(0, 10);
+            cleanedValue = cleanedValue.slice(0, 10);
 
-          if (cleanedValue.length >= 4) {
-              cleanedValue = cleanedValue.slice(0, 3) + ' ' + cleanedValue.slice(3);
-          }
-          if (cleanedValue.length >= 8) {
-              cleanedValue = cleanedValue.slice(0, 7) + ' ' + cleanedValue.slice(7);
-          }
+            if (cleanedValue.length >= 4) {
+                cleanedValue = cleanedValue.slice(0, 3) + ' ' + cleanedValue.slice(3);
+            }
+            if (cleanedValue.length >= 8) {
+                cleanedValue = cleanedValue.slice(0, 7) + ' ' + cleanedValue.slice(7);
+            }
 
-          phoneInput.value = cleanedValue.trim();
+            phoneInput.value = cleanedValue.trim();
 
-          if (!phonePattern.test(cleanedValue)) {
-              showError(phoneError);
-              return false;
-          } else {
-              hideError('phoneError');
-              return true;
-          }
-      }
+            if (!phonePattern.test(cleanedValue)) {
+                showError(phoneError);
+                return false;
+            } else {
+                hideError('phoneError');
+                return true;
+            }
+        }
 
 
         function validatePassword(passwordInput) {
@@ -262,5 +279,28 @@
             errorElement.classList.add('hidden');
         }
     });
+
+    // preview image 
+    function previewImage(event) {
+        const input = event.target;
+        const reader = new FileReader();
+        reader.onload = function() {
+            const dataURL = reader.result;
+            const image = document.getElementById('preview-image');
+            image.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+        // Show the button close
+        document.getElementById("show-button").classList.remove("hidden");
+    }
+
+    function clearFileInput() {
+        document.getElementById('user-image').value = '';
+        const defaultImageURL =
+            "{{asset('images/default-profile.png')}}";
+        document.getElementById('preview-image').src = defaultImageURL; // Reset the preview image to the default
+        document.getElementById("show-button").classList.add("hidden");
+
+    }
     </script>
 </x-app-layout>
