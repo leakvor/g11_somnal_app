@@ -18,7 +18,7 @@
 
                 <h3 class="text-gray-700 text-3xl font-medium">Users</h3>
                 <p class="text-base text-gray-600 mb-2">Number of users: <span
-                        class="text-red-500">{{$users->count() }}</span></p>
+                        class="text-red-500">{{auth()->user()->count() }}</span></p>
                 <div id="search-container" class="flex justify-end pr-5">
                     <div class="relative pr-4 lg:mx-0">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
