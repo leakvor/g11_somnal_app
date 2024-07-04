@@ -93,6 +93,11 @@ const router = createRouter({
       name: 'CompanyDashboard',
       component: () => import('../views/Company/CompanyDashboard.vue')
     },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/Web/notification/notificationView.vue') 
+    },
 
   ]
 })
