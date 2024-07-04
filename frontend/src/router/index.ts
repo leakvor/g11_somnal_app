@@ -85,8 +85,8 @@ const router = createRouter({
     },
     {
       path: '/favorite-page',
-      name: 'favorite-page',
-      component: () => import('../views/Web/Post/FavouritePageView.vue')
+      name: 'favorite page',
+      component: () => import('../views/Web/userInfo/FavoritePage.vue')
     },
     {
       path:"/post",
@@ -108,6 +108,12 @@ const router = createRouter({
       path:"/messenger",
       name:"messenger",
       component:() => import('../views/Web/Chat/UserChat.vue')
+    },
+    //pyment
+      {
+      path:"/payment",
+      name:"payment",
+      component:() => import('../views/Web/userInfo/PaymentPage.vue')
     },
 
   ]

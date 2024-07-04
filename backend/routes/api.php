@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -74,6 +75,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [FavoriteController::class, 'store']);
         Route::delete('/delete/{id}', [FavoriteController::class, 'destroy']);
       
+    });
+
+    //payment
+    Route::prefix('payment')->group(function () {
+        Route::get('/list', [PaymentController::class, 'index']);
+        Route::post('/create', [PaymentController::class, 'store']);
     });
 
 });

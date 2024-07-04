@@ -1,32 +1,31 @@
 <!-- FavouritePageCard.vue -->
 <template>
-  <div>
-    <div class="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
-      <div class="relative overflow-hidden pb-2/3"> <!-- Adjust pb-2/3 for 3:2 aspect ratio -->
-        <img class="absolute h-full w-full object-cover object-center" :src="item.imageSrc" alt="Card Image" />
-      </div>
-      <div class="relative bg-blue-200">
-        <div class="py-6 px-4 md:px-8">
-          <h3 class="text-xl md:text-2xl font-bold text-black">{{ item.category }}</h3>
-          <div class="text-gray-600 text-sm font-medium flex items-center mb-2 mt-1">
-            <p>Location : &nbsp;</p>
-            <a :href="item.locationLink" class="hover:text-black transition duration-300 ease-in-out mb-3">{{ item.location }}</a>
+  <div class="container px-5 py-10 mx-auto">
+    <h1 class="font-bold mb-15 text-black">Favourites Page</h1>
+    <div class="adjay mt-10 p-10 d-flex flex-wrap gap-5">
+      <div
+        class="card bg-white-200 hover:bg-gray-200 shadow-lg"
+        v-for="fav in favorites"
+        :key="fav.id"
+      >
+        <img
+          :src="`http://127.0.0.1:8000/uploads/${fav.item.image}`"
+          class="card-img-top mt-5"
+          alt="..."
+        />
+        <div class="card-body">
+          <div class="title text-center">
+            <h3 class="card-title">{{ fav.item.name }}</h3>
+            <h5>{{ fav.item.price }}$</h5>
           </div>
-          <p class="leading-7 text-gray-700">{{ item.description }}</p>
-          <div class="mt-6 flex justify-between items-center">
-            <!-- Uncomment if needed -->
-           <!-- <img :src="item.logoSrc" alt="Provider Logo" class="w-6 h-6" /> -->
-            <!-- <button>Edit</button>
-            <a :href="item.readMoreLink" class="flex items-center">
-              <p class="mr-5">Read more</p>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14.125" height="13.358" viewBox="0 0 14.125 13.358">
-                <path fill="#1d1d1d" fill-rule="evenodd" d="M14.189,10.739H3V9.2H14.189L9.361,4.378l1.085-1.085,6.679,6.679-6.679,6.679L9.361,15.566Z"></path>
-              </svg>
-            </a> -->
-            <a :href="item.readMoreLink" class="flex items-center">
-              <!-- <p class="mr-5">Read more</p> -->
-              <button class="bg-blue border-blue color-white">Delete</button>
+
+          <div class="icon d-flex justify-content-evenly w-100 justify-content-around mt-4 mb-3">
+            <a href="#" class="circle-icon" style="background: green">
+              <i class="bi bi-chat-dots" ></i>
             </a>
+            <button @click="confirmDeletePost(fav.id)" class="circle-icon delete-button">
+              <i class="fa fa-trash"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -37,16 +36,132 @@
 <script>
 export default {
   name: 'FavouriteCard',
-  props: {
-    item: {
-      type: Object,
-      required: true
+  props: ['favorites'],
+  mounted() {
+    this.favorites
+  },
+  methods: {
+    confirmDeletePost(favId) {
+      if (window.confirm('Are you sure you want to delete this fav?')) {
+        this.$emit('delete-fav', favId)
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped>
+/* i {
+  border-radius: 50px;
+  background-color: green;
+  color: white;
+  padding: 10px;
+} */
+i:hover {
+  background: orangered;
+}
+.card {
+  width: 22.5%;
+}
+.card img {
+  width: 50%;
+  height: 70%;
+  margin: auto;
+  object-fit: cover;
+}
 
+.card:hover {
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.circle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: #f1f1f1; /* Background color for the circle */
+  text-align: center;
+}
 
+.circle-icon i {
+  color: #000; /* Icon color */
+}
+
+.delete-button {
+  background-color: red;
+  border: 1px solid white;
+}
+
+.delete-button i {
+  color: white;
+}
+
+@media (min-width: 320px) and (max-width: 568px) {
+ 
+  .card img {
+    width: 40%;
+    height: 10%;
+  }
+  .adjay .card {
+    width: 200px;
+    margin: auto;
+  }
+}
+@media (max-width: 768px) {
+  .adjay {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+  }
+  .card {
+    width: 98%;
+    margin: auto;
+  }
+  .card-title {
+    font-size: 10px;
+  }
+}
+@media (max-width: 428px) {
+  .adjay .card {
+    width: 90%;
+    margin: auto;
+  }
+  .card-title {
+    font-size: 20px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .adjay {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .adjay .card {
+    width: 45%;
+  }
+}
+@media (min-width: 800px) and (max-width: 1214px) {
+  .adjay {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+  }
+  .adjay .card {
+    width: 27.5%;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1290px) {
+  .adjay {
+    display: flex;
+    gap:3px;
+  
+  }
+  .card{
+    width: 21%;
+  }  
+}
 </style>

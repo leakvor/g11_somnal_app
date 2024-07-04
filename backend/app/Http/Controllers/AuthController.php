@@ -164,12 +164,22 @@ class AuthController extends Controller
     
     public function uploadProfile(Request $request)
     {
-    
         try {
             $user = $request->user();
-            $user->name = $request->name;
-            $user->phone = $request->phone;
-            $user->email = $request->email;
+    
+            // Update user attributes based on validated input
+            if ($request->has('name')) {
+                $user->name = $request->name;
+            }
+            if ($request->has('email')) {
+                $user->email = $request->email;
+            }
+            if ($request->has('phone')) {
+                $user->phone = $request->phone;
+            }
+            if ($request->has('role_id')) {
+                $user->role_id = $request->role_id;
+            }
     
             if ($request->hasFile('profile')) {
                 $img = $request->file('profile');

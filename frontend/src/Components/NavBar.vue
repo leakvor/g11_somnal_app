@@ -138,6 +138,29 @@
               <span>Contact Us</span>
             </router-link>
           </li> -->
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+            <router-link
+              to="/favorite-page"
+              class="nav-link position-relative"
+              :class="{ active: isActive('/favorite-page') }"
+            >
+              <i class="material-icons">favorite</i>
+              <span>Favorite Item</span>
+              <!-- <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                id="notification_number"
+              >
+                {{ favorites.length }}
+              </span> -->
+            </router-link>
+          </li>
+
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+            <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
+              <i class="material-icons">payment</i>
+              <span>Payment</span>
+            </router-link>
+          </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/partner" class="nav-link" :class="{ active: isActive('/partner') }">
@@ -160,7 +183,10 @@
             >
           </li>
 
-          <li class="nav-item d-flex align-items-center me-4"  v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+          <li
+            class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+          >
             <router-link
               to="/chat"
               class="nav-link position-relative"
@@ -266,15 +292,15 @@ import { useRoute, useRouter } from 'vue-router'
 export default {
   name: 'NavBar',
   setup() {
-    const authStore = useAuthStore() 
+    const authStore = useAuthStore()
     const route = useRoute()
-    const router = useRouter() 
+    const router = useRouter()
 
     const isActive = (path) => route.path === path
 
     const logout = () => {
-      authStore.logout() 
-      router.push('/') 
+      authStore.logout()
+      router.push('/')
     }
 
     return {
@@ -283,7 +309,11 @@ export default {
       logout
     }
   },
-
+  data() {
+    return {
+      favorites: []
+    }
+  },
   mounted() {
     const navLinks = document.querySelectorAll('.nav-link')
     navLinks.forEach((navLink) => {
@@ -299,7 +329,24 @@ export default {
           }
         }
       })
-    })
+    }),
+    this.fetchFavorites()
+  },
+  methods: {
+    async fetchFavorites() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/fav/list', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        this.favorites = response.data.data
+        console.log(this.favorites)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 }
 </script>
