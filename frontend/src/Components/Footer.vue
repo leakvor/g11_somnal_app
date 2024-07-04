@@ -36,7 +36,7 @@ import { Icon } from '@iconify/vue'
                 <h6>Contact</h6>
                 <ul class="list-unstyled">
                     <li><a href="#" class="d-flex align-items-center"><i class="material-icons pe-2">location_on</i> New York, NY 10012, US</a></li>
-                    <li><a href="#"class="d-flex align-items-center"><i class="material-icons pe-2">mail</i>info@gmail.com</a></li>
+                    <li><a href="#" class="d-flex align-items-center"><i class="material-icons pe-2">mail</i>info@gmail.com</a></li>
                     <li><a href="#" class="d-flex align-items-center"><i class="material-icons pe-2">phone</i> (+855) 01 234 567 88</a></li>
                 </ul>
             </div>
@@ -92,6 +92,7 @@ import { Icon } from '@iconify/vue'
 }
 
 .footer .btn-floating {
+    border-radius: 50%;
     transition: all 0.3s ease-in-out;
 }
 

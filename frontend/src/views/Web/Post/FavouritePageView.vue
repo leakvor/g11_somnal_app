@@ -4,17 +4,20 @@
   <div>
     <FavouritePage :favouritesData="favourites" />
   </div>
+  <FooterVue />
 </template>
 
 <script>
 import NavBar from '@/Components/NavBar.vue';
+import FooterVue from '@/Components/Footer.vue';
 import FavouritePage from '../../../Components/dialogs/FavouritePage.vue';
 
 export default {
   name: 'FavouritePageView',
   components: {
     FavouritePage,
-    NavBar
+    NavBar,
+    FooterVue
   },
   data() {
     return {

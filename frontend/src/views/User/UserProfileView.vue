@@ -88,11 +88,14 @@
         </form>
       </div>
     </div>
+    <!-- <FooterVue/> -->
   </div>
+  
 </template>
 
 <script>
 import NavBar from '@/Components/NavBar.vue'
+import FooterVue from '@/Components/Footer.vue'
 import PostCard from '../Web/Post/PostCard.vue'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -100,7 +103,8 @@ import Cookies from 'js-cookie'
 export default {
   components: {
     NavBar,
-    PostCard
+    PostCard,
+    FooterVue
   },
   data() {
     return {

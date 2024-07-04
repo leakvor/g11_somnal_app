@@ -62,10 +62,12 @@
       </div>
     </div>
     <ContactUs/>
+    <FooterVue/>
     
   </template>
   <script>
   import NavBar from '../../Components/NavBar.vue'
+  import FooterVue from '../../Components/Footer.vue'
   import ContactUs from '../../Components/ContactUs.vue'
 
   
@@ -75,6 +77,7 @@ export default{
   components:{
     NavBar,
     ContactUs,
+    FooterVue
   }
 }
 </script>
