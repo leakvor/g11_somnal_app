@@ -99,6 +99,18 @@
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
+              to="/company/revenue"
+              class="nav-link"
+              :class="{ active: isActive('/company/revenue') }"
+            >
+            <i class="material-icons">attach_money</i>
+              <span>Revenue</span>
+            </router-link>
+          </li>
+
+    
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+            <router-link
               to="/company/dashboard"
               class="nav-link"
               :class="{ active: isActive('/company/dashboard') }"

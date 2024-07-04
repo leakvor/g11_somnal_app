@@ -114,14 +114,7 @@
 <script>
 import NavBar from './NavBar.vue';
 export default {
-<<<<<<< HEAD
   name: 'ContactUs'
-=======
-  name: 'ContactUs',
-  components:{
-    NavBar
-  }
->>>>>>> company_dashboard
 }
 </script>
 
@@ -151,8 +144,4 @@ input{
     width: 100%;
   }
 }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> company_dashboard

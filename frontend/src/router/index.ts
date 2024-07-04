@@ -119,7 +119,14 @@ const router = createRouter({
       path: '/company/dashboard',
       name: 'CompanyDashboard',
       component: () => import('../views/Company/CompanyDashboard.vue')
-    }
+    },
+    
+    {
+      path: '/company/revenue',
+      name: 'companyRevenue',
+      component: () => import('../views/Web/Company/CompanyRevenue.vue')
+    },
+
 
   ]
 })
