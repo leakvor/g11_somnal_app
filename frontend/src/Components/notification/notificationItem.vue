@@ -13,7 +13,7 @@
           </div>
         </div>
       </div>
-      <button @click="toggleDropdown"
+      <button @click="$emit('delete')"
         class="inline-flex items-center justify-center p-2 text-sm font-medium text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 bord-white">
         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
           viewBox="0 0 16 3">

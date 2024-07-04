@@ -4,14 +4,23 @@
     <div>
       <h3 class="text-xl font-semibold mb-2">New</h3>
       <div class="space-y-4">
-        <NotificationItem v-for="(notification, index) in newNotifications" :key="index" :notification="notification" />
+        <NotificationItem 
+          v-for="(notification, index) in newNotifications" 
+          :key="index" 
+          :notification="notification"
+          @delete="deleteNewNotification(index)" 
+        />
       </div>
     </div>
     <div class="mt-6">
       <h3 class="text-xl font-semibold mb-2">Earlier</h3>
       <div class="space-y-4">
-        <NotificationItem v-for="(notification, index) in earlierNotifications" :key="index"
-          :notification="notification" />
+        <NotificationItem 
+          v-for="(notification, index) in earlierNotifications" 
+          :key="index" 
+          :notification="notification"
+          @delete="deleteEarlierNotification(index)" 
+        />
       </div>
     </div>
   </div>
@@ -21,7 +30,6 @@
 import { ref } from 'vue';
 import NotificationItem from './notificationItem.vue';
 
-const name = 'notificationComponent';
 const newNotifications = ref([
   {
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1bDrIZIBO-_x5E1vEJCzdAQhShDRqhOG84A&s',
@@ -51,6 +59,14 @@ const earlierNotifications = ref([
     time: '3h',
   },
 ]);
+
+const deleteNewNotification = (index) => {
+  newNotifications.value.splice(index, 1);
+};
+
+const deleteEarlierNotification = (index) => {
+  earlierNotifications.value.splice(index, 1);
+};
 </script>
 
 <style scoped></style>
