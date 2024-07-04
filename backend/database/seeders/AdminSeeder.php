@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
         $admin = User::create([
             'name'=>'Admin',
             'email'=>'admin@gmail.com',
-            'phone'=>'098-989-8399',
+            'phone'=>'098 989 8399',
             'password'=>bcrypt('password'),
             'profile' => 'user.avif'
         ]);
@@ -28,7 +28,15 @@ class AdminSeeder extends Seeder
         $writer = User::create([
             'name'=>'User',
             'email'=>'user@gmail.com',
-            'phone'=>'098-989-8391',
+            'phone'=>'098 989 8391',
+            'password'=>bcrypt('password')
+
+        ]);
+
+        $company = User::create([
+            'name'=>'Company',
+            'email'=>'company@gmail.com',
+            'phone'=>'098 989 8392',
             'password'=>bcrypt('password')
 
         ]);
@@ -37,6 +45,7 @@ class AdminSeeder extends Seeder
 
         $admin_role = Role::create(['name' => 'admin']);
         $writer_role = Role::create(['name' => 'user']);
+        $company_role = Role::create(['name' => 'company']);
 
         $permission = Permission::create(['name' => 'Post access']);
         $permission = Permission::create(['name' => 'Post edit']);
@@ -67,6 +76,7 @@ class AdminSeeder extends Seeder
 
         $admin->assignRole($admin_role);
         $writer->assignRole($writer_role);
+        $company->assignRole($company_role);
 
 
         $admin_role->givePermissionTo(Permission::all());
