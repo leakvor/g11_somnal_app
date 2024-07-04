@@ -183,7 +183,7 @@ import { onMounted, watch } from 'vue';
 import { useAuthStore } from '../stores/auth-store';
 import { useRoute } from 'vue-router';
 
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
 
 export default {
   name: "NavBar",

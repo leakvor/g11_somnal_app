@@ -27,78 +27,16 @@ const router = createRouter({
       component: () => import('../views/Web/HomeView.vue')
     },
     {
-      path: '/category',
-      name: 'category',
-      component: () => import('../views/Web/Category/ServiceView.vue')
+      path: '/post',
+      name: 'post',
+      component: () => import('../views/Web/Post/ListView.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/Web/About/AboutUs.vue')
-    },
-    {
-      path:'/adjay/:id',
-      name:'adjay',
-      component:() => import('../views/Web/Category/AdjayView.vue'),
-      props: true,
-    },
-    {
-      path:"/service",
-      name:"service",
-      component:() => import('../views/Web/Category/ServiceView.vue')
-
-    },
-    {
-      path:'/register',
-      name:'post',
-      component:() => import('../views/Admin/Auth/RegisterView.vue')
-    },
-    {
-      path: '/contact',
-      name: 'contactus',
-      component: () => import('../views/Web/Post/ContactusView.vue')
-    },
-    {
-    path:"/profile",
-    name:"profile",
-    component:() => import('../views/User/UserProfileView.vue')
-  },
-    {
-    path:"/chat",
-    name:"chat",
-    component:() => import('../views/Web/Chat/ChatView.vue')
-  },
-    {
-    path:"/comment-post",
-    name:"comment-post",
-    component:() => import('../views/Web/commentPost/CommentView.vue')
-  },
-    {
-    path:"/homeview",
-    name:"homeview",
-    component:() => import('../views/Web/HomeView.vue')
-  },
-    {
-      path: '/partner',
-      name: 'partner',
-      component: () => import('../views/Web/Post/PartnerView.vue')
-    },
-    {
-      path: '/favorite-page',
-      name: 'favorite-page',
-      component: () => import('../views/Web/Post/FavouritePageView.vue')
-    },
-    {
-      path: '/company/dashboard',
-      name: 'CompanyDashboard',
-      component: () => import('../views/Company/CompanyDashboard.vue')
-    },
-    {
-      path: '/paid-adjay',
-      name: 'paid-adjay',
-      component: () => import('../views/Web/Post/PaidAdjayView.vue')
+      path: '/homepage',
+      name: 'homepage',
+      component: () => import('../views/Web/HomePage/HomePage.vue')
     }
-
+  
   ]
 })
 
@@ -135,4 +73,6 @@ const router = createRouter({
 //   }
 // })
 
+// export default { router, simpleAcl }
 export default { router}
+

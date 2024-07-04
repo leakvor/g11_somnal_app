@@ -1,5 +1,4 @@
 <template>
-  <NavBar/>
   <div class="container mx-auto px-8 fadeIn">
     <div class="text-center">
       <!-- <h1 class="text-blue-500 text-3xl font-bold">Contact Us</h1> -->
@@ -15,7 +14,7 @@
       </div>
       <!-- Contact Form Section -->
       <div id="form-container" class="form-container w-full md:w-1/2 md:pl-8 bg-white p-8 shadow  ">
-        <div class="text-blue-800 text-4xl font-bold text-center mb-4">Contact Us</div>
+        <div class="text-orange text-4xl font-bold text-center mb-4">Contact Us</div>
         <form action="https://fabform.io/f/{form-id}" method="post">
           <div class="mb-4">
             <label for="name" class="block text-lg text-gray-900">Name</label>
@@ -39,7 +38,7 @@
               rows="5" id="comment" name="message" placeholder="Type Your Message/Feedback here..." required></textarea>
           </div>
           <button type="submit"
-            class="w-full bg-green-700 text-white py-3 px-4 rounded hover:bg-green-600 hover:text-white border border-green-500 transition duration-500">
+            class="w-full bg-green-700 text-white py-3 px-4 rounded hover:bg-green-600 hover:text-white transition duration-500" id="bt-sendcontace">
             <i class="fas fa-paper-plane"></i> Send
           </button>
         </form>
@@ -49,7 +48,7 @@
     <div class="mt-20 flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-20 justify-center">
       <div class="flex items-center">
         <div class="flex-shrink-0">
-          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md  text-white" id="addres">
             <!-- Heroicon name: globe-alt -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
@@ -69,7 +68,7 @@
       </div>
       <div class="flex items-center mt-6 sm:mt-0">
         <div class="flex-shrink-0">
-          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md text-white" id="phone">
             <!-- Heroicon name: phone -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
@@ -89,7 +88,7 @@
       </div>
       <div class="flex items-center mt-6 sm:mt-0">
         <div class="flex-shrink-0">
-          <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+          <div class="flex items-center justify-center h-12 w-12 rounded-md  text-white" id="mail">
             <!-- Heroicon name: mail -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
@@ -111,16 +110,6 @@
   </div>
 </template>
 
-<script>
-import NavBar from './NavBar.vue';
-export default {
-  name: 'ContactUs',
-  components:{
-    NavBar
-  }
-}
-</script>
-
 <style scoped>
 
 input{
@@ -129,7 +118,16 @@ input{
 .fadeIn {
   animation: fadeIn 3s;
 }
-
+#addres,#phone,#mail{
+  background-color:rgba(2, 87, 32, 0.844);
+}
+#addres:hover,#phone:hover,#mail:hover{
+  background-color: rgb(238, 152, 3);
+}
+#bt-sendcontace{
+  border: none;
+  border-bottom: 5px solid rgb(238, 152, 3);;
+}
 @keyframes fadeIn {
   0% {
     opacity: 0;
