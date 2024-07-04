@@ -45,7 +45,6 @@
         </form>
       </div>
 
-
     </div>
     <div class="mt-20 flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-20 justify-center">
       <div class="flex items-center">
@@ -113,8 +112,16 @@
 </template>
 
 <script>
+import NavBar from './NavBar.vue';
 export default {
+<<<<<<< HEAD
   name: 'ContactUs'
+=======
+  name: 'ContactUs',
+  components:{
+    NavBar
+  }
+>>>>>>> company_dashboard
 }
 </script>
 
@@ -144,4 +151,8 @@ input{
     width: 100%;
   }
 }
+<<<<<<< HEAD
 </style>
+=======
+</style>
+>>>>>>> company_dashboard
