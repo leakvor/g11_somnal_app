@@ -269,6 +269,7 @@ public function forgotPassword(Request $request): JsonResponse
         return response()->json(['message' => 'Password reset successfully']);
     }
 
+    //check email unique============
     public function checkEmailUnique(Request $request)
 {
     $email = $request->email;

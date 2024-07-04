@@ -3,13 +3,13 @@
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
             <div class="container mx-auto px-6 py-8">
 
-                <h3 class="text-gray-700 text-3xl font-medium">{{ auth()->user()->name }} Dashboard</h3>
-
+                <h3 class="text-gray-700 text-3xl font-medium">Admin Dashboard</h3>
+                
             </div>
         </main>
         <div class="container mx-auto mt-5 px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
-                <a href="#" class="bg-white rounded-lg shadow-md p-4 text-center hover:-translate-y-3px hover:shadow-xl duration-300">
+                <a href="{{ route('admin.revenues.index')}}" class="bg-white rounded-lg shadow-md p-4 text-center hover:-translate-y-3px hover:shadow-xl duration-300">
                     <div class="card-body">
                         <img src="{{asset('images/icons/revenue.png')}}" alt="Revenue" class="w-12 mx-auto mt-1">
                         <p class="mt-3 text-xs">Revenue</p>
