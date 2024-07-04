@@ -1,4 +1,5 @@
 <template>
+  <Navbar/>
   <div class="relative">
     <div class="flex items-center p-4 bg-white rounded-lg shadow-md">
       <div class="w-12 h-12 rounded-full overflow-hidden mr-4">

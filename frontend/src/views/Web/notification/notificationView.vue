@@ -1,22 +1,22 @@
 <template>
+  <NavBar/>
   <div id="app">
     <notificationComponent />
-     <!-- <Notifi/> -->
   </div>
 </template>
 
 <script setup>
 import notificationComponent from '../../../Components/notification/notificationComponent.vue';
-// import Notifi from '../../../Components/notification/Notifi.vue'
+import NavBar from "@/Components/NavBar.vue";
 
 const name = 'notificationView';
 const component = {
-  notificationComponent
-  // Notifi
+  notificationComponent,
+  NavBar
+
 }
 
 </script>
 
 <style>
-/* Add global styles if needed */
 </style>
