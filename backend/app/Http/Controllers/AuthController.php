@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Frontuser;
 use App\Models\Password;
 use App\Models\User;
+use Faker\Provider\ar_EG\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -278,6 +279,13 @@ public function forgotPassword(Request $request): JsonResponse
 
     return response()->json(['unique' => $isUnique, 'message' => $isUnique ? 'Email is available' : 'Email already exists']);
 }
-  
+
+
+// get company
+public function getCompany(Request $request)
+{
+    $companies = User::where('role_id', 3)->get();
+    return response()->json(['success'=>true,'message' => 'Company details', 'data' => $companies]);
+}
 
 }

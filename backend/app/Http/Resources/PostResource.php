@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class PostResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+{
+    return [
+        'id' => $this->id,
+        'title' => $this->title,
+        'company_id' => $this->company_id,
+        'images' => $this->images->map(function ($image) {
+            return ['image_id' => $image->image_id, 'image' => $image->image->image];
+        })->all(),
+        'items' => $this->items->map(function ($item) {
+            return ['item_id' => $item->item_id, 'item' => $item->item->name,
+        'price'=>$item->item->price,
+        ];
+        })->all(),
+        'date_created' => $this->created_at->format('d M Y H:i:s'),
+    ];
+}
+}
+

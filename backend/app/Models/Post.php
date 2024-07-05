@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,12 +14,30 @@ use Illuminate\Validation\ValidationException;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = ['title','description','user_id','image'];
+    protected $fillable = ['title','user_id','company_id','status'];
 
     //user
     public function user():BelongsTo{
         return $this->belongsTo(User::class,'user_id');
     }
+    //company
+    public function company():BelongsTo{
+        return $this->belongsTo(User::class,'company_id');
+    }
+
+   // items
+  public function items(): HasMany
+    {
+        return $this->hasMany(Post_Item::class, 'post_id');
+   }
+
+    // images
+   public function images(): HasMany
+    {
+       return $this->hasMany(Post_Image::class, 'post_id');
+    }
+
+
 
     //comment
     public function comment():HasMany{

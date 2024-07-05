@@ -33,6 +33,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/check-email', [AuthController::class, 'checkEmailUnique']);
 
+//list all company
+Route::get('/company', [AuthController::class, 'getCompany']);
+
+//list all post
+Route::get('post/list', [PostController::class, 'index']);
 
 
 // Routes that require authentication
@@ -43,15 +48,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
     Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
     Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
+   
 
     // Post routes
     Route::prefix('post')->group(function () {
-        Route::get('/list', [PostController::class, 'index']);
         Route::get('/show/user', [PostController::class, 'show_post']);
         Route::post('/create/user', [PostController::class, 'store']);
-        Route::post('/update/user/{id}', [PostController::class, 'update']);
+        Route::post('/update/user/{id}', [PostController::class, 'edit']);
         Route::delete('/delete/user/{id}', [PostController::class, 'destroy']);
         Route::get('/each/user/{id}', [PostController::class, 'show_one_post']);
+        Route::get('/to_company', [PostController::class, 'post_add_to_company']);
     });
 
     // Comment routes
