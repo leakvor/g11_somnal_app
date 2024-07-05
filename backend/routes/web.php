@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
     MailSettingController,
+    CompanyController,
     CategoryController,
     ItemController,
     HistoryMarketprices,
@@ -67,6 +68,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('posts','PostController');
         Route::resource('revenues','RevenueController');
         Route::resource('categories',CategoryController::class);
+        Route::resource('companies', CompanyController::class);
         Route::resource('items',ItemController::class);
         Route::resource('history',HistoryMarketprices::class);
 
