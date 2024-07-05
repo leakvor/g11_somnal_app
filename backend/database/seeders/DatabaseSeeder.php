@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(10)->create();
         $this->call(AdminSeeder::class);
+        $this->call([
+            CategorySeeder::class,
+            ItemSeeder::class
+        ]);
         // \App\Models\Post::factory(17)->create();
         $this->call(MailsettingSeeder::class);
+
     }
 }
