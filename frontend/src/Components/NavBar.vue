@@ -77,7 +77,7 @@
           </li>
 
           <li class="nav-item me-4">
-            <router-link to="/service" class="nav-link" :class="{ active: isActive('/service') }">
+            <router-link to="/salesrequest" class="nav-link" :class="{ active: isActive('/service') }">
               <i class="material-icons">engineering</i>
               <span>Services</span>
             </router-link>
