@@ -4,6 +4,17 @@
       <div class="d-flex justify-content-center text-orange p-3 bg-success rounded-top">
         <h2>View Post</h2>
       </div>
+      <div class="search-container m-2 ">
+        <div class="input-group  d-flex justify-content-end ">
+        <input class="input-text border-none rounded-start" type="search" v-model="searchTerm" placeholder="Search Item..." />
+        <button
+          class="btn btn-outline-secondary bg-orange text-white border-none"
+          type="button"
+        >
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      </div>
       <div>
         <table class="table table-striped table-hover">
           <thead>
@@ -11,17 +22,19 @@
               <th>ID</th>
               <th>UserName</th>
               <th>Post-ID</th>
-              <th class="active">Actions</th>
+              <th>Date</th>
+              <th class="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,) in data" :key="item.ID">
-              <td>{{ item.ID }}</td>
-              <td>{{ item['Username'] }}</td>
+            <tr v-for="item in paginatedData" :key="item.id">
+              <td>{{ item.id }}</td>
+              <td>{{ item.userName }}</td>
               <td>
-                <a href="#" @click.prevent="handlePostIdClick(item['Post-ID'])">{{ item['Post-ID'] }}</a>
+                <a href="#" @click.prevent="handlePostIdClick(item.postId)">{{ item.postId }}</a>
               </td>
-              <td class="d-flex justify-content-end">
+              <td>{{ formatDate(item.date) }}</td>
+              <td class="text-end">
                 <button
                   v-for="action in item.actions"
                   :key="action"
@@ -34,6 +47,11 @@
             </tr>
           </tbody>
         </table>
+        <div class="pagination  d-flex justify-content-end ">
+          <button class="btn btn-success me-2" @click="prevPage" :disabled="currentPage === 1"><i class="bi bi-chevron-left"></i></button>
+          <span class="mx-2">{{ currentPage }} / {{ totalPages }}</span>
+          <button class="btn btn-success ms-2" @click="nextPage" :disabled="currentPage === totalPages"><i class="bi bi-chevron-right"></i></button>
+        </div>
       </div>
     </div>
   </div>
@@ -45,43 +63,80 @@ export default {
     return {
       data: [
         {
-          ID: "01",
-          "Username": "Tiv",
-          "Post-ID": "https://adjay.com",
+          id: "01",
+          userName: "Tiv",
+          postId: "https://adjay.com",
+          date: "2023-05-01",
           actions: ["Buy", "Padding", "Cancel"]
         },
         {
-          ID: "02",
-          "Username": "Vouk",
-          "Post-ID": "https://adjay.com",
+          id: "02",
+          userName: "Vouk",
+          postId: "https://adjay.com",
+          date: "2023-06-15",
           actions: ["Buy", "Padding", "Cancel"]
         },
         {
-          ID: "03",
-          "Username": "Thary",
-          "Post-ID": "https://adjay.com",
+          id: "03",
+          userName: "Thary",
+          postId: "https://adjay.com",
+          date: "2023-07-20",
           actions: ["Buy", "Padding", "Cancel"]
         },
         {
-          ID: "04",
-          "Username": "leak",
-          "Post-ID": "https://adjay.com",
+          id: "04",
+          userName: "leak",
+          postId: "https://adjay.com",
+          date: "2023-08-01",
           actions: ["Buy", "Padding", "Cancel"]
         },
         {
-          ID: "05",
-          "Username": "leak",
-          "Post-ID": "https://adjay.com",
+          id: "05",
+          userName: "leak",
+          postId: "https://adjay.com",
+          date: "2023-09-10",
           actions: ["Buy", "Padding", "Cancel"]
         },
         {
-          ID: "06",
-          "Username": "leak",
-          "Post-ID": "https://adjay.com",
+          id: "06",
+          userName: "leak",
+          postId: "https://adjay.com",
+          date: "2023-10-15",
           actions: ["Buy", "Padding", "Cancel"]
         }
-      ]
+      ],
+      searchTerm: "",
+      currentPage: 1,
+      itemsPerPage: 5
     };
+  },
+  computed: {
+    filteredData() {
+      return this.data.filter(item =>
+        item.userName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    },
+    totalPages() {
+      return Math.ceil(this.filteredData.length / this.itemsPerPage);
+    },
+    paginatedData() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.filteredData.slice(startIndex, endIndex);
+    },
+    getButtonClass() {
+      return (action) => {
+        if (action === "Buy") {
+          return "success";
+        } else if (action === "Padding") {
+          return "warning";
+        } else if (action === "Cancel") {
+          return "danger";
+        } else {
+          return "secondary";
+        }
+      };
+    }
   },
   methods: {
     deleteRow(index) {
@@ -93,22 +148,26 @@ export default {
     },
     handleActionClick(item, action) {
       if (action === "Buy") {
-        alert(`Sure you want buy ?: ${item['Post-ID']}`);
+        alert(`Sure you want buy ?: ${item.postId}`);
       } else if (action === "Cancel") {
-        this.deleteRow(this.data.indexOf(item));
+        const index = this.data.findIndex(i => i.id === item.id);
+        this.deleteRow(index);
       } else {
-        alert(`Sure you want:  ${item['Post-ID']}`);
+        alert(`Sure you want:  ${item.postId}`);
       }
     },
-    getButtonClass(action) {
-      if (action === "Buy") {
-        return "success";
-      } else if (action === "Padding") {
-        return "warning";
-      } else if (action === "Cancel") {
-        return "danger";
-      } else {
-        return "secondary";
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
       }
     }
   }
@@ -116,26 +175,25 @@ export default {
 </script>
 
 <style scoped>
-
   th,
   td {
     text-align: left;
   }
-  th{
+  th {
     font-weight: bold;
   }
   button {
-    margin-right:6%;
+    margin-right: 6px;
   }
-  button.success {
-    background-color: #4caf50;
+  button.btn-success {
+    background-color: #126f15;
     color: white;
   }
-  button.warning {
-    background-color:rgb(255, 157, 0);
+  button.btn-warning {
+    background-color: rgb(255, 157, 0);
     color: black;
   }
-  button.danger {
+  button.btn-danger {
     background-color: #f44336;
     color: white;
   }
@@ -145,72 +203,68 @@ export default {
   }
   
   /* Mobile */
-@media (max-width: 767px) {
-  .table thead {
-    display:none;
+  @media (max-width: 767px) {
+    .table thead {
+      display: none;
+    }
 
-  }
- 
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+      display: block;
+    }
 
-  .table,
-  .table tbody,
-  .table tr,
-  .table td {
-    display: block;
-    
-  }
+    .table tr {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #dee2e6;
+    }
 
-  .table tr {
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #dee2e6;
-  }
+    .table td {
+      position: relative;
+      /* text-align: right;
+      padding-left: 50%; */
+    }
 
-  .table td {
-    position: relative;
-  }
-  .table td .button{
-    margin-left: 50px;
-  }
-
-  .table td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 50%;
-    font-weight: bold;
-  
-  }
-}
-
-/* Tablet */
-@media (min-width: 768px) and (max-width: 991px) {
-  .table {
-    font-size: 0.9rem;
+    .table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      font-weight: bold;
+      text-align: left;
+    }
   }
 
-  .table td,
-  .table th {
-    padding: 0.5rem;
-  }
-   button {
-    margin-right:6%;
-  }
-}
+  /* Tablet */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .table {
+      font-size: 0.9rem;
+    }
 
-/* Laptop */
-@media (min-width: 992px) {
-  .table {
-    font-size: 1rem;
+    .table td,
+    .table th {
+      padding: 0.5rem;
+    }
+
+    button {
+      margin-right: 6px;
+    }
   }
 
-  .table td,
-  .table th {
-    padding: 0.75rem;
-  }
-  .active{
-    display: flex;
-    justify-content:center;
-  }
-}
+  /* Laptop */
+  @media (min-width: 992px) {
+    .table {
+      font-size: 1rem;
+    }
 
+    .table td,
+    .table th {
+      padding: 0.75rem;
+    }
+
+    .text-end {
+      text-align: right;
+    }
+  }
 </style>
