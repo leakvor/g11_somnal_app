@@ -9,7 +9,7 @@
             @can('item access')
                 @foreach ($items as $item)
                     <div class="card max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl rounded overflow-hidden shadow-lg m-4">
-                        <img class="w-full h-56 object-cover" src="{{ asset('uploads/' . $item->image) }}" alt="Image">
+                        <img class="w-full h-56 object-cover" src="{{ asset('scrap/' . $item->image) }}" alt="Image">
                         <div class="px-6 py-4">
                             <div class="font-bold text-xl mb-2">{{ $item->name }}</div>
                             <p class="text-gray-700 text-base">{{ $item->price }} ៛</p>
