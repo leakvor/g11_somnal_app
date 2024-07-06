@@ -12,19 +12,13 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active" data-bs-interval="2000">
-          <img
-            src="../../../assets/Slider/slider-1.png"
-            class="d-block w-100" alt="..." />
+          <img src="../../../assets/Slider/slider-1.png" class="d-block w-100" alt="..." />
         </div>
         <div class="carousel-item" data-bs-interval="2000">
-          <img
-            src="../../../assets/Slider/slider-2.png"
-            class="d-block w-100" alt="..." />
+          <img src="../../../assets/Slider/slider-2.png" class="d-block w-100" alt="..." />
         </div>
         <div class="carousel-item">
-          <img
-            src="../../../assets/Slider/slider-3.png"
-            class="d-block w-100" alt="..." />
+          <img src="../../../assets/Slider/slider-3.png" class="d-block w-100" alt="..." />
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
@@ -40,11 +34,11 @@
     </div>
 
     <div class="button-group d-flex justify-content-end pt-5 pe-3">
-      <a href="" type="button" class="btn btn-success d-flex align-items-center me-3 p-3">
+      <a href="" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
         <i class="material-icons icon-align">add_shopping_cart</i>
         <span>Sale Now</span>
       </a>
-      <a href="" type="button" class="btn btn-primary text-white d-flex align-items-center"> 
+      <a href="" type="button" class="buy btn text-white d-flex align-items-center">
         <i class="material-icons icon-align">shopping_bag</i>
         <span>Buy Now</span>
       </a>
@@ -58,15 +52,15 @@
             <th scope="col">#</th>
             <th scope="col">Scrap Name</th>
             <th scope="col">Date</th>
-            <th scope="col">Fee</th>
+            <th scope="col">Price</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index">
+          <tr v-for="(item, index) in formattedItems" :key="index">
             <th scope="row">{{ index + 1 }}</th>
-            <td>{{ item.scrapName }}</td>
-            <td>{{ item.date }}</td>
-            <td ><span class="text-danger font-bold">${{ item.fee }}</span><span class="text-success">/kg</span></td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.formattedDate }}</td>
+            <td><span class="text-danger font-bold">{{ item.price }}៛</span><span class="text-black">/kg</span></td>
           </tr>
         </tbody>
       </table>
@@ -95,34 +89,21 @@
   </div>
   <Footer></Footer>
 </template>
+
 <script>
-import NavBar from '../../../Components/NavBar.vue'
-import Footer from '../../../Components/Footer.vue'
+import axios from 'axios';
+import NavBar from '../../../Components/NavBar.vue';
+import Footer from '../../../Components/Footer.vue';
+
 export default {
   name: 'HomePage',
-  components:{
+  components: {
     NavBar,
-    Footer
+    Footer,
   },
   data() {
     return {
-      items: [
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 10 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 2 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 2 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 0.5 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-        { scrapName: 'Scrap Name', date: '20/June/2024', fee: 1 },
-      ],
+      items: [],
       companies: [
         {
           name: 'Company 1',
@@ -130,7 +111,7 @@ export default {
           address: 'Phnom Penh',
           tel: '012 345 6789',
           image: 'company-logo.png',
-          description: 'Description for Company 1'
+          description: 'Description for Company 1',
         },
         {
           name: 'Company 2',
@@ -138,36 +119,63 @@ export default {
           address: 'Phnom Penh',
           tel: '012 345 6789',
           image: 'company-logo.png',
-          description: 'Description for Company 2'
+          description: 'Description for Company 2',
         },
         {
-          name: 'Company 2',
-          service: 'service 2',
+          name: 'Company 3',
+          service: 'service 3',
           address: 'Phnom Penh',
           tel: '012 345 6789',
           image: 'company-logo.png',
-          description: 'Description for Company 2'
+          description: 'Description for Company 3',
         },
         {
-          name: 'Company 2',
-          service: 'service 2',
+          name: 'Company 4',
+          service: 'service 4',
           address: 'Phnom Penh',
           tel: '012 345 6789',
           image: 'company-logo.png',
-          description: 'Description for Company 2'
+          description: 'Description for Company 4',
         },
         {
-          name: 'Company 2',
-          service: 'service 2',
+          name: 'Company 5',
+          service: 'service 5',
           address: 'Phnom Penh',
           tel: '012 345 6789',
           image: 'company-logo.png',
-          description: 'Description for Company 2'
+          description: 'Description for Company 5',
         },
-      ]
-    }
-  }
-}
+      ],
+    };
+  },
+  computed: {
+    formattedItems() {
+      return this.items.map(item => ({
+        ...item,
+        formattedDate: this.formatDate(item.created_at),
+      }));
+    },
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/item/list');
+        this.items = response.data.data;
+        console.log(response.data.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'long', day: '2-digit' };
+      return date.toLocaleDateString('en-US', options);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -178,6 +186,9 @@ export default {
   filter: brightness(70%);
 }
 
+.buy{
+  background: #ff8c00;
+}
 .list-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -193,19 +204,16 @@ export default {
   border: 2px solid thick;
 }
 
-
 .company-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-color: #007bff;
 }
 
-
 .company-card img {
   width: 110px;
   height: 110px;
   object-fit: fill;
-  
 }
 
 .text-card {
@@ -237,15 +245,18 @@ export default {
   .list-container {
     grid-template-columns: repeat(2, 1fr);
   }
+  tbody tr td{
+    font-size: 12px;
+  }
   .company-card img {
-  width: 70px;
-  height: 70px;
-  
-}
-.company-card .company-info h5{
-  margin-top: 5px;
-  font-size: 12px;
-  font-weight: bold;
-}
+    width: 70px;
+    height: 70px;
+  }
+
+  .company-card .company-info h5 {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: bold;
+  }
 }
 </style>
