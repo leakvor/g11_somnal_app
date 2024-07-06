@@ -1,98 +1,622 @@
 <template>
-    <form @submit.prevent="createPost" method="Post" class="flex flex-col p-4 rounded-lg bg-white shadow-md w-200 h-100 m-auto mt-5" enctype="multipart/form-data">
-      <h2 class="text-center mb-3">Create new post</h2>
-  
-      <div class="title mt-3 mb-3">
-        <label class="block mb-2 text-sm font-medium text-gray-900" for="title">Title</label>
-        <input type="text" class="w-full p-2 border border-gray-300" id="title" v-model="postData.title" required />
+  <div class="container mt-5">
+    <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
+      <h3 class="text-center m-3">Post Here!!</h3>
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          class="form-control shared-style"
+          id="title"
+          name="title"
+          v-model="title"
+        />
       </div>
-      
-      <div class="title mt-3 mb-3">
-        <label class="block mb-2 text-sm font-medium text-gray-900" for="description">Description</label>
-        <input type="text" class="w-full p-2 border border-gray-300" id="description" v-model="postData.description" required />
-      </div>
-      
-      <div class="mt-3">
-        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file</label>
-        <div class="relative">
-          <img v-if="imageUrl" :src="imageUrl" alt="Uploaded Image" class="w-full h-300px border border-gray-300 p-2 cursor-pointer" @click="uploadImage">
-          <img v-else src="https://via.placeholder.com/200x200" alt="Default Image" class="w-full h-300px border border-gray-300 p-2 cursor-pointer" @click="uploadImage">
-          <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file_input" name="image" @change="handleFileUpload">
-        </div>
-      </div>
-      
-      <div class="flex justify-end space-x-10 mt-5">
-        <button type="submit" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-          Create a new post
+      <div class="mb-3 dropdown">
+        <label for="item-dropdown" class="form-label">Item selection</label>
+        <button
+          class="form-control shared-style dropdown-toggle"
+          type="button"
+          id="item-dropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Select items
         </button>
+        <ul class="dropdown-menu" aria-labelledby="item-dropdown">
+          <li v-for="item in item_all" :key="item.id">
+            <div class="form-check dropdown-item">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                :value="item.id"
+                :id="`Checkme${item.id}`"
+                name="item_ids[]"
+                v-model="selectedItems"
+              />
+              <label class="form-check-label" :for="`Checkme${item.id}`">{{ item.name }}</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="mb-3">
+        <label for="formFile" class="form-label">File image post</label>
+        <FilePond
+          name="images[]"
+          v-model="images"
+          ref="pond"
+          label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
+          allow-multiple="true"
+          accepted-file-types="image/jpeg, image/png"
+          @updatefiles="handleFileChange"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="company-selection" class="form-label">Company Selection</label>
+        <select
+          id="company-selection"
+          name="company"
+          class="form-select shared-style"
+          v-model="company_id"
+        >
+          <option disabled selected value="">Select a company</option>
+          <option v-for="company in companies" :key="company.id" :value="company.id">
+            {{ company.name }}
+          </option>
+        </select>
+      </div>
+      <div class="submit d-grid gap-2">
+        <button class="btn btn-success" type="submit">Submit</button>
       </div>
     </form>
-  </template>
-  
-  <script>
-  import axios from 'axios';
-  
-  export default {
-    data() {
-      return {
-        postData: {
-          title: '',
-          description: '',
-          image: null
-        },
-        imageUrl: null
+  </div>
+</template>
+
+<script>
+import vueFilePond from 'vue-filepond';
+import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
+import axios from 'axios';
+import router from '@/router';
+
+// Register the plugins
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview
+);
+
+export default {
+  components: {
+    FilePond
+  },
+  data() {
+    return {
+      images: [],
+      item_all: [],
+      company_id: null,
+      companies: [],
+      title: '',
+      status: 'pending',
+      selectedItems: [],
+    };
+  },
+  mounted() {
+    this.getAllItems();
+    this.getAllCompanies();
+  },
+  methods: {
+    async createPost() {
+      console.log("title", this.title);
+      console.log("image", this.images);
+      console.log("item", this.selectedItems.join(','));
+      console.log("company", this.company_id);
+      try {
+        const formData = new FormData();
+        formData.append('title', this.title);
+        formData.append('company_id', this.company_id);
+        formData.append('status', this.status);
+        formData.append('items', this.selectedItems.join(','));
+        this.images.forEach((image) => {
+          formData.append('images[]', image);
+        });
+        const token = localStorage.getItem('access_token');
+        const response = await axios.post('http://127.0.0.1:8000/api/post/create/user', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'ultipart/form-data'
+          }
+        });
+        console.log(response.data);
+        this.resetForm();
+        // router.push('/')
+      } catch (error) {
+        console.error('Error creating post:', error);
       }
     },
-    methods: {
-      uploadImage() {
-        this.$refs.fileInput.click();
-      },
-      handleFileUpload(event) {
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            this.imageUrl = e.target.result;
-          };
-          reader.readAsDataURL(file);
-          this.postData.image = file; 
-        }
-      },
-      async createPost() {
-        try {
-          const formData = new FormData();
-          formData.append('title', this.postData.title);
-          formData.append('description', this.postData.description);
-          if (this.postData.image) {
-            formData.append('image', this.postData.image);
-          }
-          
-          const token = localStorage.getItem('access_token');
-          const response = await axios.post('http://127.0.0.1:8000/api/post/create/user', formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data' 
-            }
-          });
-          
-          console.log(response.data);
-          this.$router.push('/profile'); 
-          this.resetForm();
-        } catch (error) {
-          console.error('Error creating post:', error);
-        }
-      },
-      resetForm() {
-        this.postData.title = '';
-        this.postData.description = '';
-        this.image = null;
-        this.$refs.fileInput.value = ''; // Reset file input
+    handleFileChange(fileItems) {
+      this.images = fileItems.map(fileItem => fileItem.file);
+    },
+    resetForm() {
+      this.title = '';
+      this.company_id = null;
+      this.images = [];
+      this.selectedItems = [];
+      this.item_all.forEach((item) => {
+        document.getElementById(`Checkme${item.id}`).checked = false;
+      });
+    },
+    async getAllItems() {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/item/list');
+        this.item_all = response.data.data;
+      } catch (error) {
+        console.error('Error getting items:', error);
       }
-    }
+    },
+    async getAllCompanies() {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/company');
+        this.companies = response.data.data;
+        console.log(this.companies);
+      } catch (error) {
+        console.error('Error getting companies:', error);
+      }
+    },
   }
-  </script>
-  
-  <style scoped>
-  /* Add scoped styles if needed */
-  </style>
-  
+};
+</script>
+
+
+
+
+
+<style scoped>
+.container {
+  width: 100%;
+}
+
+form {
+  width: 40vw;
+  margin: auto;
+  border-radius: 10px;
+  border-top: 7px solid rgb(248, 98, 44);
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown .form-control,
+.dropdown-menu {
+  width: 100%;
+}
+.dropdown .form-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-check-input {
+  margin-left: 20px;
+}
+
+.form-label {
+  margin-top: 5px;
+}
+
+.submit {
+  margin-top: 7%;
+  margin-bottom: 5%;
+}
+@media screen and (max-width: 1114px) {
+  form {
+    width: 90vw;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+  #company-selection option {
+    font-size: 14px;
+  }
+  .submit {
+    margin-top: 10%;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 50px;
+    height: 50px;
+  }
+}
+@media screen and (max-width: 1280px) {
+  form {
+    width: 80vw;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+  #company-selection option {
+    font-size: 14px;
+  }
+  .submit {
+    margin-top: 6%;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+  .form-check-label {
+    font-size: 24px;
+  }
+  .form-select option {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 884px) {
+  form {
+    width: 80vw;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+    margin: 5px;
+  }
+  .form-label {
+    font-size: 26px;
+  }
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn {
+    font-size: 22px;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px; /* Adjust width */
+    height: 30px; /* Adjust height */
+  }
+  .form-check-label {
+    font-size: 24px;
+  }
+}
+@media screen and (max-width: 834px) {
+  form {
+    width: 80vw;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  .submit {
+    margin-top: 6%;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+  .form-check-label {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  form {
+    width: 90vw;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+  .form-check-label {
+    font-size: 24px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+}
+@media screen and (max-width: 800px) {
+  form {
+    width: 90vw;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+    margin: 5px;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  .submit {
+    margin-top: 6%;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+  .form-check-label {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  form {
+    width: 80vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+}
+@media screen and (max-width: 428px) {
+  form {
+    width: 80vw;
+    height: auto;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  form {
+    width: 90vw;
+    height: auto;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+}
+@media screen and (max-width: 412px) {
+  form {
+    width: 90vw;
+    height: auto;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+}
+@media screen and (max-width: 393px) {
+  .container {
+    padding: 0 15px;
+  }
+  form {
+    width: 90vw;
+    height: auto;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+  #company-selection option {
+    font-size: 11px;
+  }
+  .submit {
+    margin-top: 3%;
+  }
+  .form-check-input {
+    width: 20px;
+    height: 10px;
+  }
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .container {
+    padding: 0 15px;
+  }
+  form {
+    width: 80vw;
+    height: auto;
+  }
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  .submit {
+    margin-top: 4%;
+  }
+  .form-check-input {
+    width: 20px;
+    height: 10px;
+  }
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+}
+</style>
