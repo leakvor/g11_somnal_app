@@ -61,7 +61,7 @@
           <option value="11">November</option>
           <option value="12">December</option>
         </select>
-        <button type="button" class="btn btn-success">Story</button>
+        <!-- <button type="button" class="btn btn-success">Story</button> -->
       </div>
       <table id="ScrapPrice" class="table text-nowrap table-striped table-hover mt-4">
         <thead class="table-dark text-white">
