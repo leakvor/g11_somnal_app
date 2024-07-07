@@ -91,7 +91,7 @@
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
-            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post') }">
+            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>

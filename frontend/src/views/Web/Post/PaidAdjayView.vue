@@ -1,5 +1,6 @@
 <!-- App.vue (or your main application file) -->
 <template>
+  <NavBar/>
     <div id="app">
       <ManagePaidAdjay />
     </div>

@@ -1,7 +1,7 @@
 <!-- FavouritePage.vue -->
 <template>
   <div class="container px-5 py-10 mx-auto">
-    <h1 class="font-bold mb-15 text-black">Favourites Page</h1>
+    <h2 class=" mb-15 text-dark">Favourites Page</h2>
     <div class="flex flex-wrap -m-7 gap-7">
       <FavouriteCard v-for="(item, index) in favouritesData" :key="index" :item="item" />
     </div>

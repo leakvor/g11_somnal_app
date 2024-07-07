@@ -24,12 +24,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/Web/HomeView.vue')
+      component: () => import('../views/Web/HomePage/HomePage.vue')
     },
     {
-      path: '/category',
-      name: 'category',
-      component: () => import('../views/Web/Category/ServiceView.vue')
+      path: '/post',
+      name: 'post',
+      component: () => import('../views/Web/Post/ListView.vue')
     },
     {
       path: '/about',
@@ -182,4 +182,6 @@ const router = createRouter({
 //   }
 // })
 
+// export default { router, simpleAcl }
 export default { router}
+
