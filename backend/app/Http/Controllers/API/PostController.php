@@ -102,9 +102,11 @@ class PostController extends Controller
     public function show_one_post($id)
     {
         $post = Post::find($id);
+       
         if (!$post) {
             return response()->json(['success' => false, 'message' => 'Post not found'], 404);
         }
+        $post = new PostResource($post);
         return response()->json(['success' => true, 'data' => $post]);
     }
 
@@ -254,6 +256,7 @@ class PostController extends Controller
         if (!$posts) {
             return response()->json(['success' => false, 'message' => 'No post found for this company'], 404);
         }
+        $posts = PostResource::collection($posts);
         return response()->json(['success' => true, 'data' => $posts]);
     }
     //get all post that company buy

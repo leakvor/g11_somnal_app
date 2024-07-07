@@ -2,7 +2,10 @@
   <div>
     <NavBar />
     <div class="container">
-      <div class="post-container" v-for="post in posts" :key="post.id">
+      <router-link style="margin-top: 10px" to="/post/request/sell" class="btn btn-primary"
+        >Back</router-link
+      >
+      <div class="post-container" v-if="post">
         <div class="post-header d-flex align-items-center">
           <img
             :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
@@ -37,13 +40,11 @@
             />
           </div>
         </div>
-
         <button
-          :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
-          @click="updatePostStatus(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
-        >
-          {{ post.status === 'buy' ? 'Already Buy' : 'Buy' }}
-        </button>
+          style="margin: 10px"
+          class="btn btn-success"
+          @click="updatePostStatus(post.id, 'buy')"> Buy</button>
+        <button class="btn btn-danger"  @click="updatePostStatus(post.id, 'cancel')">Cancel</button>
       </div>
     </div>
   </div>
@@ -52,59 +53,77 @@
 <script>
 import NavBar from '../../../Components/NavBar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 export default {
-  name: 'PostComponent',
+  name: 'ShowPost',
   components: {
     NavBar
   },
+  props: ['id'],
   data() {
     return {
-      accountImage: '',
-      accountName: '',
-      postTitle: '',
-      images: [],
-      posts: []
+      post: null
     }
   },
+  mounted() {
+    this.fetchPost()
+  },
+  setup() {
+    const router = useRouter()
+    return { router }
+  },
   methods: {
-    async fetchPosts() {
+    async fetchPost() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/post/list')
-        this.posts = response.data
-        console.log(this.posts)
-        // this.router.push('/post/request/sell');
+        const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${this.id}`)
+        this.post = response.data.data
+        console.log(this.post)
       } catch (error) {
         console.error(error)
       }
     },
+
+    //update status of post
+    //update post status
     async updatePostStatus(postId, newStatus) {
       try {
-        console.log(newStatus)
-        console.log(postId)
+        console.log('New Status:', newStatus)
+        console.log('Post ID:', postId)
+
         const token = localStorage.getItem('access_token')
         if (!token) {
           throw new Error('No access token found')
         }
+
         const headers = {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
+
         const data = { status: newStatus }
+
         const response = await axios.post(
           `http://127.0.0.1:8000/api/post/update/status/${postId}`,
           data,
           { headers }
         )
+
         console.log('Response:', response)
-        alert('You already buy this item.')
+
+        const message =
+          newStatus === 'cancel'
+            ? 'You have been cancelled this item.'
+            : 'You have been bought this item.'
+        alert(message)
+        this.router.push('/post/request/sell')
       } catch (error) {
-        alert('You are a user so you do not have permission to buy'), console.error(error)
+        const message =
+          newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
+        alert(message)
+        console.error('Error:', error)
       }
     }
-  },
-  mounted() {
-    this.fetchPosts()
   }
 }
 </script>
@@ -119,7 +138,6 @@ export default {
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .post-header {
   display: flex;
   align-items: center;

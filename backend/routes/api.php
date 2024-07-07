@@ -39,6 +39,9 @@ Route::get('/company', [AuthController::class, 'getCompany']);
 //list all post
 Route::get('/post/list', [PostController::class, 'index']);
 
+//show each post of user====
+Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
+
 //update statusof post
 Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
 
@@ -59,7 +62,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create/user', [PostController::class, 'store']);
         Route::post('/update/user/{id}', [PostController::class, 'edit']);
         Route::delete('/delete/user/{id}', [PostController::class, 'destroy']);
-        Route::get('/each/user/{id}', [PostController::class, 'show_one_post']);
         Route::get('/to_company', [PostController::class, 'post_add_to_company']);
         Route::get('/company/buy', [PostController::class, 'post_buy']);
         //update statusof post

@@ -133,12 +133,18 @@ const router = createRouter({
       component: () => import('../views/Web/Company/CompanyRevenue.vue')
     },
 
-    //customer post to sell in specific company
-    // {
-    //   path:"/post/request/sell",
-    //   name:"requestSell",
-    //   component:() => import('../views/Web/Post/RequestSell.vue')
-    // },
+    // customer post to sell in specific company
+    {
+      path:"/post/request/sell",
+      name:"requestSell",
+      component:() => import('../views/Web/Post/RequestSell.vue')
+    },
+    {
+      path:"/show/post/:id",
+      name:"showPost",
+      component:() => import('../views/Web/Post/ShowPost.vue'),
+      props: true,
+    },
 
   ]
 })

@@ -120,7 +120,7 @@
             </router-link>
           </li>
 
-          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
               to="/post/request/sell"
               class="nav-link"
@@ -129,7 +129,7 @@
             <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
-          </li> -->
+          </li>
 
           <li
             class="nav-item me-4"
@@ -156,8 +156,7 @@
           </li>
           <li
             class="nav-item me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
             <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
               <i class="material-icons">info</i>
               <span>Post View</span>
@@ -361,24 +360,9 @@ export default {
           }
         }
       })
-    }),
-    this.fetchFavorites()
+    })
   },
   methods: {
-    async fetchFavorites() {
-      try {
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get('http://127.0.0.1:8000/api/fav/list', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        this.favorites = response.data.data
-        console.log(this.favorites)
-      } catch (error) {
-        console.error(error)
-      }
-    }
   }
 }
 </script>
