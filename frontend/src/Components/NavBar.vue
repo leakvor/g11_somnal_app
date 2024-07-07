@@ -91,7 +91,7 @@
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
-            <router-link to="/post" class="nav-link" :class="{ active: isActive('/post') }">
+            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
@@ -154,14 +154,14 @@
               <span>About Us</span>
             </router-link>
           </li>
-          <li
+          <!-- <li
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
             <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
               <i class="material-icons">info</i>
               <span>Post View</span>
             </router-link>
-          </li>
+          </li> -->
 
           <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || !authStore.isAuthenticatedUser || !authStore.isAuthenticatedCompany">
             <router-link to="/contact" class="nav-link" :class="{ active: isActive('/contact') }">
