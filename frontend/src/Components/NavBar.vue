@@ -120,6 +120,17 @@
             </router-link>
           </li>
 
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+            <router-link
+              to="/post/request/sell"
+              class="nav-link"
+              :class="{ active: isActive('/post/request/sell') }"
+            >
+            <i class="material-icons">local_mall</i>
+              <span>Request to sell</span>
+            </router-link>
+          </li>
+
           <li
             class="nav-item me-4"
             v-if="
@@ -141,6 +152,15 @@
             <router-link to="/about" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
               <span>About Us</span>
+            </router-link>
+          </li>
+          <li
+            class="nav-item me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+          >
+            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
+              <i class="material-icons">info</i>
+              <span>Post View</span>
             </router-link>
           </li>
 

@@ -88,7 +88,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'profile'=>'1719900794.png',
+                'profile'=>'1720074967.png',
                 'role_id' => 2,
                 
             ]);

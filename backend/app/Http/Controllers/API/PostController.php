@@ -16,20 +16,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use App\Traits\uploadImage; 
+use App\Traits\uploadImage;
 use Mockery\CountValidator\Exception;// Import the uploadImage trait
 
 class PostController extends Controller
 {
-    use uploadImage; 
+    use uploadImage;
 
     // all post
     public function index()
-    {
-        $posts = Post::all();
-        $posts=PostResource::collection($posts);
-        return response()->json($posts);
-    }
+{
+    $posts = Post::where('status', 'pending')
+                  ->whereNull('company_id')
+                  ->get();
+    $posts = PostResource::collection($posts);
+    return response()->json($posts);
+}
 
     // see all of my post
     public function show_post(Request $request)
@@ -38,127 +40,136 @@ class PostController extends Controller
         if (!$request->user()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    
+
         // Retrieve authenticated user
         $user = $request->user();
-    
+
         // Retrieve all posts for the authenticated user with the 'user' relationship loaded
         $posts = Post::where('user_id', $user->id)
-            ->with(['user', 'images' => function ($query) {
-                $query->select('post_id', 'image_id');
-            }, 'items' => function ($query) {
-                $query->select('post_id', 'item_id');
-            }])
+            ->with([
+                'user',
+                'images' => function ($query) {
+                    $query->select('post_id', 'image_id');
+                },
+                'items' => function ($query) {
+                    $query->select('post_id', 'item_id');
+                }
+            ])
             ->get();
-    
+
         // If no posts found, return 404 error
         if ($posts->isEmpty()) {
             return response()->json(['message' => 'Posts not found'], 404);
         }
-    
+
         // Transform the collection of posts using PostResource
         $transformedPosts = PostResource::collection($posts);
-    
+
         // Return success response with transformed data
         return response()->json(['success' => true, 'data' => $transformedPosts], 200);
     }
 
 
-//update
-public function update(Request $request, $id){
-    // return $request->user()->id;
-    $post=Post::find($id);
-    if(!$post){
-        return response()->json(['success'=>false,'message'=>'Post not found'],404);
+    //update
+    public function update(Request $request, $id)
+    {
+        // return $request->user()->id;
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+        if ($post->user_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+        $post = Post::store($request, $id);
+        return response()->json(['success' => true, 'message' => 'Post updated successfully']);
     }
-    if ($post->user_id !== auth()->id()) {
-        return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+    //destory
+    public function destroy($id)
+    {
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+        if ($post->user_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+        $post->delete();
+        return response()->json(['success' => true, 'message' => 'Post has been deleted']);
     }
-    $post=Post::store($request,$id);
-    return response()->json(['success'=>true,'message'=>'Post updated successfully']);
-}
-//destory
-public function destroy($id){
-    $post=Post::find($id);
-    if(!$post){
-        return response()->json(['success'=>false,'message'=>'Post not found'],404);
+
+    //show each post of user==================
+    public function show_one_post($id)
+    {
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+        return response()->json(['success' => true, 'data' => $post]);
     }
-    if ($post->user_id!== auth()->id()) {
-        return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
-    }
-    $post->delete();
-    return response()->json(['success'=>true,'message'=>'Post has been deleted']);
-}
 
-//show each post of user==================
-public function show_one_post($id){
-    $post=Post::find($id);
-    if(!$post){
-        return response()->json(['success'=>false,'message'=>'Post not found'],404);
-    }
-    return response()->json(['success'=>true,'data'=>$post]);
-}
+    // create post with multiple images===============
+    public function store(Request $request)
+    {
+        $request->validate([
+            'company_id' => 'nullable|integer',
+        ]);
+        // Set a default status if not provided
+        $user_id = $request->user()->id;
+        $status = $request->input('status', 'pending');
 
-// create post with multiple images===============
-public function store(Request $request)
-{
-    // Set a default status if not provided
-    $user_id = $request->user()->id;
-    $status = $request->input('status', 'pending');
+        // Create the post
+        $post = Post::create([
+            'title' => $request->input('title'),
+            'company_id' =>$request->input('company_id')?? null,
+            'status' => "pending",
+            'user_id' => $user_id,
+        ]);
 
-    // Create the post
-    $post = Post::create([
-        'title' => $request->input('title'),
-        'company_id' => $request->input('company_id'),
-        'tatus' => $status,
-        'user_id' => $user_id,
-    ]);
+        // Handle image uploads and associate with post
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $img) {
+                try {
+                    $ext = $img->getClientOriginalExtension();
+                    $imageName = uniqid() . '.' . $ext; // Generate a unique name for each image
+                    $img->move(public_path('uploads'), $imageName);
 
-    // Handle image uploads and associate with post
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $image) {
-            try {
-                // Store the image
-                $imageName = $image->getClientOriginalName();
-                $imagePath = $image->storeAs('public/images', $imageName);
+                    // Create an Image record in the database
+                    $newImage = Image::create([
+                        'image' => $imageName,
+                    ]);
 
-                // Create an Image record in the database
-                $newImage = Image::create([
-                    'image' => $imageName,
-                ]);
+                    // Associate the image with the post
+                    Post_Image::create([
+                        'post_id' => $post->id,
+                        'image_id' => $newImage->id,
+                    ]);
 
-                // Associate the image with the post
-                Post_Image::create([
-                    'post_id' => $post->id,
-                    'image_id' => $newImage->id,
-                ]);
-
-            } catch (Exception $e) {
-                // Handle image upload errors
-                return response()->json(['error' => 'Error uploading image: '. $e->getMessage()], 500);
+                } catch (Exception $e) {
+                    // Handle image upload errors
+                    return response()->json(['error' => 'Error uploading image: ' . $e->getMessage()], 500);
+                }
             }
         }
+
+        // Attach items to the post
+        $items = explode(',', $request->input('items'));
+        foreach ($items as $itemId) {
+            if (Item::where('id', $itemId)->exists()) {
+                Post_Item::create([
+                    'post_id' => $post->id,
+                    'item_id' => $itemId,
+                ]);
+            } else {
+                return response()->json(['error' => "Item ID $itemId does not exist"], 422);
+            }
+        }
+
+        return response()->json(['message' => 'Post created successfully', 'post' => $post], 201);
     }
+    //edit post
 
-    // Attach items to the post
-    $items = explode(',', $request->input('items'));
-foreach ($items as $itemId) {
-    if (Item::where('id', $itemId)->exists()) {
-        Post_Item::create([
-            'post_id' => $post->id,
-            'item_id' => $itemId,
-        ]);
-    } else {
-        return response()->json(['error' => "Item ID $itemId does not exist"], 422);
-    }
-}
-
-    return response()->json(['message' => 'Post created successfully', 'post' => $post], 201);
-}
-
-//edit post
-
-public function edit(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         // return $request;
         // Get the post
@@ -202,7 +213,7 @@ public function edit(Request $request, $id)
                     }
                 } catch (Exception $e) {
                     // Handle image upload errors
-                    return response()->json(['error' => 'Error uploading image: '. $e->getMessage()], 500);
+                    return response()->json(['error' => 'Error uploading image: ' . $e->getMessage()], 500);
                 }
             }
         }
@@ -233,16 +244,45 @@ public function edit(Request $request, $id)
     }
 
 
-//get all post of each company
-public function post_add_to_company(Request $request){
-    $company_id=$request->user()->id;
-    // return $company_id;
-    $posts=Post::where('company_id',$company_id)->get();
-    if(!$posts){
-        return response()->json(['success'=>false,'message'=>'No post found for this company'],404);
+    //get all post to each company
+    public function post_add_to_company(Request $request)
+    {
+        $company_id = $request->user()->id;
+        $posts = Post::where('company_id', $company_id)
+            ->where('status', 'pending')
+            ->get();
+        if (!$posts) {
+            return response()->json(['success' => false, 'message' => 'No post found for this company'], 404);
+        }
+        return response()->json(['success' => true, 'data' => $posts]);
     }
-    return response()->json(['success'=>true,'data'=>$posts]);
-}
+    //get all post that company buy
+    public function post_buy(Request $request)
+    {
+        $company_id = $request->user()->id;
+        $posts = Post::where('company_id', $company_id)
+            ->where('status', 'buy')
+            ->get();
+        if (!$posts) {
+            return response()->json(['success' => false, 'message' => 'No post found for this company'], 404);
+        }
+        return response()->json(['success' => true, 'data' => $posts]);
+    }
+
+    //update status
+    public function update_status(Request $request, $id)
+    {
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['success' => false, 'message' => 'Post not found'], 404);
+        }
+        if ($request->user()->role_id !== 3) {
+            return response()->json(['success' => false, 'message' => 'You are not company owner'], 401);
+        }
+        $post->status = $request->input('status');
+        $post->save();
+        return response()->json(['success' => true, 'message' => 'Status updated successfully']);
+    }
 
 
 

@@ -93,6 +93,12 @@ const router = createRouter({
       name:"post",
       component:() => import('../views/Web/Post/PostCard.vue')
     },
+    //post view
+    {
+      path:"/post_view",
+      name:"post view",
+      component:() => import('../views/Web/Post/PostView.vue')
+    },
       {
       path:"/post/create",
       name:"post",
@@ -120,13 +126,19 @@ const router = createRouter({
       name: 'CompanyDashboard',
       component: () => import('../views/Company/CompanyDashboard.vue')
     },
-    
+    //company revenues
     {
       path: '/company/revenue',
       name: 'companyRevenue',
       component: () => import('../views/Web/Company/CompanyRevenue.vue')
     },
 
+    //customer post to sell in specific company
+    {
+      path:"/post/request/sell",
+      name:"requestSell",
+      component:() => import('../views/Web/Post/RequestSell.vue')
+    },
 
   ]
 })

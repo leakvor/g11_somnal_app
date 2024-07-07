@@ -37,7 +37,10 @@ Route::post('/check-email', [AuthController::class, 'checkEmailUnique']);
 Route::get('/company', [AuthController::class, 'getCompany']);
 
 //list all post
-Route::get('post/list', [PostController::class, 'index']);
+Route::get('/post/list', [PostController::class, 'index']);
+
+//update statusof post
+Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
 
 
 // Routes that require authentication
@@ -48,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
     Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
     Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
-   
+
 
     // Post routes
     Route::prefix('post')->group(function () {
@@ -58,6 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/delete/user/{id}', [PostController::class, 'destroy']);
         Route::get('/each/user/{id}', [PostController::class, 'show_one_post']);
         Route::get('/to_company', [PostController::class, 'post_add_to_company']);
+        Route::get('/company/buy', [PostController::class, 'post_buy']);
+        //update statusof post
+        Route::post('/update/status/{id}', [PostController::class, 'update_status']);
     });
 
     // Comment routes
@@ -80,7 +86,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/list', [FavoriteController::class, 'index']);
         Route::post('/create', [FavoriteController::class, 'store']);
         Route::delete('/delete/{id}', [FavoriteController::class, 'destroy']);
-      
+
     });
 
     //payment

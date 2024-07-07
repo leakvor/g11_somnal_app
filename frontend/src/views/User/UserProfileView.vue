@@ -12,9 +12,8 @@
                     <img
                       data-no-retina=""
                       class="img-circle img-responsive img-bordered-primary"
-                      :src="`http://127.0.0.1:8000/uploads/${userData.profile}`"
                       alt="John Doe"
-                     
+                     :src="`http://127.0.0.1:8000/uploads/${userData.profile}`"
                       style="
                         width: 200px;
                         height: 200px;

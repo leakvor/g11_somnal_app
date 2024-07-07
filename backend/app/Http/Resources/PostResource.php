@@ -17,6 +17,7 @@ class PostResource extends JsonResource
     return [
         'id' => $this->id,
         'title' => $this->title,
+        'user' => $this->user,
         'company_id' => $this->company_id,
         'images' => $this->images->map(function ($image) {
             return ['image_id' => $image->image_id, 'image' => $image->image->image];
@@ -26,6 +27,7 @@ class PostResource extends JsonResource
         'price'=>$item->item->price,
         ];
         })->all(),
+        'status'=>$this->status,
         'date_created' => $this->created_at->format('d M Y H:i:s'),
     ];
 }

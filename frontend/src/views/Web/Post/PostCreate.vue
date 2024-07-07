@@ -96,10 +96,10 @@ export default {
     return {
       images: [],
       item_all: [],
-      company_id: null,
+      company_id: "",
       companies: [],
       title: '',
-      status: 'pending',
+      // status: 'pending',
       selectedItems: [],
     };
   },
@@ -117,7 +117,6 @@ export default {
         const formData = new FormData();
         formData.append('title', this.title);
         formData.append('company_id', this.company_id);
-        formData.append('status', this.status);
         formData.append('items', this.selectedItems.join(','));
         this.images.forEach((image) => {
           formData.append('images[]', image);
@@ -126,12 +125,12 @@ export default {
         const response = await axios.post('http://127.0.0.1:8000/api/post/create/user', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'ultipart/form-data'
+            'Content-Type': 'multipart/form-data'
           }
         });
         console.log(response.data);
         this.resetForm();
-        // router.push('/')
+        this.$router.push('/profile');
       } catch (error) {
         console.error('Error creating post:', error);
       }

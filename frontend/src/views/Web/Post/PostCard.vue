@@ -10,7 +10,9 @@
           </li>
         </ul>
         <div class="feed p-2">
-          <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border">
+          <div
+            class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border"
+          >
             <div class="feed-text px-2">
               <h6 class="text-black-50 mt-2">What's on your mind</h6>
             </div>
@@ -19,7 +21,9 @@
             </div>
           </div>
           <div class="bg-white border mt-2" v-for="post in posts" :key="post.id">
-            <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
+            <div
+              class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom"
+            >
               <div class="d-flex flex-row align-items-center feed-text px-2">
                 <img
                   class="rounded-circle"
@@ -28,7 +32,7 @@
                   alt="Profile"
                 />
                 <div class="d-flex flex-column flex-wrap ml-2">
-                  <span style="color: black">{{ post.user.name }}</span>
+                  <span style="color: black">{{ post.user.name}}</span>
                   <span class="text-black-50 time">{{ post.created_at }}</span>
                 </div>
               </div>
@@ -46,85 +50,57 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <p style="color: black">{{ post.description }}</p>
+              <span v-for="(item, index) in post.items" :key="index">
+                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+              </span>
             </div>
-            <div class="feed-image p-2 px-3" v-if="post.image">
-              <img
-                class="img-fluid img-responsive"
-                :src="`http://127.0.0.1:8000/uploads/${post.image}`"
-                alt="Post Image"
-              />
-            </div>
-            <div class="d-flex justify-content-between align-items-center p-2">
-              <div class="d-flex flex-row align-items-center">
-                <button
-                  type="submit"
-                  @click="likePost(post.id)"
-                  :class="['fa', 'fa-heart', { liked: post.liked }]"
-                  :style="{ color: post.liked ? 'red' : 'gray' }"
-                ></button>
-                <i class="fa fa-smile-o ml-2" style="color: blue"></i>
-              </div>
-              <div class="muted-color" style="color: black">
-                <span v-if="post.total_likes === 1">{{ post.total_likes }} like</span>
-                <span v-else>{{ post.total_likes }} likes</span>
-                <span class="ml-2" v-if="post.total_comments === 1">{{ post.total_comments }} comment</span>
-                <span class="ml-2" v-else>{{ post.total_comments }} comments</span>
+            <div class="row">
+              <div
+                v-for="(image, index) in post.images"
+                :key="index"
+                class="col-sm-12 col-md-6 col-lg-4"
+              >
+                <img
+                  class="img-fluid shadow rounded mb-4 gallery-img"
+                  :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                  :alt="`Image ${index + 1}`"
+                />
               </div>
             </div>
+            <button
+              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
+              {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
+            </button>
           </div>
+            
         </div>
       </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   props: ['posts'],
   data() {
     return {
-      showOptions: null,
-    };
+      showOptions: null
+    }
   },
   methods: {
     toggleOptions(postId) {
-      this.showOptions = this.showOptions === postId ? null : postId;
+      this.showOptions = this.showOptions === postId ? null : postId
     },
     confirmDeletePost(postId) {
       if (window.confirm('Are you sure you want to delete this post?')) {
-        this.$emit('delete-post', postId);
+        this.$emit('delete-post', postId)
       }
     },
-    async likePost(post) {
-      console.log(post);
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.post('http://127.0.0.1:8000/api/comment/user/like', {
-          post_id: this.post,
-        }, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.data === true) {
-          post.liked = true;
-          post.total_likes++;
-        } else if (response.data === false) {
-          post.liked = false;
-          post.total_likes--;
-        } else {
-          console.error('Unexpected response from server');
-        }
-      } catch (error) {
-        console.error('Error liking/unliking post:', error);
-      }
-    },
-  },
-};
+  }
+}
 </script>
 
 <style scoped>
