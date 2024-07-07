@@ -120,7 +120,7 @@
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
               to="/post/request/sell"
               class="nav-link"
@@ -129,7 +129,7 @@
             <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li
             class="nav-item me-4"

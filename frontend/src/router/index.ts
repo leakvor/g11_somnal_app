@@ -134,11 +134,11 @@ const router = createRouter({
     },
 
     //customer post to sell in specific company
-    {
-      path:"/post/request/sell",
-      name:"requestSell",
-      component:() => import('../views/Web/Post/RequestSell.vue')
-    },
+    // {
+    //   path:"/post/request/sell",
+    //   name:"requestSell",
+    //   component:() => import('../views/Web/Post/RequestSell.vue')
+    // },
 
   ]
 })
