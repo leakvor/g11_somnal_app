@@ -98,7 +98,6 @@ const router = createRouter({
       name: 'notifications',
       component: () => import('../views/Web/notification/notificationView.vue') 
     },
-
   ]
 })
 
