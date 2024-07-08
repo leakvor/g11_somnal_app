@@ -145,6 +145,13 @@ const router = createRouter({
       component:() => import('../views/Web/Post/ShowPost.vue'),
       props: true,
     },
+    //show map
+    {
+      path:"/map",
+      name:"show Map",
+      component:() => import('../views/Web/Map/MapView.vue'),
+      props: true,
+    },
 
   ]
 })

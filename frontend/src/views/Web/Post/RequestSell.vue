@@ -47,16 +47,10 @@
                 </td>
                 <td>{{ post.date_created }}</td>
                 <td class="text-end">
-                  <button
-                    class="btn btn-success"
-                    @click="updatePostStatus(post.id,  'buy')"
-                  >
+                  <button class="btn btn-success" @click="updatePostStatus(post.id, 'buy')">
                     Buy
                   </button>
-                  <button
-                    class="btn btn-danger"
-                    @click="updatePostStatus(post.id, 'cancel')"
-                  >
+                  <button class="btn btn-danger" @click="updatePostStatus(post.id, 'cancel')">
                     Cancel
                   </button>
                 </td>
@@ -148,39 +142,49 @@ export default {
     },
     //update post status
     async updatePostStatus(postId, newStatus) {
-  try {
-    console.log('New Status:', newStatus);
-    console.log('Post ID:', postId);
+      try {
+        console.log('New Status:', newStatus)
+        console.log('Post ID:', postId)
 
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      throw new Error('No access token found');
+        const token = localStorage.getItem('access_token')
+        if (!token) {
+          throw new Error('No access token found')
+        }
+
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+
+        const data = { status: newStatus }
+
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/post/update/status/${postId}`,
+          data,
+          { headers }
+        )
+
+        console.log('Response:', response)
+
+        // Update the post status in the local posts array
+        const postIndex = this.posts.findIndex((post) => post.id === postId)
+        if (postIndex !== -1) {
+          this.posts[postIndex].status = newStatus
+        }
+
+        const message =
+          newStatus === 'cancel'
+            ? 'You have been cancelled this item.'
+            : 'You have been bought this item.'
+        alert(message)
+        window.location.reload()
+      } catch (error) {
+        const message =
+          newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
+        alert(message)
+        console.error('Error:', error)
+      }
     }
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    };
-
-    const data = { status: newStatus };
-
-    const response = await axios.post(
-      `http://127.0.0.1:8000/api/post/update/status/${postId}`,
-      data,
-      { headers }
-    );
-
-    console.log('Response:', response);
-
-    const message = newStatus === 'cancel' ? 'You have been cancelled this item.' : 'You have been bought this item.';
-    alert(message);
-  } catch (error) {
-    const message = newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.';
-    alert(message);
-    console.error('Error:', error);
-  }
-}
-
   },
   mounted() {
     this.fecthPostSell()
