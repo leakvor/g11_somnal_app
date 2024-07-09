@@ -17,6 +17,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
     "@popperjs/core": "^2.11.8",
+    "@vueuse/core": "^10.11.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "element-plus": "^2.7.4",
@@ -42,6 +43,7 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/js-cookie": "^3.0.6",
     "@types/jsdom": "^21.1.6",
+    "@types/leaflet": "^1.9.12",
     "@types/node": "^20.12.5",
     "@unocss/preset-attributify": "^0.60.4",
     "@unocss/preset-uno": "^0.60.4",

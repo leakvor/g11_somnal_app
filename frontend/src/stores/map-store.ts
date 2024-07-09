@@ -5,9 +5,11 @@ type Marker = {
   longitude: number;
 };
 
-export const userMarker = useLocalStorage<Marker>("USER_MARKER", {
-  latitude: 0,
-  longitude: 0,
+const userMarker = useLocalStorage<Marker>("USER_MARKER", {
+  latitude: 11.5565521,
+  longitude: 104.88805006,
 });
 
-export const nearbyMarkers = useLocalStorage<Marker[]>("NEARBY_MARKERS", []);
+const nearbyMarkers = useLocalStorage<Marker[]>("NEARBY_MARKERS", []);
+
+export { userMarker, nearbyMarkers };

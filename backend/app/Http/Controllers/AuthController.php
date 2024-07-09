@@ -89,11 +89,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'profile'=>'1720074967.png',
-                'role_id' => 2,
-                
-            ]);
-    
-    
+                'role_id' => 2,               
+            ]);      
             return response()->json([
                 'status' => true,
                 'message' => 'User created successfully',
@@ -188,6 +185,12 @@ class AuthController extends Controller
                 $imageName = time() . '.' . $ext;
                 $img->move(public_path('uploads'), $imageName);
                 $user->profile = $imageName;
+            }
+            if($request->has('latitude')){
+                $user->latitude = $request->latitude;
+            }
+            if($request->has('longitude')){
+                $user->longitude = $request->longitude;
             }
     
             $user->save();
