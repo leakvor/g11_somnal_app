@@ -81,70 +81,8 @@ const router = createRouter({
     {
       path: '/partner',
       name: 'partner',
-      component: () => import('../views/Web/Post/PartnerView.vue')
-    },
-    {
-      path: '/favorite-page',
-      name: 'favorite page',
-      component: () => import('../views/Web/userInfo/FavoritePage.vue')
-    },
-    {
-      path:"/post",
-      name:"post",
-      component:() => import('../views/Web/Post/PostCard.vue')
-    },
-    //post view
-    {
-      path:"/post_view",
-      name:"post view",
-      component:() => import('../views/Web/Post/PostView.vue')
-    },
-      {
-      path:"/post/create",
-      name:"post",
-      component:() => import('../views/Web/Post/PostCreate.vue')
-    },
-      {
-      path:"/post/edit/:id",
-      name:"edit_post",
-      component:() => import('../views/Web/Post/PostEdit.vue'),
-      props: true,
-    },
-      {
-      path:"/messenger",
-      name:"messenger",
-      component:() => import('../views/Web/Chat/UserChat.vue')
-    },
-    //pyment
-      {
-      path:"/payment",
-      name:"payment",
-      component:() => import('../views/Web/userInfo/PaymentPage.vue')
-    },
-    {
-      path: '/company/dashboard',
-      name: 'CompanyDashboard',
-      component: () => import('../views/Company/CompanyDashboard.vue')
-    },
-    //company revenues
-    {
-      path: '/company/revenue',
-      name: 'companyRevenue',
-      component: () => import('../views/Web/Company/CompanyRevenue.vue')
-    },
-
-    // customer post to sell in specific company
-    {
-      path:"/post/request/sell",
-      name:"requestSell",
-      component:() => import('../views/Web/Post/RequestSell.vue')
-    },
-    {
-      path:"/show/post/:id",
-      name:"showPost",
-      component:() => import('../views/Web/Post/ShowPost.vue'),
-      props: true,
-    },
+      component: () => import('../views/Web/partners/PartnerView.vue')
+    }
 
   ]
 })
