@@ -134,7 +134,7 @@ class PostController extends Controller
             foreach ($request->file('images') as $img) {
                 try {
                     $ext = $img->getClientOriginalExtension();
-                    $imageName = uniqid() . '.' . $ext; // Generate a unique name for each image
+                    $imageName = uniqid() . '.' . $ext; 
                     $img->move(public_path('uploads'), $imageName);
 
                     // Create an Image record in the database
