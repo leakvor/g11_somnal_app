@@ -2,9 +2,9 @@
   <div class="container mx-auto p-4">
     <div class="flex flex-col lg:flex-row items-center justify-between">
       <div class="text-head lg:ml-10 mb-4 lg:mb-0">
-        <h1 class="text-2xl font-bold mb-4"><b>បង្កើនចំណូលរបស់អ្នកជាមួយយើងខ្ញុំ</b></h1>
-        <p>យើងរូមគ្នាជួយពង្រឹងអាជីវកម្មរបស់លោកអ្នកមានការរីចម្រើន​និង​ជួយបង្កើតចំណូលរបស់អ្នក។</p>
-        <button class="bg-red-500 text-white px-4 py-2 rounded-full mt-5">ចុចនៅទីនេះ!</button>
+        <h1 class="text-2xl font-bold mb-4"><b>Increase your revenue with us</b></h1>
+        <p>We strengthen our business together, grow and generate our revenue. </p>
+        <button class="bg-red-500 text-white px-4 py-2 rounded-full mt-5">Click on here!</button>
       </div>
       <div class="partner-img lg:ml-20">
         <img src="@/assets/partner/partner.png" alt="Partner Image" class="w-full lg:max-w-lg xl:max-w-xl">
