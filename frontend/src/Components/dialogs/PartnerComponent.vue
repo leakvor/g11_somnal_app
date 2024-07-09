@@ -35,6 +35,9 @@ export default {
 </script>
 
 <style scoped>
+h1,p,li{
+  color: black;
+}
 .partner-img img {
   width: 100%;
   max-width: 100%;
