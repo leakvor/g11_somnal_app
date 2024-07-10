@@ -194,29 +194,38 @@ export default {
         this.cardNumberMessage = 'Invalid card number';
       }
     },
+    //update role
     async updateProfile() {
-      try {
-        const token = localStorage.getItem('access_token');
-        if (!token) {
-          throw new Error('No token found');
-        }
+  try {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      throw new Error('No token found');
+    }
 
-        const response = await axios.post(
-          'http://127.0.0.1:8000/api/updateProfile',
-          { role_id: this.role_id },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+    // Generate fake longitude and latitude data for Phnom Penh, Cambodia
+    const longitude = Math.random() * (104.92 - 104.85) + 104.85;
+    const latitude = Math.random() * (11.58 - 11.55) + 11.55;
 
-        console.log('Profile updated successfully:', response.data);
-      } catch (error) {
-        console.error('Error updating profile:', error);
+    const response = await axios.post(
+      'http://127.0.0.1:8000/api/updateProfile',
+      {
+        role_id: this.role_id,
+        longitude,
+        latitude,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       }
-    },
+    );
+
+    // Handle response
+  } catch (error) {
+    console.error(error);
+  }
+}
   },
 }
 </script>

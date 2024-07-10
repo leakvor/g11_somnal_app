@@ -45,6 +45,9 @@ Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
 //update statusof post
 Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
 
+//get company nearbyme
+Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
+
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {

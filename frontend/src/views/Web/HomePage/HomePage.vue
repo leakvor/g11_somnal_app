@@ -36,10 +36,10 @@
         <i class="material-icons icon-align">add_shopping_cart</i>
         <span>Sale Now</span>
       </a>
-      <a href="" type="button" class="buy btn text-white d-flex align-items-center">
+      <router-link to="/post_view" class="buy btn text-white d-flex align-items-center">
         <i class="material-icons icon-align">shopping_bag</i>
         <span>Buy Now</span>
-      </a>
+      </router-link>
     </div>
 
     <div class="table-responsive bg-white mt-5 pe-3 ps-3">

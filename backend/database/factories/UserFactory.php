@@ -26,12 +26,13 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
             'remember_token' => Str::random(10),
-            'role_id' => $this->faker->randomElement([ 2, 3]), // Randomly assigns 1, 2, or 3
+            'role_id' => $this->faker->randomElement([ 2, 3]), 
+            'latitude' => $this->faker->latitude(11.48, 11.58), 
+            'longitude' => $this->faker->longitude(104.85, 105.00), 
         ];
     }
-    
 
     /**
      * Indicate that the model's email address should be unverified.

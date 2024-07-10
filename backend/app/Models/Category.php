@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name'];
+    protected $fillable = ['name','image'];
 
     public function items():HasMany{
         return $this->hasMany(Item::class);
@@ -22,9 +22,19 @@ class Category extends Model
     }
 
     //create a new category
-    public static function store($request,$id=null){
+    public static function store(Request $request, $id = null)
+    {
         $data = $request->only('name');
-        $data = self::updateOrCreate(['id' => $id], $data);
+    
+        if ($request->hasFile('image')) {
+            $img = $request->file('image');
+            $ext = $img->getClientOriginalExtension();
+            $imageName = time() . '.' . $ext;
+            $img->move(public_path('uploads'), $imageName);
+            $data['image'] = 'uploads/' . $imageName; // Store the image path
+        }
+    
+        return self::updateOrCreate(['id' => $id], $data);
     }
 
     //show specific category
