@@ -248,11 +248,6 @@ export default {
 }
 </script>
 
-
-
-
-
-
 <style scoped>
 th,
 td {
