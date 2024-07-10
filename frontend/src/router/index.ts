@@ -152,6 +152,11 @@ const router = createRouter({
       component:() => import('../views/Web/Map/MapView.vue'),
       props: true,
     },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/Web/notification/notificationView.vue') 
+    },
 
   ]
 })

@@ -79,7 +79,7 @@
         <ul class="navbar-nav">
           <li
             class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>
@@ -87,7 +87,7 @@
             </router-link>
           </li>
 
-          <li
+          <!-- <li
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
@@ -99,7 +99,7 @@
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
@@ -189,7 +189,7 @@
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-            <router-link to="/map" class="nav-link" :class="{ active: isActive('/pmap') }">
+            <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
               <i class="material-icons">map</i>
               <span>Map</span>
             </router-link>
@@ -324,7 +324,7 @@
 </template>
 
 <script>
-// import { useAuthStore } from '../stores/auth-store'
+import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
 
 export default {
