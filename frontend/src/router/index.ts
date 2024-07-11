@@ -132,6 +132,12 @@ const router = createRouter({
       name: 'companyRevenue',
       component: () => import('../views/Web/Company/CompanyRevenue.vue')
     },
+    // see all company
+    {
+      path: '/companies',
+      name: 'companies',
+      component: () => import('../views/Web/Company/ShowAllCompanies.vue')
+    },
 
     // customer post to sell in specific company
     {

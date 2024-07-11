@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CompaniesListController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\HistoryMarketPriceController;
 
