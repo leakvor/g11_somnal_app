@@ -4,16 +4,15 @@
       <!-- Notification content -->
       <div class="flex-grow">
         <div class="flex items-end space-x-2">
-          <NotificationIcon :type="notification.icon" />
           <div class="flex items-center mt-3 hover:bg-gray-100 rounded-lg px-1 py-1 cursor-pointer">
             <div class="flex flex-shrink-0 items-end">
-              <img class="h-16 w-16 rounded-full" :src="notification.avatar" alt="Avatar">
+              <img class="h-16 w-16 rounded-full" src="" alt="Avatar">
               <img class="w-6 h-6 -ml-5" src="https://drive.google.com/uc?id=1jAh9mzCA6TIsDj06NMMxcVjqvwEshlvu" alt="">
             </div>
             <div class="ml-3">
-              <span class="font-medium text-sm">{{ notification.sender }}</span>
-              <p class="text-sm">{{ notification.message }}</p>
-              <span class="text-sm text-blue font-semibold">{{ notification.time }}</span>
+              <span class="font-medium text-sm"></span>
+              <p class="text-sm"></p>
+              <span class="text-sm text-blue font-semibold"></span>
             </div>
           </div>
         </div>
@@ -61,7 +60,7 @@
 <script>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-
+ 
 export default defineComponent({
   props: {
     notification: {

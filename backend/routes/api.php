@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\NotificationConControlller;
 use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -100,7 +101,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [PaymentController::class, 'store']);
     });
 
+    //notification
+    Route::prefix('notification')->group(function () {
+        Route::post('/company/list',[NotificationConControlller::class,'company_notifications']);
+        Route::post('/user/list',[NotificationConControlller::class,'user_notification']);
+    });
+
 });
+
+
+
 
 // Category routes
 Route::prefix('category')->group(function () {

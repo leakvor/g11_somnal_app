@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('cvv',3);
             $table->string('expiration_date', 5);
             $table->integer('user_id');
+            $table->integer('price');
             $table->softDeletes();
             $table->timestamps();
         });

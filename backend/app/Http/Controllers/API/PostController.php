@@ -306,7 +306,7 @@ class PostController extends Controller
             ]);
         }else if($request->input('status')=='buy' && $post->company_id!==null){
             Notification::create([
-                'type' => 'post',
+                'type' => 'reply',
                 'post_id' => $post->id,
                 'message' => "Your scrb has been cancel.",
                 'user_id'=>$request->user()->id,

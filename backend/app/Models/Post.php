@@ -52,6 +52,12 @@ class Post extends Model
         return Post::where('user_id',$id)->get();
     }
 
+      // Define relationship to notifications
+      public function notifications()
+      {
+          return $this->hasMany(Notification::class);
+      }
+      
     //create or update post 
     public static function store($request, $id = null)
 {

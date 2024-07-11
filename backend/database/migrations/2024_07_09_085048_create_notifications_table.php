@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('post_id')->nullable();
             $table->text('message')->nullable();
             $table->integer('user_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

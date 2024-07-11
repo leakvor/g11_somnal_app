@@ -14,7 +14,7 @@
       </div>
       <div class="mb-3 dropdown">
         <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
-        <div class="mb-3" v-if="selectedItemsNames.length>0">
+        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
         <p style="color:black">{{ selectedItemsNames }}</p>
       </div>
         <button
@@ -55,7 +55,7 @@
         />
       </div>
       <div class="mb-3">
-        <label for="company-selection" class="form-label">Company Selection</label>
+        <label for="company-selection" style="color: black" class="form-label">Company Selection</label>
         <select
           id="company-selection"
           name="company"
@@ -81,7 +81,7 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import VueMultiselect from 'vue-multiselect'
+
 
 import axios from 'axios'
 import router from '@/router'
@@ -92,7 +92,7 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 export default {
   components: {
     FilePond,
-    VueMultiselect
+    
   },
   data() {
     return {

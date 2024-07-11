@@ -16,6 +16,7 @@ class Payment extends Model
         'cvv',
         'expiration_date',
         'user_id',
+        'price'
     ];
 
     // Relationship with user
