@@ -55,7 +55,6 @@ export default {
               const response = await axiosInstance.post('http://127.0.0.1:8000/api/check-email', {
                 email: value
               })
-              console.log(value);
               return response.data.unique
             } catch (error) {
               console.error('Error checking email uniqueness:', error)
