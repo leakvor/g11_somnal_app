@@ -45,6 +45,8 @@ Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
 //update statusof post
 Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
 
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -52,8 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
-    Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
-    Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
+
+  
 
 
     // Post routes

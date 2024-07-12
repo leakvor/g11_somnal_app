@@ -1,5 +1,7 @@
 <?php
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
@@ -7,6 +9,7 @@ use App\Http\Controllers\Admin\{
     CompanyController,
     CategoryController,
     ItemController,
+    
     HistoryMarketprices,
     RevenueController
 };
@@ -28,17 +31,19 @@ Route::get('/', function () {
 });
 
 
-Route::get('/test-mail',function(){
+Route::get('/test-email/{email}', function ($email) {
+    $user = User::where('email', $email)->first();
 
-    $message = "Testing mail";
-
-    \Mail::raw('Hi, welcome!', function ($message) {
-      $message->to('ajayydavex@gmail.com')
-        ->subject('Testing mail');
-    });
-
-    dd('sent');
-
+    if ($user) {
+        try {
+            Mail::to($email)->send(new WelcomeMail($user));
+            return 'Test email sent to ' . $email;
+        } catch (\Exception $e) {
+            return 'Failed to send email: ' . $e->getMessage();
+        }
+    } else {
+        return 'User not found';
+    }
 });
 
 
