@@ -324,7 +324,7 @@
 </template>
 
 <script>
-// import { useAuthStore } from '../stores/auth-store'
+import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
 
 export default {
