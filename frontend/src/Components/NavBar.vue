@@ -79,7 +79,7 @@
         <ul class="navbar-nav">
           <li
             class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>
@@ -87,7 +87,7 @@
             </router-link>
           </li>
 
-          <li
+          <!-- <li
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
@@ -99,7 +99,7 @@
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
@@ -189,18 +189,18 @@
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-            <router-link to="/map" class="nav-link" :class="{ active: isActive('/pmap') }">
+            <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
               <i class="material-icons">map</i>
               <span>Map</span>
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
               <i class="material-icons">payment</i>
               <span>Payment</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/partner" class="nav-link" :class="{ active: isActive('/partner') }">
@@ -317,6 +317,15 @@
               </ul>
             </div>
           </li>
+          <!-- <li
+            class="nav-item me-4"
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+          >
+            <router-link to="/companies" class="nav-link" :class="{ active: isActive('/about') }">
+              <i class="material-icons">info</i>
+              <span>Companies</span>
+            </router-link>
+          </li> -->
         </ul>
       </div>
     </div>

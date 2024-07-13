@@ -50,11 +50,11 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <span v-for="(item, index) in post.items" :key="index">
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
                 {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
               </span>
             </div>
-            <div class="row">
+            <div class="row m-3">
               <div
                 v-for="(image, index) in post.images"
                 :key="index"
@@ -68,7 +68,7 @@
               </div>
             </div>
             <button
-              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
+              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success m-3'">
               {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
             </button>
           </div>

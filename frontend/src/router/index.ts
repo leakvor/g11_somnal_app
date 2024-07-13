@@ -132,6 +132,12 @@ const router = createRouter({
       name: 'companyRevenue',
       component: () => import('../views/Web/Company/CompanyRevenue.vue')
     },
+    // see all company
+    {
+      path: '/companies',
+      name: 'companies',
+      component: () => import('../views/Web/Company/ShowAllCompanies.vue')
+    },
 
     // customer post to sell in specific company
     {
@@ -151,6 +157,11 @@ const router = createRouter({
       name:"show Map",
       component:() => import('../views/Web/Map/MapView.vue'),
       props: true,
+    },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/Web/notification/NotificationVue.vue') 
     },
 
   ]

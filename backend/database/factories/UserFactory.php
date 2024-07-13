@@ -26,11 +26,11 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
             'remember_token' => Str::random(10),
             'role_id' => $this->faker->randomElement([ 2, 3]), 
-            'latitude' => $this->faker->latitude(10.75, 13.25), 
-            'longitude' => $this->faker->longitude(102.5, 107.5), 
+            'latitude' => $this->faker->latitude(11.48, 11.58), 
+            'longitude' => $this->faker->longitude(104.85, 105.00), 
         ];
     }
 

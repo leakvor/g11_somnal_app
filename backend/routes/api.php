@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\NotificationConControlller;
 use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CompaniesListController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\HistoryMarketPriceController;
 
@@ -47,6 +49,10 @@ Route::post('/post/update/status/{id}', [PostController::class, 'update_status']
 
 //get company nearbyme
 Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
+
+
+//update notification status
+Route::get('/notification/status/{id}',[NotificationConControlller::class,'markAsSeen']);
 
 
 // Routes that require authentication
@@ -100,7 +106,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/create', [PaymentController::class, 'store']);
     });
 
+    //notification
+    Route::prefix('notification')->group(function () {
+        Route::get('/company/list',[NotificationConControlller::class,'company_notifications']);
+        Route::get('/user/list',[NotificationConControlller::class,'user_notification']);
+        Route::get('/user/list/alert',[NotificationConControlller::class,'user_notification_alert']);
+        Route::get('/company/list/alert',[NotificationConControlller::class,'company_notification_alert']);
+    });
+
 });
+
+
+
 
 // Category routes
 Route::prefix('category')->group(function () {
