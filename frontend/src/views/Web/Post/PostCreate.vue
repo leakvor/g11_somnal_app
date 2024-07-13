@@ -1,6 +1,6 @@
 <template>
-  <div class="container mt-5">
-    <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
+  <div class="container">
+    <form @submit.prevent="createPost" class="form p-4 " method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3">Post Here!!</h3>
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -23,7 +23,7 @@
         >
           Select items
         </button>
-        <ul class="dropdown-menu" aria-labelledby="item-dropdown">
+        <ul class="dropdown-menu scrollable-menu" aria-labelledby="item-dropdown">
           <li v-for="item in item_all" :key="item.id">
             <div class="form-check dropdown-item">
               <input
@@ -65,7 +65,7 @@
           </option>
         </select>
       </div>
-      <div class="submit d-grid gap-2">
+     <div class="submit d-grid gap-2">
         <button class="btn btn-success" type="submit">Submit</button>
       </div>
     </form>
@@ -99,7 +99,6 @@ export default {
       company_id: "",
       companies: [],
       title: '',
-      // status: 'pending',
       selectedItems: [],
     };
   },
@@ -168,22 +167,26 @@ export default {
 };
 </script>
 
-
-
-
-
 <style scoped>
 .container {
   width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+
 }
 
 form {
-  width: 40vw;
+  width: 100%;
+  max-width: 800px;
   margin: auto;
   border-radius: 10px;
   border-top: 7px solid rgb(248, 98, 44);
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 .dropdown .form-control,
@@ -194,6 +197,11 @@ form {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.dropdown-menu.scrollable-menu {
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .form-check-input {
@@ -208,414 +216,29 @@ form {
   margin-top: 7%;
   margin-bottom: 5%;
 }
-@media screen and (max-width: 1114px) {
-  form {
-    width: 90vw;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
 
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-  #company-selection option {
-    font-size: 14px;
-  }
-  .submit {
-    margin-top: 10%;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 50px;
-    height: 50px;
-  }
-}
-@media screen and (max-width: 1280px) {
+@media (min-width: 576px) {
   form {
-    width: 80vw;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-  #company-selection option {
-    font-size: 14px;
-  }
-  .submit {
-    margin-top: 6%;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    height: 30px;
-  }
-  .form-check-label {
-    font-size: 24px;
-  }
-  .form-select option {
-    font-size: 16px;
-  }
-}
-@media screen and (max-width: 884px) {
-  form {
-    width: 80vw;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-    margin: 5px;
-  }
-  .form-label {
-    font-size: 26px;
-  }
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn {
-    font-size: 22px;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px; /* Adjust width */
-    height: 30px; /* Adjust height */
-  }
-  .form-check-label {
-    font-size: 24px;
-  }
-}
-@media screen and (max-width: 834px) {
-  form {
-    width: 80vw;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  .submit {
-    margin-top: 6%;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    height: 30px;
-  }
-  .form-check-label {
-    font-size: 24px;
+    width: 90%;
   }
 }
 
-@media screen and (max-width: 820px) {
+@media (min-width: 768px) {
   form {
-    width: 90vw;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
+    width: 90%;
 
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    height: 30px;
-  }
-  .form-check-label {
-    font-size: 24px;
-  }
-
-  .submit {
-    margin-top: 6%;
-  }
-}
-@media screen and (max-width: 800px) {
-  form {
-    width: 90vw;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-    margin: 5px;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  .submit {
-    margin-top: 6%;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    height: 30px;
-  }
-  .form-check-label {
-    font-size: 24px;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (min-width: 992px) {
   form {
-    width: 80vw;
-    height: auto;
-  }
-
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    height: 30px;
-  }
-
-  .submit {
-    margin-top: 6%;
-  }
-}
-@media screen and (max-width: 428px) {
-  form {
-    width: 80vw;
-    height: auto;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 35px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 18px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
+     width: 90%;
   }
 }
 
-@media screen and (max-width: 414px) {
+@media (min-width: 1200px) {
   form {
-    width: 90vw;
-    height: auto;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 35px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 18px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
-  }
-}
-@media screen and (max-width: 412px) {
-  form {
-    width: 90vw;
-    height: auto;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 35px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 18px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
-  }
-}
-@media screen and (max-width: 393px) {
-  .container {
-    padding: 0 15px;
-  }
-  form {
-    width: 90vw;
-    height: auto;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 35px;
-  }
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 18px;
-  }
-  #company-selection option {
-    font-size: 11px;
-  }
-  .submit {
-    margin-top: 3%;
-  }
-  .form-check-input {
-    width: 20px;
-    height: 10px;
-  }
-  input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  .container {
-    padding: 0 15px;
-  }
-  form {
-    width: 80vw;
-    height: auto;
-  }
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 35px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 18px;
-  }
-  #company-selection option {
-    font-size: 12px;
-  }
-
-  .submit {
-    margin-top: 4%;
-  }
-  .form-check-input {
-    width: 20px;
-    height: 10px;
-  }
-  input[type='checkbox'] {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+    width: 60%;
   }
 }
 </style>

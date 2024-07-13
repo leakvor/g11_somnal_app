@@ -49,20 +49,17 @@
     <div class="slider-container">
       <div class="slider mt-5">
         <div class="slider-item" v-for="company in filteredCompanies" :key="company.id">
-          <a href="#" class="card company-card text-decoration-none text-dark">
+          <a href="/companies" class="card company-card text-decoration-none text-dark">
             <div class="card-body">
               <div class="company-logo text-center">
                 <img :src="company.profile" alt="Company Logo"  width="100" height="100" />
               </div>
               <div class="company-info">
-                <h5 class="text-title"><b>Name:</b> {{ company.name }}</h5>
+                <h5 class="text-title"><b></b> {{ company.name }}</h5>
                 <p class="text-card text-danger"><b>Services:</b> {{ company.services }}</p>
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"><b>Phone:</b> {{ company.phone }}</a>
                 <p class="text-card"><b>Email:</b> {{ company.email }}</p>
-                <p class="text-card"><b>Address:</b> {{ company.address }}</p>
-              </div>
-              <div class="company-action d-flex justify-content-end">
-                <button class="btn btn-success">Sales Now</button>
+                <p class="text-card"><b>Address:</b> {{ company.address}}</p>
               </div>
             </div>
           </a>
@@ -129,6 +126,7 @@
         </ul>
       </nav>
     </div>
+    
   <Footer></Footer>
   </div>
 </template>
@@ -150,7 +148,7 @@
         filteredCompanies: [],
         items: [],
         currentPage: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 5,
       }
     },
     computed: {
