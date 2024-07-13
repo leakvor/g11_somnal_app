@@ -317,6 +317,15 @@
               </ul>
             </div>
           </li>
+          <!-- <li
+            class="nav-item me-4"
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+          >
+            <router-link to="/companies" class="nav-link" :class="{ active: isActive('/about') }">
+              <i class="material-icons">info</i>
+              <span>Companies</span>
+            </router-link>
+          </li> -->
         </ul>
       </div>
     </div>
