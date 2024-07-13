@@ -127,7 +127,7 @@ class PostController extends Controller
         $post = Post::create([
             'title' => $request->input('title'),
             'company_id' => $request->input('company_id') ?? null,
-            'status' => $status, // Use the provided status
+            'status' => $status, 
             'user_id' => $user_id,
         ]);
 
@@ -137,6 +137,7 @@ class PostController extends Controller
                 'type' => 'post',
                 'post_id' => $post->id,
                 'message' => "You have a new post from a user who wants to sell their scrap to your company",
+                'status' => 'false',
             ]);
         }
 
@@ -294,15 +295,17 @@ class PostController extends Controller
         }
         if ($request->input('status') == 'buy') {
             Notification::create([
-                'type' => 'post',
+                'type' => 'reply',
                 'post_id' => $post->id,
                 'message' => "Your scrb has been buy.",
+                'status'=>'false',
             ]);
         } else if ($request->input('status') == 'cancel') {
             Notification::create([
-                'type' => 'post',
+                'type' => 'reply',
                 'post_id' => $post->id,
                 'message' => "Your scrb has been cancel.",
+                'status'=>'false',
             ]);
         }else if($request->input('status')=='buy' && $post->company_id!==null){
             Notification::create([
@@ -310,6 +313,7 @@ class PostController extends Controller
                 'post_id' => $post->id,
                 'message' => "Your scrb has been cancel.",
                 'user_id'=>$request->user()->id,
+                'status'=>'false',
             ]);
         }
         $post->status = $request->input('status');

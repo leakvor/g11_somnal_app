@@ -50,6 +50,10 @@ Route::post('/post/update/status/{id}', [PostController::class, 'update_status']
 Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
 
 
+//update notification status
+Route::get('/notification/status/{id}',[NotificationConControlller::class,'markAsSeen']);
+
+
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
     // User profile routes
@@ -103,8 +107,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //notification
     Route::prefix('notification')->group(function () {
-        Route::post('/company/list',[NotificationConControlller::class,'company_notifications']);
-        Route::post('/user/list',[NotificationConControlller::class,'user_notification']);
+        Route::get('/company/list',[NotificationConControlller::class,'company_notifications']);
+        Route::get('/user/list',[NotificationConControlller::class,'user_notification']);
+        Route::get('/user/list/alert',[NotificationConControlller::class,'user_notification_alert']);
+        Route::get('/company/list/alert',[NotificationConControlller::class,'company_notification_alert']);
     });
 
 });

@@ -195,12 +195,12 @@
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
               <i class="material-icons">payment</i>
               <span>Payment</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/partner" class="nav-link" :class="{ active: isActive('/partner') }">

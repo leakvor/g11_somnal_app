@@ -14,6 +14,8 @@ import customAxios from './plugins/axios'
 import 'uno.css'
 import { configure } from 'vee-validate'
 import axios from './axios'
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 
 const app = createApp(App)
@@ -26,6 +28,7 @@ app.use(createPinia())
 app.use(router.router)
 app.use(router)
 app.use(ElementPlus)
+app.use(Toast);
 // app.use(router.simpleAcl)
 
 app.config.globalProperties.$customAxios = customAxios
