@@ -1,9 +1,15 @@
 <template>
+<<<<<<< HEAD
   <div class="container">
     <form @submit.prevent="createPost" class="form p-4 " method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3">Post Here!!</h3>
+=======
+  <div class="container mt-5">
+    <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
+      <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
+>>>>>>> 1828fd19d6ca6e768ad476781fe039615d0fda49
       <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
+        <label for="title" class="form-label" style="color: black">Title</label>
         <input
           type="text"
           class="form-control shared-style"
@@ -13,7 +19,10 @@
         />
       </div>
       <div class="mb-3 dropdown">
-        <label for="item-dropdown" class="form-label">Item selection</label>
+        <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
+        <div class="mb-3" v-if="selectedItemsNames.length>0">
+        <p style="color:black">{{ selectedItemsNames }}</p>
+      </div>
         <button
           class="form-control shared-style dropdown-toggle"
           type="button"
@@ -40,7 +49,7 @@
         </ul>
       </div>
       <div class="mb-3">
-        <label for="formFile" class="form-label">File image post</label>
+        <label for="formFile" class="form-label" style="color: black">File image post</label>
         <FilePond
           name="images[]"
           v-model="images"
@@ -73,98 +82,111 @@
 </template>
 
 <script>
-import vueFilePond from 'vue-filepond';
-import 'filepond/dist/filepond.min.css';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import vueFilePond from 'vue-filepond'
+import 'filepond/dist/filepond.min.css'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import VueMultiselect from 'vue-multiselect'
 
-import axios from 'axios';
-import router from '@/router';
+import axios from 'axios'
+import router from '@/router'
 
 // Register the plugins
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
-);
+const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 
 export default {
   components: {
-    FilePond
+    FilePond,
+    VueMultiselect
   },
   data() {
     return {
       images: [],
       item_all: [],
-      company_id: "",
+      company_id: '',
       companies: [],
       title: '',
+<<<<<<< HEAD
       selectedItems: [],
     };
+=======
+      // status: 'pending',
+      selectedItems: []
+    }
+  },
+  computed: {
+    selectedItemsNames() {
+      return this.selectedItems.map(id => {
+        const item = this.item_all.find(item => item.id === id);
+        return item.name;
+      });
+    }
+>>>>>>> 1828fd19d6ca6e768ad476781fe039615d0fda49
   },
   mounted() {
-    this.getAllItems();
-    this.getAllCompanies();
+    this.getAllItems()
+    this.getAllCompanies()
   },
   methods: {
     async createPost() {
-      console.log("title", this.title);
-      console.log("image", this.images);
-      console.log("item", this.selectedItems.join(','));
-      console.log("company", this.company_id);
+      console.log('title', this.title)
+      console.log('image', this.images)
+      console.log('item', this.selectedItems.join(','))
+      console.log('company', this.company_id)
       try {
-        const formData = new FormData();
-        formData.append('title', this.title);
-        formData.append('company_id', this.company_id);
-        formData.append('items', this.selectedItems.join(','));
+        const formData = new FormData()
+        formData.append('title', this.title)
+        formData.append('company_id', this.company_id)
+        formData.append('items', this.selectedItems.join(','))
         this.images.forEach((image) => {
-          formData.append('images[]', image);
-        });
-        const token = localStorage.getItem('access_token');
+          formData.append('images[]', image)
+        })
+        const token = localStorage.getItem('access_token')
         const response = await axios.post('http://127.0.0.1:8000/api/post/create/user', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
           }
-        });
-        console.log(response.data);
-        this.resetForm();
-        this.$router.push('/profile');
+        })
+        console.log(response.data)
+        this.resetForm()
+        this.$router.push('/profile')
       } catch (error) {
-        console.error('Error creating post:', error);
+        console.error('Error creating post:', error)
       }
     },
     handleFileChange(fileItems) {
-      this.images = fileItems.map(fileItem => fileItem.file);
+      this.images = fileItems.map((fileItem) => fileItem.file)
     },
     resetForm() {
-      this.title = '';
-      this.company_id = null;
-      this.images = [];
-      this.selectedItems = [];
+      this.title = ''
+      this.company_id = null
+      this.images = []
+      this.selectedItems = []
       this.item_all.forEach((item) => {
-        document.getElementById(`Checkme${item.id}`).checked = false;
-      });
+        document.getElementById(`Checkme${item.id}`).checked = false
+      })
     },
     async getAllItems() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/item/list');
-        this.item_all = response.data.data;
+        const response = await axios.get('http://127.0.0.1:8000/api/item/list')
+        this.item_all = response.data.data
       } catch (error) {
-        console.error('Error getting items:', error);
+        console.error('Error getting items:', error)
       }
     },
     async getAllCompanies() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/company');
-        this.companies = response.data.data;
-        console.log(this.companies);
+        const response = await axios.get('http://127.0.0.1:8000/api/company')
+        this.companies = response.data.data
+        console.log(this.companies)
       } catch (error) {
-        console.error('Error getting companies:', error);
+        console.error('Error getting companies:', error)
       }
-    },
+    }
   }
-};
+}
 </script>
 
 <style scoped>

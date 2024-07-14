@@ -3,9 +3,6 @@
     <NavBar />
     <div class="container mt-5">
       <div class="d-flex flex-column justify-content-center" id="firstchild">
-        <!-- <div class="d-flex justify-content-center text-orange p-3 bg-success rounded-top">
-          <h2>View Post</h2>
-        </div> -->
         <h2 style="color: black">View Post that have sell!!</h2>
         <div class="search-container m-2">
           <div class="input-group d-flex justify-content-end">
@@ -39,24 +36,14 @@
                 <td>{{ (currentPage - 1) * itemsPerPage + index + 1 }}</td>
                 <td>{{ post.user.name }}</td>
                 <td>
-                  <a href="#"
-                    ><router-link :to="{ name: 'showPost', params: { id: post.id } }"
-                      >Here is link</router-link
-                    ></a
-                  >
+                  <button class="btn btn-primary" @click="showPostModal(post.id)">Show Post</button>
                 </td>
                 <td>{{ post.date_created }}</td>
                 <td class="text-end">
-                  <button
-                    class="btn btn-success"
-                    @click="updatePostStatus(post.id,  'buy')"
-                  >
+                  <button class="btn btn-success" @click="updatePostStatus(post.id, 'buy')">
                     Buy
                   </button>
-                  <button
-                    class="btn btn-danger"
-                    @click="updatePostStatus(post.id, 'cancel')"
-                  >
+                  <button class="btn btn-danger" @click="updatePostStatus(post.id, 'cancel')">
                     Cancel
                   </button>
                 </td>
@@ -79,6 +66,51 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="post-container" v-if="post">
+              <p class="post-title" style="size: 5px;color:black">{{ post.title }}</p>
+              <p class="text-danger" style="margin-top: -20px;color:black">Type of scrap:</p>
+              <ul>
+                <li>
+                  <p class="comment-text">
+                    <span style="color:black" v-for="(item, index) in post.items" :key="index">
+                      {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+                    </span>
+                  </p>
+                </li>
+              </ul>
+              <div class="row">
+                <div
+                  v-for="(image, index) in post.images"
+                  :key="index"
+                  class="col-sm-12 col-md-6 col-lg-4"
+                >
+                  <img
+                    class="img-fluid shadow rounded mb-4 gallery-img"
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Image ${index + 1}`"
+                  />
+                </div>
+              </div>
+              <button
+                style="margin: 10px"
+                class="btn btn-success"
+                @click="updatePostStatus(post.id, 'buy')"> Buy</button>
+              <button class="btn btn-danger"  @click="updatePostStatus(post.id, 'cancel')">Cancel</button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -94,7 +126,8 @@ export default {
       posts: [],
       searchTerm: '',
       currentPage: 1,
-      itemsPerPage: 5
+      itemsPerPage: 5,
+      post: null,
     }
   },
   computed: {
@@ -148,45 +181,77 @@ export default {
     },
     //update post status
     async updatePostStatus(postId, newStatus) {
-  try {
-    console.log('New Status:', newStatus);
-    console.log('Post ID:', postId);
+      try {
+        console.log('New Status:', newStatus)
+        console.log('Post ID:', postId)
 
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      throw new Error('No access token found');
+        const token = localStorage.getItem('access_token')
+        if (!token) {
+          throw new Error('No access token found')
+        }
+
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+
+        const data = { status: newStatus }
+
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/post/update/status/${postId}`,
+          data,
+          { headers }
+        )
+
+        console.log('Response:', response)
+
+        // Update the post status in the local posts array
+        const postIndex = this.posts.findIndex((post) => post.id === postId)
+        if (postIndex !== -1) {
+          this.posts[postIndex].status = newStatus
+        }
+
+        const message =
+          newStatus === 'cancel'
+            ? 'You have been cancelled this item.'
+            : 'You have been bought this item.'
+        alert(message)
+        window.location.reload()
+      } catch (error) {
+        const message =
+          newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
+        alert(message)
+        console.error('Error:', error)
+      }
+    },
+    async fetchPost() {
+     
+    },
+    async showPostModal(postId) {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`)
+        this.post = response.data.data
+        console.log(this.post)
+        // const postModal = new bootstrap.Modal(document.getElementById('postModal'))
+        // postModal.show()
+      $('#postModal').modal('show')
+
+      } catch (error) {
+        console.error(error)
+      }
     }
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    };
-
-    const data = { status: newStatus };
-
-    const response = await axios.post(
-      `http://127.0.0.1:8000/api/post/update/status/${postId}`,
-      data,
-      { headers }
-    );
-
-    console.log('Response:', response);
-
-    const message = newStatus === 'cancel' ? 'You have been cancelled this item.' : 'You have been bought this item.';
-    alert(message);
-  } catch (error) {
-    const message = newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.';
-    alert(message);
-    console.error('Error:', error);
-  }
-}
-
   },
   mounted() {
     this.fecthPostSell()
+    this.showPostModal()
   }
 }
 </script>
+
+
+
+
+
 
 <style scoped>
 th,

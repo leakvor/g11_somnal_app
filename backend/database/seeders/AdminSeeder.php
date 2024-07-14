@@ -91,7 +91,10 @@ class AdminSeeder extends Seeder
         $permission = Permission::create(['name' => 'Mail access']);
         $permission = Permission::create(['name' => 'Mail edit']);
 
+<<<<<<< HEAD
         
+=======
+>>>>>>> 1828fd19d6ca6e768ad476781fe039615d0fda49
 
 
         $admin->assignRole($admin_role);

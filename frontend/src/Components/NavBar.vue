@@ -91,7 +91,11 @@
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
-            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
+            <router-link
+              to="/post_view"
+              class="nav-link"
+              :class="{ active: isActive('/post_view') }"
+            >
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
@@ -103,12 +107,11 @@
               class="nav-link"
               :class="{ active: isActive('/company/revenue') }"
             >
-            <i class="material-icons">attach_money</i>
+              <i class="material-icons">attach_money</i>
               <span>Revenue</span>
             </router-link>
           </li>
 
-    
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
               to="/company/dashboard"
@@ -126,7 +129,7 @@
               class="nav-link"
               :class="{ active: isActive('/post/request/sell') }"
             >
-            <i class="material-icons">local_mall</i>
+              <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
           </li>
@@ -147,8 +150,7 @@
 
           <li
             class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/about" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
               <span>About Us</span>
@@ -187,6 +189,13 @@
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+            <router-link to="/map" class="nav-link" :class="{ active: isActive('/pmap') }">
+              <i class="material-icons">map</i>
+              <span>Map</span>
+            </router-link>
+          </li>
+
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
               <i class="material-icons">payment</i>
               <span>Payment</span>
@@ -202,13 +211,11 @@
 
           <li
             class="nav-item d-flex align-items-center me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link
               to="/login"
               class="nav-link text-white btn btn-login custom-hover pe-3 ps-3"
-              >Login</router-link
-            >
+              >Login</router-link>
             <router-link to="/register" class="nav-link btn btn-register pe-3 ps-3"
               >Register</router-link
             >
@@ -314,9 +321,9 @@
             class="nav-item me-4"
             v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
           >
-            <router-link to="/companies" class="nav-link" :class="{ active: isActive('/about') }">
+            <router-link to="/priceoption" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
-              <span>Companies</span>
+              <span>Pricing Option</span>
             </router-link>
           </li>
         </ul>
@@ -371,8 +378,7 @@ export default {
       })
     })
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 <style scoped>

@@ -121,6 +121,12 @@ const router = createRouter({
       name:"payment",
       component:() => import('../views/Web/userInfo/PaymentPage.vue')
     },
+      {
+      path:"/priceoption",
+      name:"priceoption",
+      component:() => import('../views/Web/userInfo/PricingOption.vue')
+    },
+
     {
       path: '/company/dashboard',
       name: 'CompanyDashboard',
@@ -149,6 +155,13 @@ const router = createRouter({
       path:"/show/post/:id",
       name:"showPost",
       component:() => import('../views/Web/Post/ShowPost.vue'),
+      props: true,
+    },
+    //show map
+    {
+      path:"/map",
+      name:"show Map",
+      component:() => import('../views/Web/Map/MapView.vue'),
       props: true,
     },
 

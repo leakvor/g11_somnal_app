@@ -89,11 +89,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'profile'=>'1720074967.png',
-                'role_id' => 2,
-                
-            ]);
-    
-    
+                'role_id' => 2,               
+            ]);      
             return response()->json([
                 'status' => true,
                 'message' => 'User created successfully',
@@ -188,6 +185,13 @@ class AuthController extends Controller
                 $imageName = time() . '.' . $ext;
                 $img->move(public_path('uploads'), $imageName);
                 $user->profile = $imageName;
+            }
+
+            if($request->has('latitude')){
+                $user->latitude = $request->latitude;
+            }
+            if($request->has('longitude')){
+                $user->longitude = $request->longitude;
             }
     
             $user->save();
@@ -286,6 +290,20 @@ public function getCompany(Request $request)
 {
     $companies = User::where('role_id', 3)->get();
     return response()->json(['success'=>true,'message' => 'Company details', 'data' => $companies]);
+}
+
+//get company nearby me
+public function getNearbyCompanies(Request $request)
+{
+    $latitude = $request->input('latitude');
+    $longitude = $request->input('longitude');
+
+    $companies = User::select('id', 'name', 'latitude', 'longitude')
+        ->where('role_id', 3) 
+        ->whereRaw("acos(sin(radians($latitude)) * sin(radians(latitude)) + cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude))) * 6371 < 5")
+        ->get();
+
+    return response()->json($companies);
 }
 
 }
