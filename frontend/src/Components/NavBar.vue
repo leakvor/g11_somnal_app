@@ -265,14 +265,7 @@
           >
             <div class="profile-dropdown dropdown-two">
               <router-link
-                to="/"
-                href="#"
-                class="d-flex align-items-center"
-                role="button"
-                id="profileDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+                to="/"  href="#"  class="d-flex align-items-center"  role="button"  id="profileDropdown"  data-bs-toggle="dropdown" aria-expanded="false">
                 <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
                   alt="Profile"
@@ -350,10 +343,63 @@ export default {
       router.push('/')
     }
 
+    async function fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        user_info.value = response.data.data
+        console.log('User Info:', user_info.value)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    }
+
+    async function getAlert(){
+      try {
+        if (!user_info.value || !user_info.value.role_id) {
+          throw new Error('User info or role_id is not available')
+        }
+
+        let endpoint = ''
+        if (user_info.value.role_id === 2) {
+          endpoint = 'user'
+        } else if (user_info.value.role_id === 3) {
+          endpoint = 'company'
+        }
+
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get(`http://127.0.0.1:8000/api/notification/${endpoint}/list/alert`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+
+        notification_alert.value = response.data.data
+       for (const notification of notification_alert.value){
+        console.log("id",notification.id)
+        toast.info(notification.message)
+        if(notification.id){
+          markAsSeen(notification.id)
+        }
+       }
+        console.log('Notifications:', notifications.value)
+      } catch (error) {
+        console.error('Error fetching notifications:', error)
+      }
+    } 
+
+    
+
     return {
       authStore,
       isActive,
-      logout
+      logout,
+      fetchUser,
+      getAlert
     }
   },
   data() {
@@ -376,11 +422,16 @@ export default {
           }
         }
       })
-    })
+    }),
+    this.fetchUser()
+    this.getAlert()
   },
   methods: {}
 }
 </script>
+
+
+
 <style scoped>
 .navbar {
   background-color: #fff;

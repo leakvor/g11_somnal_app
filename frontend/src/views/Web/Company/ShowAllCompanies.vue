@@ -171,21 +171,41 @@ export default {
       filteredCompanies: [],
       visible: false,
       selectedCompany: null,
-      searchText: ''
+      searchText: '',
+      user_info: null,
     }
   },
   mounted() {
     this.getAllItems()
     this.fetchCompanies()
+    this.fetchUser()
   },
   methods: {
     openModal(company) {
+      if(user_info.value.role_id==2){
+          console.log('Post Details:', post.value)
+          $('#postModal').modal('show')
+        }
       this.selectedCompany = company
       console.log(this.selectedCompany)
       this.visible = true
     },
     closeModal() {
       this.visible = false
+    },
+    async fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        user_info.value = response.data.data
+        console.log('User Info:', user_info.value)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
     },
     async createPost() {
       console.log('title', this.title)

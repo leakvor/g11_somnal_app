@@ -101,7 +101,6 @@ export default {
       company_id: '',
       companies: [],
       title: '',
-<<<<<<< HEAD
       // status: 'pending',
       selectedItems: []
     }
@@ -113,10 +112,6 @@ export default {
         return item.name;
       });
     }
-=======
-      selectedItems: [],
-    };
->>>>>>> show_all_companies
   },
   mounted() {
     this.getAllItems()
@@ -145,7 +140,12 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-        this.$router.push('/profile')
+        if(this.company_id != null){
+          this.$router.push('/profile')
+        }else{
+          this.$router.push('/sell/now')
+        }
+        
       } catch (error) {
         console.error('Error creating post:', error)
       }
