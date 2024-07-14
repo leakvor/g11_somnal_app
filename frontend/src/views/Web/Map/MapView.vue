@@ -1,6 +1,7 @@
 <template>
   <div>
     <input type="text" v-model="searchQuery" @input="suggestLocations" placeholder="Search for a location in Cambodia" />
+    <button @click="resetMap">Start Again</button>
     <div id="map"></div>
     <ul v-if="suggestions.length > 0" id="suggestions-list">
       <li v-for="(suggestion, index) in suggestions" :key="index" @click="selectSuggestion(suggestion)">
@@ -10,12 +11,16 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, onMounted, watchEffect } from 'vue';
 import leaflet from 'leaflet';
 import axios from 'axios';
+import 'leaflet-routing-machine';
 import { useGeolocation } from '@vueuse/core';
 import { userMarker } from '../../../stores/map-store';
+
+const ORS_API_KEY = import.meta.env.VITE_ORS_API_KEY;
 
 const searchQuery = ref('');
 const suggestions = ref([]);
@@ -23,8 +28,8 @@ const { coords, error } = useGeolocation();
 let map: leaflet.Map;
 let userGeoMarker: leaflet.Marker | null = null;
 let companyMarkers: leaflet.Marker[] = [];
+let routingControl: any = null;
 
-// Create a green marker icon
 const greenIcon = leaflet.icon({
   iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
   shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
@@ -44,19 +49,15 @@ watchEffect(() => {
     console.error('Error getting user location:', error.value);
     return;
   }
-
   updateGeoMarker();
 });
 
 function initializeMap() {
   map = leaflet.map('map').setView([userMarker.value.latitude, userMarker.value.longitude], 13);
-
   leaflet.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
-
-  // Make API request to retrieve nearby companies
   getNearbyCompanies();
 }
 
@@ -64,27 +65,19 @@ function updateGeoMarker() {
   if (coords.value.latitude !== Number.POSITIVE_INFINITY && coords.value.longitude !== Number.POSITIVE_INFINITY) {
     userMarker.value.latitude = coords.value.latitude;
     userMarker.value.longitude = coords.value.longitude;
-
     if (userGeoMarker) {
       map.removeLayer(userGeoMarker);
     }
-
     userGeoMarker = leaflet.marker([userMarker.value.latitude, userMarker.value.longitude])
       .addTo(map)
       .bindPopup('User Marker');
-
     map.setView([userMarker.value.latitude, userMarker.value.longitude], 13);
-
     const el = userGeoMarker.getElement();
     if (el) {
       el.style.filter = 'hue-rotate(120deg)';
     }
-
-    // Remove existing company markers
     companyMarkers.forEach(marker => map.removeLayer(marker));
     companyMarkers = [];
-
-    // Make API request to retrieve nearby companies again
     getNearbyCompanies();
   }
 }
@@ -101,8 +94,8 @@ function getNearbyCompanies() {
       const lon = parseFloat(longitude);
       const companyMarker = leaflet.marker([lat, lon])
         .addTo(map)
-        .bindPopup(`Company: ${name} (<strong>${lat.toFixed(2)},${lon.toFixed(2)}</strong>)`);
-
+        .bindPopup(`Company: ${name}`)
+        .on('click', () => calculateRoute([userMarker.value.latitude, userMarker.value.longitude], [lat, lon], name));
       companyMarkers.push(companyMarker);
     });
   }).catch(error => {
@@ -112,9 +105,7 @@ function getNearbyCompanies() {
 
 function suggestLocations() {
   if (searchQuery.value.trim() === '') return;
-
   const searchUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery.value)}&limit=5&addressdetails=1`;
-
   axios.get(searchUrl)
     .then(response => {
       suggestions.value = response.data;
@@ -130,15 +121,72 @@ function selectSuggestion(suggestion: any) {
   const lat = parseFloat(suggestion.lat);
   const lon = parseFloat(suggestion.lon);
   map.setView([lat, lon], 13);
-
-  // Add a marker for the selected suggestion with the green icon
   const searchMarker = leaflet.marker([lat, lon], { icon: greenIcon })
     .addTo(map)
     .bindPopup(`Selected Location: ${suggestion.display_name}`);
-
   searchMarker.openPopup();
+  calculateRoute([userMarker.value.latitude, userMarker.value.longitude], [lat, lon], suggestion.display_name);
+}
+
+function calculateRoute(start: [number, number], end: [number, number], companyName: string) {
+  if (routingControl) {
+    map.removeControl(routingControl);
+  }
+  routingControl = leaflet.Routing.control({
+    waypoints: [
+      leaflet.latLng(start[0], start[1]),
+      leaflet.latLng(end[0], end[1])
+    ],
+    createMarker: function(i, waypoint, n) {
+      return leaflet.marker(waypoint.latLng, { icon: greenIcon }).bindPopup(`Waypoint ${i + 1}`);
+    },
+    lineOptions: {
+      styles: [{ color: '#6FA1EC', weight: 4 }]
+    },
+    show: false, // Disable default route instructions
+    addWaypoints: false,
+    draggableWaypoints: false,
+    routeWhileDragging: false,
+  }).addTo(map);
+
+  
+  routingControl.on('routesfound', function(e) {
+    const routes = e.routes;
+    const summary = routes[0].summary;
+    const distanceInKm = summary.totalDistance / 1000;
+    const travelTimeInMinutes = Math.round(summary.totalTime / 60);
+    const directionInfo = `<strong>${companyName}</strong><br>Distance: ${distanceInKm.toFixed(2)} km, Travel time: ${travelTimeInMinutes} minutes`;
+
+  //   // Display the information in a custom popup
+    const directionPopup = leaflet.popup()
+      .setLatLng(end)
+      .setContent(`<p>${directionInfo}</p>`)
+      .openOn(map);
+  });
+  customizeRouteInstructionsStyle();
+}
+function customizeRouteInstructionsStyle() {
+  // Delay to ensure Leaflet has rendered the instructions
+  setTimeout(() => {
+    const routeInstructionsContainers = document.querySelectorAll('.leaflet-routing-container');
+    routeInstructionsContainers.forEach(container => {
+      container.style.backgroundColor = 'orange';
+      container.style.color = 'white';
+      container.style.padding = '10px';
+      container.style.borderRadius = '5px';
+      container.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+    });
+  }, 100); // Adjust the delay as needed based on your application's rendering time
+}
+
+function resetMap() {
+  if (routingControl) {
+    map.removeControl(routingControl);
+    routingControl = null;
+  }
 }
 </script>
+
 
 <style scoped>
 #suggestions-list {
@@ -184,4 +232,6 @@ input[type="text"] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 </style>
+
