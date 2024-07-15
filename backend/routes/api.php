@@ -118,6 +118,8 @@ Route::prefix('item')->group(function () {
     Route::delete('/delete/{id}', [ItemController::class, 'destroy']);
     Route::get('/show/{id}', [ItemController::class, 'show']);
     Route::post('/update/{id}', [ItemController::class, 'update']);
+    Route::get('/relate/{id}', [ItemController::class, 'getRelatedProducts']);
+
 });
 
 // History Market Price routes

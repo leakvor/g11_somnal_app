@@ -59,5 +59,19 @@ class ItemController extends Controller
         return response()->json(['success'=>true,'message'=>'Item updated successfully']);
     }
     
+    // related intems
+    public function getRelatedProducts($id){
+        {
+            // Get the item by ID
+            $item = Item::findOrFail($id);
+        
+            $relatedItems = Item::where('category_id', $item->category_id)
+                                ->where('id', '!=', $id)
+                                ->get();
+        
+            return response()->json(['related_items' => $relatedItems]);
+        }
+    }
+        
 
 }
