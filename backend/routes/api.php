@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\HistoryMarketPriceController;
-
+use App\Events\MessageSent;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\HistoryMarketPriceController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -78,9 +79,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Chat routes
     Route::prefix('chat')->group(function () {
+        Route::get('/list/users/makeChat', [ChatController::class, 'getAllUsers']);
+        Route::get('/user/profile/{userId}', [ChatController::class, 'getProfile']);
         Route::post('/send/message', [ChatController::class, 'store']);
         Route::delete('/delete/message/{id}', [ChatController::class, 'destroy']);
+        Route::get('/list/users', [ChatController::class, 'listChats']);
         Route::get('/get/message/{receiverId}', [ChatController::class, 'getConversation']);
+        Route::get('/list/message/isRead', [ChatController::class, 'listConversationIsRead']);
+        Route::post('/seen/message/user/{userId}', [ChatController::class, 'seenChat']);
         Route::post('/update/message/{id}', [ChatController::class, 'updateMessage']);
     });
 
