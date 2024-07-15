@@ -224,8 +224,8 @@
               :class="{ active: isActive('/chat') }"
             >
               <span
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >+99 <span class="visually-hidden">unread messages</span></span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" v-show="totalUnseen > 0"
+                >{{ totalUnseen }}  <span class="visually-hidden">unread messages</span></span
               >
 
               <i class="material-icons icon-align">chat_bubble</i>
@@ -416,6 +416,8 @@ import axios from 'axios'
 import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
 
+
+
 export default {
   name: 'NavBar',
   data() {
@@ -432,7 +434,9 @@ export default {
         passwordError: '',
         alertMessage: '',
         isSuccess: false, 
-        isError: false
+        isError: false,
+        totalUnseen:null
+
     }
   },
     computed: {
@@ -527,6 +531,9 @@ export default {
       authStore
     }
   },
+  beforeUnmount() {
+     clearInterval(this.intervalId);
+  },
   mounted() {
     const navLinks = document.querySelectorAll('.nav-link')
     navLinks.forEach((navLink) => {
@@ -550,6 +557,11 @@ export default {
     $('#registerModal').on('hidden.bs.modal', () => {
       this.clearModal();
     });
+
+    this.listChatIsRead();
+    this.intervalId = setInterval(() => {
+      this.listChatIsRead();
+    }, 5000); // call it every 5 seconds
   },
   methods: {
     async register() {
@@ -644,7 +656,20 @@ export default {
     this.phoneError = '';
     this.emailError = '';
     this.passwordError = '';
-  }
+  },
+  async listChatIsRead() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.totalUnseen = response.data.total
+      } catch (error) {
+        console.error('Error listing chat isRead:', error);
+      }
+    },
   },
 }
 </script>
