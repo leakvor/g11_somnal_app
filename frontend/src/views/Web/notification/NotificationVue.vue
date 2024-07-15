@@ -1,12 +1,16 @@
 <template>
   <div>
     <NavBar />
-    <div class="container" style="margin-top: 20px">
+    <div class="container" style="margin-top: 20px;margin-bottom:300px">
       <div class="row">
         <div class="col-lg-15">
-          <div v-for="(notification, index) in notifications" :key="index" class="box shadow-sm rounded bg-white mb-3">
+          <div
+            v-for="(notification, index) in notifications"
+            :key="index"
+            class="box shadow-sm rounded bg-white mb-3"
+          >
             <div class="box-title border-bottom p-3">
-              <h6 class="m-0" v-if="index === 0" >Recent</h6>
+              <h6 class="m-0" v-if="index === 0">Recent</h6>
               <h6 class="m-0" v-else-if="index === notifications.length - 1">Earlier</h6>
             </div>
             <div class="box-body p-0">
@@ -23,7 +27,7 @@
                   />
                 </div>
                 <div class="font-weight-bold mr-3">
-                  <div class="text-truncate" style="color:black">{{ notification.message }}</div>
+                  <div class="text-truncate" style="color: black">{{ notification.message }}</div>
                 </div>
                 <span class="ml-auto mb-auto">
                   <div class="btn-group">
@@ -37,10 +41,18 @@
                       <i class="mdi mdi-dots-vertical"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <button class="dropdown-item" type="button" @click="deleteNotification(notification.id)">
+                      <button
+                        class="dropdown-item"
+                        type="button"
+                        @click="deleteNotification(notification.id)"
+                      >
                         <i class="mdi mdi-delete"></i> Delete
                       </button>
-                      <button class="dropdown-item" type="button" @click="turnOffNotification(notification.id)">
+                      <button
+                        class="dropdown-item"
+                        type="button"
+                        @click="turnOffNotification(notification.id)"
+                      >
                         <i class="mdi mdi-close"></i> Turn Off
                       </button>
                     </div>
@@ -54,54 +66,76 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="postModal"
+      tabindex="-1"
+      aria-labelledby="postModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog ">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <div class="post-container" v-if="post">
-        <div class="post-header d-flex align-items-center">
-          <img
-            :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
-            alt="Account Image"
-            class="account-image rounded-circle"
-            style="border: 1px solid gray"
-          />
-          <h6 class="account-name ml-3 mb-0">{{ post.user.name }}</h6>
-        </div>
-        <p class="post-title" style="size: 5px">{{ post.title }}</p>
-        <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
-        <ul>
-          <li>
-            <p class="comment-text">
-              <span v-for="(item, index) in post.items" :key="index">
-                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
-              </span>
-            </p>
-          </li>
-        </ul>
+              <div class="post-header d-flex align-items-center">
+                <img
+                  :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+                  alt="Account Image"
+                  class="account-image rounded-circle"
+                  style="border: 1px solid gray"
+                />
+                <h6 class="account-name ml-3 mb-0">{{ post.user.name }}</h6>
+              </div>
+              <p class="post-title" style="size: 5px">{{ post.title }}</p>
+              <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
+              <ul>
+                <li>
+                  <p class="comment-text">
+                    <span v-for="(item, index) in post.items" :key="index">
+                      {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+                    </span>
+                  </p>
+                </li>
+              </ul>
 
-        <div class="row">
-          <div
-            v-for="(image, index) in post.images"
-            :key="index"
-            class="col-sm-12 col-md-6 col-lg-4"
-          >
-            <img
-              class="img-fluid shadow rounded mb-4 gallery-img"
-              :src="`http://127.0.0.1:8000/uploads/${image.image}`"
-              :alt="`Image ${index + 1}`"
-            />
-          </div>
-        </div>
-        <button
-          style="margin: 10px"
-          class="btn btn-success"
-          @click="updatePostStatus(post.id, 'buy')"> Buy</button>
-        <button class="btn btn-danger"  @click="updatePostStatus(post.id, 'cancel')">Cancel</button>
-      </div>
+              <div class="row">
+                <div
+                  v-for="(image, index) in post.images"
+                  :key="index"
+                  class="col-sm-12 col-md-6 col-lg-4"
+                >
+                  <img
+                    class="img-fluid shadow rounded mb-4 gallery-img"
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Image ${index + 1}`"
+                  />
+                </div>
+              </div>
+
+              <div v-if="user_info.role_id == 3 && post.status == 'pending'">
+                <button
+                  style="margin: 10px"
+                  class="btn btn-success"
+                  @click="updatePostStatus(post.id, 'buy')"
+                >
+                  Buy
+                </button>
+                <button class="btn btn-danger" @click="updatePostStatus(post.id, 'cancel')">
+                  Cancel
+                </button>
+              </div>
+              <div v-else-if="user_info.role_id == 2 || post.status == 'buy' || post.status == 'cancel'">
+                <button style="margin: 10px" class="btn btn-danger disabled">{{post.status}}</button>
+              </div>
+
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -113,7 +147,6 @@
   </div>
 </template>
 
-
 <script>
 import { ref, onMounted } from 'vue'
 import NavBar from '../../../Components/NavBar.vue'
@@ -121,7 +154,6 @@ import FooterVue from '../../../Components/Footer.vue'
 import axios from 'axios'
 
 import { useToast } from 'vue-toastification'
-
 
 export default {
   components: {
@@ -134,7 +166,6 @@ export default {
     const user_info = ref(null)
     const lastNotificationMessage = ref('')
     const post = ref(null)
-    const notification_alert=ref([])
 
     //fetch user info====
     async function fetchUser() {
@@ -167,11 +198,14 @@ export default {
         }
 
         const token = localStorage.getItem('access_token')
-        const response = await axios.get(`http://127.0.0.1:8000/api/notification/${endpoint}/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/notification/${endpoint}/list`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        })
+        )
 
         notifications.value = response.data.data
         console.log('Notifications:', notifications.value)
@@ -180,59 +214,13 @@ export default {
       }
     }
 
-    //get alert notification
-    async function getAlert(){
-      try {
-        if (!user_info.value || !user_info.value.role_id) {
-          throw new Error('User info or role_id is not available')
-        }
-
-        let endpoint = ''
-        if (user_info.value.role_id === 2) {
-          endpoint = 'user'
-        } else if (user_info.value.role_id === 3) {
-          endpoint = 'company'
-        }
-
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get(`http://127.0.0.1:8000/api/notification/${endpoint}/list/alert`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-
-        notification_alert.value = response.data.data
-       for (const notification of notification_alert.value){
-        console.log("id",notification.id)
-        toast.info(notification.message)
-        if(notification.id){
-          markAsSeen(notification.id)
-        }
-       }
-        console.log('Notifications:', notifications.value)
-      } catch (error) {
-        console.error('Error fetching notifications:', error)
-      }
-    }
-
-    async function markAsSeen(id){
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/notification/status/${id}`)
-        console.log(response)
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      }
-    }
-
     //show model
     async function showPostModal(postId) {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`)
         post.value = response.data.data
-        if(user_info.value.role_id==3){
-          console.log('Post Details:', post.value)
-          $('#postModal').modal('show')
-        }
+        console.log('Post Details:', post.value)
+        $('#postModal').modal('show')
       } catch (error) {
         console.error('Error fetching post details:', error)
         toast.error('Failed to fetch post details')
@@ -288,8 +276,6 @@ export default {
     onMounted(async () => {
       await fetchUser()
       await fetchNotifications()
-      await getAlert()
-      await markAsSeen()
     })
 
     return {
@@ -300,9 +286,7 @@ export default {
       lastNotificationMessage,
       showPostModal,
       post,
-      updatePostStatus,
-      getAlert,
-      markAsSeen
+      updatePostStatus
     }
   }
 }
@@ -411,7 +395,7 @@ li p {
   transform: scale(1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-h6{
-  color:black;
+h6 {
+  color: black;
 }
 </style>

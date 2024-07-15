@@ -161,8 +161,15 @@ const router = createRouter({
     {
       path: '/notifications',
       name: 'notifications',
-      component: () => import('../views/Web/notification/NotificationVue.vue') 
+    component: () => import('../views/Web/notification/NotificationVue.vue') 
     },
+    //sell now
+    {
+      path: '/sell/now',
+      name: 'sell now',
+      component: () => import('../views/Web/Post/PostSell.vue') 
+    },
+
 
   ]
 })

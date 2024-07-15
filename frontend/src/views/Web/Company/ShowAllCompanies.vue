@@ -54,15 +54,15 @@
       </div>
       <div
         class="modal fade show"
-        style="display: block"
         tabindex="-1"
         aria-labelledby="postModalLabel"
         aria-hidden="true"
+        :style="{ display: visible ? 'block' : 'none', backgroundColor: 'rgba(0, 0, 0, 0.5)' }"
         v-if="visible"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
-            <div class="modal-header ">
+            <div class="modal-header">
               <h5 class="modal-title text-orange" id="postModalLabel">Post Here!!</h5>
               <button
                 type="button"
@@ -78,9 +78,8 @@
                 method="POST"
                 enctype="multipart/form-data"
               >
-
                 <div class="mb-3">
-                  <label for="title" class="form-label">Title</label>
+                  <label for="title" class="form-label" style="color:black">Title</label>
                   <input
                     type="text"
                     class="form-control shared-style"
@@ -90,9 +89,12 @@
                   />
                 </div>
                 <div class="mb-3 dropdown">
-                  <label for="item-dropdown" class="form-label">Item selection</label>
+                  <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
+                  <div class="mb-3" v-if="selectedItemsNames.length > 0">
+                    <p style="color:black">{{ selectedItemsNames }}</p>
+                  </div>
                   <button class="form-control shared-style dropdown-toggle" type="button" id="item-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <p>Select items</p>  
+                    <p>Select items</p>
                   </button>
                   <ul class="dropdown-menu dropdown-scroll" aria-labelledby="item-dropdown">
                     <li v-for="item in item_all" :key="item.id">
@@ -105,15 +107,13 @@
                           name="item_ids[]"
                           v-model="selectedItems"
                         />
-                        <label class="form-check-label" :for="`Checkme${item.id}`">{{
-                          item.name
-                        }}</label>
+                        <label class="form-check-label" :for="`Checkme${item.id}`">{{ item.name }}</label>
                       </div>
                     </li>
                   </ul>
                 </div>
                 <div class="mb-3">
-                  <label for="formFile" class="form-label">File image post</label>
+                  <label for="formFile" class="form-label" style="color:black">File image post</label>
                   <FilePond
                     name="images[]"
                     v-model="images"
@@ -136,6 +136,7 @@
     <Footer />
   </div>
 </template>
+
 
 <script>
 import vueFilePond from 'vue-filepond'
@@ -171,21 +172,49 @@ export default {
       filteredCompanies: [],
       visible: false,
       selectedCompany: null,
-      searchText: ''
+      searchText: '',
+      user_info: null,
     }
   },
   mounted() {
     this.getAllItems()
     this.fetchCompanies()
+    this.fetchUser()
+  },
+  computed: {
+    selectedItemsNames() {
+      return this.selectedItems.map(id => {
+        const item = this.item_all.find(item => item.id === id);
+        return item.name;
+      });
+    }
   },
   methods: {
     openModal(company) {
+      if(this.user_info.role_id==2){
+        $('#postModal').modal('show')
       this.selectedCompany = company
-      console.log(this.selectedCompany)
+      console.log("id",this.selectedCompany)
       this.visible = true
+      }
+        
     },
     closeModal() {
       this.visible = false
+    },
+    async fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        this.user_info = response.data.data
+        console.log('User Info:', this.user_info)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
     },
     async createPost() {
       console.log('title', this.title)
@@ -351,4 +380,6 @@ justify-content: space-between;
     justify-content: center !important;
   }
 }
+
+
 </style>

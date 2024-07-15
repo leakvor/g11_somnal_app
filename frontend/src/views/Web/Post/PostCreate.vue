@@ -82,7 +82,6 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
-
 import axios from 'axios'
 import router from '@/router'
 
@@ -140,7 +139,12 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-        this.$router.push('/profile')
+        if(this.company_id != null){
+          this.$router.push('/profile')
+        }else{
+          this.$router.push('/sell/now')
+        }
+        
       } catch (error) {
         console.error('Error creating post:', error)
       }

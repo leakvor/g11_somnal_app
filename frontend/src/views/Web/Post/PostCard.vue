@@ -30,6 +30,7 @@
                   :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
                   width="45"
                   alt="Profile"
+                  style="border: 1px solid black"
                 />
                 <div class="d-flex flex-column flex-wrap ml-2">
                   <span style="color: black">{{ post.user.name}}</span>

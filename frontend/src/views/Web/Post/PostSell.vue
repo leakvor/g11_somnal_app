@@ -1,8 +1,31 @@
 <template>
-  <div>
-    <NavBar />
-    <div class="container">
-      <div class="post-container" v-for="post in posts" :key="post.id">
+    <div>
+        <NavBar />
+   
+  <div class="containers">
+    <div class="d-flex justify-content-center row">
+      <div class="col-md-8">
+        <ul class="mb-2">
+          <li>
+            <router-link to="/post/create" class="btn btn-success pull-right mt-15 ml-5">
+              POST
+            </router-link>
+          </li>
+        </ul>
+        <div class="feed p-2">
+          <div
+            class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border"
+          >
+            <div class="feed-text px-2">
+              <h6 class="text-black-50 mt-2">Do you want to sell you scrab????? </h6>
+              <p style="color:gray">if u want to sell to all company, please don't select company.</p>
+            </div>
+            <div class="feed-icon px-2">
+              <i class="fa fa-long-arrow-up text-black-50"></i>
+            </div>
+          </div>
+          <div class="container">
+            <div class="post-container" v-for="post in posts" :key="post.id">
         <div class="d-flex flex-row align-items-center feed-text px-2">
                 <img
                   class="rounded-circle"
@@ -40,38 +63,30 @@
             />
           </div>
         </div>
-
-        <button
-          :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
-          @click="updatePostStatus(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
-        >
-          {{ post.status === 'buy' ? 'Already Buy' : 'Buy' }}
-        </button>
+      </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
-import NavBar from '../../../Components/NavBar.vue'
 import axios from 'axios'
+import NavBar from '../../../Components/NavBar.vue'
 
 export default {
-  name: 'PostComponent',
-  components: {
-    NavBar
-  },
-  data() {
-    return {
-      accountImage: '',
-      accountName: '',
-      postTitle: '',
-      images: [],
-      posts: []
-    }
-  },
-  methods: {
-    async fetchPosts() {
+    components:{
+        NavBar
+    },
+    data() {
+        return {
+            posts:[],
+        }
+    },
+    methods: {
+        async fetchPosts() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/post/list')
         this.posts = response.data
@@ -81,34 +96,11 @@ export default {
         console.error(error)
       }
     },
-    async updatePostStatus(postId, newStatus) {
-      try {
-        console.log(newStatus)
-        console.log(postId)
-        const token = localStorage.getItem('access_token')
-        if (!token) {
-          throw new Error('No access token found')
-        }
-        const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-        const data = { status: newStatus }
-        const response = await axios.post(
-          `http://127.0.0.1:8000/api/post/update/status/${postId}`,
-          data,
-          { headers }
-        )
-        console.log('Response:', response)
-        alert('You already buy this item.')
-      } catch (error) {
-        alert('You are a user so you do not have permission to buy'), console.error(error)
-      }
-    }
-  },
-  mounted() {
-    this.fetchPosts()
-  }
+    },
+    mounted() {
+        this.fetchPosts()
+    },
+   
 }
 </script>
 
