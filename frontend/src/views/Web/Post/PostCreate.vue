@@ -15,7 +15,7 @@
           data-bs-toggle="dropdown" aria-expanded="false">
           Select items
         </button>
-        <ul class="dropdown-menu" aria-labelledby="item-dropdown">
+        <ul class="dropdown-menu" aria-labelledby="item-dropdown" style="max-height: 200px; overflow-y: auto;">
           <li v-for="item in item_all" :key="item.id">
             <div class="form-check dropdown-item">
               <input class="form-check-input" type="checkbox" :value="item.id" :id="`Checkme${item.id}`"

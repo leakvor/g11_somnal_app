@@ -7,7 +7,7 @@
       <div class="alert alert-success mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md"
         v-if="showSuccessMessage">
         <i class="fa fa-check-circle text-green-500"></i>
-        <span class="text-green-500">{{ successMessage }}</span>
+        <span class="text-black-500">{{ successMessage }}</span>
       </div>
     </div>
 
@@ -64,7 +64,6 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-  /* Ensure the alert is above other content */
 }
 
 .alert {
