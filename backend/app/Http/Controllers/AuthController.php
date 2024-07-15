@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Mail\PasswordResetSuccess;
 use App\Mail\SendLinkMail;
 use App\Models\Frontuser;
 use App\Models\Password;
@@ -78,7 +78,7 @@ class AuthController extends Controller
                     'password' => 'required|string|min:8',
                 ]
             );
-    
+
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
@@ -86,7 +86,7 @@ class AuthController extends Controller
                     'errors' => $validateUser->errors()
                 ], 422);
             }
-    
+
             // Create the user
             $user = User::create([
                 'name' => $request->name,
@@ -95,16 +95,17 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'profile' => '1720074967.png',
                 'role_id' => 2,
+
             ]);
-    
+
             // Send the welcome email to the registered user's email
             try {
                 Mail::to($user->email)->send(new WelcomeMail($user));
                 Log::info('Welcome email sent to: ' . $user->email);
             } catch (\Exception $e) {
-                Log::error('Failed to send email to ' . $user->email . ': ' . $e->getMessage());
+                Log::error('Failed to send email: ' . $e->getMessage());
             }
-    
+            // return $user->email;
             return response()->json([
                 'status' => true,
                 'message' => 'User created successfully',
@@ -112,7 +113,6 @@ class AuthController extends Controller
                 'token' => $user->createToken("API_TOKEN")->plainTextToken
             ], 201);
         } catch (\Throwable $th) {
-            Log::error('User registration failed: ' . $th->getMessage());
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()
@@ -255,39 +255,47 @@ class AuthController extends Controller
 
     //reset password======
     public function resetPassword(Request $request): JsonResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'token' => 'required|string',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|email',
+        'token' => 'required|string',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $passwordReset = Password::where('email', $request->email)
-            ->where('token', $request->token)
-            ->where('expires_at', '>', now())
-            ->first();
-
-        if (!$passwordReset) {
-            return response()->json(['message' => 'Invalid or expired token'], 400);
-        }
-
-        $user = User::where('email', $passwordReset->email)->first();
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        $passwordReset->delete();
-
-        return response()->json(['message' => 'Password reset successfully']);
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
     }
+
+    $passwordReset = Password::where('email', $request->email)
+        ->where('token', $request->token)
+        ->where('expires_at', '>', now())
+        ->first();
+
+    if (!$passwordReset) {
+        return response()->json(['message' => 'Invalid or expired token'], 400);
+    }
+
+    $user = User::where('email', $passwordReset->email)->first();
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    $passwordReset->delete();
+
+    // Send password reset success email
+    try {
+        Mail::to($user->email)->send(new PasswordResetSuccess($user));
+        Log::info('Password reset success email sent to: ' . $user->email);
+    } catch (\Exception $e) {
+        Log::error('Failed to send password reset success email: ' . $e->getMessage());
+    }
+
+    return response()->json(['message' => 'Password reset successfully']);
+}
 
     //check email unique============
     public function checkEmailUnique(Request $request)
