@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" v-model="searchQuery" @input="suggestLocations" placeholder="Search for a location in Cambodia" />
-    <button @click="resetMap">Start Again</button>
+    <button class="btn btn-success" @click="resetMap">Start Again</button>
     <div id="map"></div>
     <ul v-if="suggestions.length > 0" id="suggestions-list">
       <li v-for="(suggestion, index) in suggestions" :key="index" @click="selectSuggestion(suggestion)">

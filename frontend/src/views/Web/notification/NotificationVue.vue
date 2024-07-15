@@ -134,7 +134,6 @@ export default {
     const user_info = ref(null)
     const lastNotificationMessage = ref('')
     const post = ref(null)
-    const notification_alert=ref([])
 
     //fetch user info====
     async function fetchUser() {
@@ -180,49 +179,6 @@ export default {
       }
     }
 
-    //get alert notification
-    async function getAlert(){
-      try {
-        if (!user_info.value || !user_info.value.role_id) {
-          throw new Error('User info or role_id is not available')
-        }
-
-        let endpoint = ''
-        if (user_info.value.role_id === 2) {
-          endpoint = 'user'
-        } else if (user_info.value.role_id === 3) {
-          endpoint = 'company'
-        }
-
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get(`http://127.0.0.1:8000/api/notification/${endpoint}/list/alert`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-
-        notification_alert.value = response.data.data
-       for (const notification of notification_alert.value){
-        console.log("id",notification.id)
-        toast.info(notification.message)
-        if(notification.id){
-          markAsSeen(notification.id)
-        }
-       }
-        console.log('Notifications:', notifications.value)
-      } catch (error) {
-        console.error('Error fetching notifications:', error)
-      }
-    }
-
-    async function markAsSeen(id){
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/notification/status/${id}`)
-        console.log(response)
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      }
-    }
 
     //show model
     async function showPostModal(postId) {
@@ -288,8 +244,6 @@ export default {
     onMounted(async () => {
       await fetchUser()
       await fetchNotifications()
-      await getAlert()
-      await markAsSeen()
     })
 
     return {
@@ -301,8 +255,6 @@ export default {
       showPostModal,
       post,
       updatePostStatus,
-      getAlert,
-      markAsSeen
     }
   }
 }
