@@ -5,24 +5,12 @@
         <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10" />
         <span class="text-xl font-bold ms-1">SOMNAL</span>
       </router-link>
-      <div
-        class="profile-dropdown dropdown-one mb-2"
-        v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-      >
-        <router-link
-          to="/"
-          href="#"
-          class="d-flex align-items-center"
-          role="button"
-          id="profileDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-            alt="Profile"
-            style="width: 40px; height: 40px; border-radius: 50%"
-          />
+      <div class="profile-dropdown dropdown-one mb-2"
+        v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+        <router-link to="/" href="#" class="d-flex align-items-center" role="button" id="profileDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
+            alt="Profile" style="width: 40px; height: 40px; border-radius: 50%" />
         </router-link>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
           <li>
@@ -54,103 +42,65 @@
           </li>
 
           <li>
-            <router-link
-              to="/logout"
-              @click="authStore.logout()"
-              class="dropdown-item d-flex align-items-center"
-            >
+            <router-link to="/logout" @click="authStore.logout()" class="dropdown-item d-flex align-items-center">
               <i class="material-icons icon-align">logout</i>Logout
             </router-link>
           </li>
         </ul>
       </div>
-      <button
-        class="navbar-toggler position"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler position" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li
-            class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
+          <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
-            <router-link
-              to="/post_view"
-              class="nav-link"
-              :class="{ active: isActive('/post_view') }"
-            >
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link
-              to="/company/revenue"
-              class="nav-link"
-              :class="{ active: isActive('/company/revenue') }"
-            >
+            <router-link to="/company/revenue" class="nav-link" :class="{ active: isActive('/company/revenue') }">
               <i class="material-icons">attach_money</i>
               <span>Revenue</span>
             </router-link>
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link
-              to="/company/dashboard"
-              class="nav-link"
-              :class="{ active: isActive('/company/dashboard') }"
-            >
+            <router-link to="/company/dashboard" class="nav-link" :class="{ active: isActive('/company/dashboard') }">
               <i class="material-icons">dashboard</i>
               <span>Dashboard</span>
             </router-link>
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link
-              to="/post/request/sell"
-              class="nav-link"
-              :class="{ active: isActive('/post/request/sell') }"
-            >
+            <router-link to="/post/request/sell" class="nav-link" :class="{ active: isActive('/post/request/sell') }">
               <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item me-4"
-            v-if="
-              authStore.isAuthenticatedUser ||
-              !authStore.isAuthenticatedUser ||
-              !authStore.isAuthenticatedCompany
-            "
-          >
+          <li class="nav-item me-4" v-if="
+            authStore.isAuthenticatedUser ||
+            !authStore.isAuthenticatedUser ||
+            !authStore.isAuthenticatedCompany
+          ">
             <router-link to="/service" class="nav-link" :class="{ active: isActive('/service') }">
               <i class="material-icons">engineering</i>
               <span>Services</span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
+          <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/about" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
               <span>About Us</span>
@@ -172,11 +122,8 @@
             </router-link>
           </li> -->
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-            <router-link
-              to="/favorite-page"
-              class="nav-link position-relative"
-              :class="{ active: isActive('/favorite-page') }"
-            >
+            <router-link to="/favorite-page" class="nav-link position-relative"
+              :class="{ active: isActive('/favorite-page') }">
               <i class="material-icons">favorite</i>
               <span>Favorite Item</span>
               <!-- <span
@@ -209,76 +156,42 @@
             </router-link>
           </li>
 
-          <li
-            class="nav-item d-flex align-items-center me-4"
+          <li class="nav-item d-flex align-items-center me-4"
             v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
-            <router-link
-              to="/login"
-              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3"
-              >Login</router-link>
-            <router-link to="/register" class="nav-link btn btn-register pe-3 ps-3"
-              >Register</router-link
-            >
+            <router-link to="/login"
+              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3">Login</router-link>
+            <router-link to="/register" class="nav-link btn btn-register pe-3 ps-3">Register</router-link>
           </li>
 
-          <li
-            class="nav-item d-flex align-items-center me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
-            <router-link
-              to="/chat"
-              class="nav-link position-relative"
-              :class="{ active: isActive('/chat') }"
-            >
-              <span
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >+99 <span class="visually-hidden">unread messages</span></span
-              >
+          <li class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+            <router-link to="/chat" class="nav-link position-relative" :class="{ active: isActive('/chat') }">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">+99 <span
+                  class="visually-hidden">unread messages</span></span>
 
               <i class="material-icons icon-align">chat_bubble</i>
               <span class="text-below-icon">Chat</span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item d-flex align-items-center me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
-            <router-link
-              to="/notifications"
-              class="nav-link position-relative"
-              :class="{ active: isActive('/notifications') }"
-            >
-              <span
-                class="position-absolute top-0 start-50 ms-3 translate-middle badge rounded-pill bg-danger"
-                id="notification_number"
-                >+99 <span class="visually-hidden">unread messages</span></span
-              >
+          <li class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+            <router-link to="/notifications" class="nav-link position-relative"
+              :class="{ active: isActive('/notifications') }">
+              <span class="position-absolute top-0 start-50 ms-3 translate-middle badge rounded-pill bg-danger"
+                id="notification_number">+99 <span class="visually-hidden">unread messages</span></span>
               <i class="material-icons icon-align">notifications</i>
               <span class="text-below-icon">Notifications </span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item d-flex align-items-center"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
+          <li class="nav-item d-flex align-items-center"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
             <div class="profile-dropdown dropdown-two">
-              <router-link
-                to="/"
-                href="#"
-                class="d-flex align-items-center"
-                role="button"
-                id="profileDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-                  alt="Profile"
-                  class="mb-2"
-                  style="width: 40px; height: 40px; border-radius: 50%"
-                />
+              <router-link to="/" href="#" class="d-flex align-items-center" role="button" id="profileDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
+                  alt="Profile" class="mb-2" style="width: 40px; height: 40px; border-radius: 50%" />
               </router-link>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li>
@@ -321,6 +234,7 @@
       </div>
     </div>
   </nav>
+  
 </template>
 
 <script>
@@ -501,6 +415,7 @@ export default {
     display: block;
     position: relative;
   }
+
   .nav-item {
     width: 100%;
   }
