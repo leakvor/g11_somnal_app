@@ -10,9 +10,10 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
     //list items
-    public function index(){
-        $items= Item::list();
-        return response()->json(['success'=>true,'data'=>$items]);
+    public function index()
+    {
+        $items = Item::list();
+        return response()->json(['success' => true, 'data' => $items]);
     }
 
     //create new item
@@ -31,33 +32,48 @@ class ItemController extends Controller
     }
 
     //delete item
-    public function destroy($id){
-        $item=Item::find($id);
-        if(!$item){
-            return response()->json(['success'=>false,'message'=>'Item not found'],404);
+    public function destroy($id)
+    {
+        $item = Item::find($id);
+        if (!$item) {
+            return response()->json(['success' => false, 'message' => 'Item not found'], 404);
         }
-        $item=Item::destroy($id);
-        return response()->json(['success'=>true,'message'=>'Item deleted successfully']);
+        $item = Item::destroy($id);
+        return response()->json(['success' => true, 'message' => 'Item deleted successfully']);
     }
     //get specific item
-    public function show($id){
-        $item=Item::find($id);
-        if(!$item){
-            return response()->json(['success'=>false,'message'=>'Item not found'],404);
+    public function show($id)
+    {
+        $item = Item::find($id);
+        if (!$item) {
+            return response()->json(['success' => false, 'message' => 'Item not found'], 404);
         }
-        $item=Item::show($item);
-        $item=ItemResource::collection($item);
-        return response()->json(['success'=>true,'data'=>$item]);
+        $item = Item::show($item);
+        $item = ItemResource::collection($item);
+        return response()->json(['success' => true, 'data' => $item]);
     }
     //update item
-    public function update(Request $request, $id){
-        $item=Item::find($id);
-        if(!$item){
-            return response()->json(['success'=>false,'message'=>'Item not found'],404);
+    public function update(Request $request, $id)
+    {
+        $item = Item::find($id);
+        if (!$item) {
+            return response()->json(['success' => false, 'message' => 'Item not found'], 404);
         }
-        $item=Item::store($request,$id);
-        return response()->json(['success'=>true,'message'=>'Item updated successfully']);
+        $item = Item::store($request, $id);
+        return response()->json(['success' => true, 'message' => 'Item updated successfully']);
     }
-    
 
+    //get relate product
+    public function getRelatedProducts($id)
+    { {
+            // Get the item by ID
+            $item = Item::findOrFail($id);
+
+            $relatedItems = Item::where('category_id', $item->category_id)
+                ->where('id', '!=', $id)
+                ->get();
+
+            return response()->json(['related_items' => $relatedItems]);
+        }
+    }
 }
