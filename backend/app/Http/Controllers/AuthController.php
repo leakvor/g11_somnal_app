@@ -78,7 +78,7 @@ class AuthController extends Controller
                     'password' => 'required|string|min:8',
                 ]
             );
-
+    
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
@@ -86,25 +86,25 @@ class AuthController extends Controller
                     'errors' => $validateUser->errors()
                 ], 422);
             }
-
+    
             // Create the user
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'phone'=> $request->phone,
                 'password' => Hash::make($request->password),
                 'profile' => '1720074967.png',
                 'role_id' => 2,
-
             ]);
-
+    
             // Send the welcome email to the registered user's email
             try {
                 Mail::to($user->email)->send(new WelcomeMail($user));
                 Log::info('Welcome email sent to: ' . $user->email);
             } catch (\Exception $e) {
-                Log::error('Failed to send email: ' . $e->getMessage());
+                Log::error('Failed to send email to ' . $user->email . ': ' . $e->getMessage());
             }
-
+    
             return response()->json([
                 'status' => true,
                 'message' => 'User created successfully',
@@ -112,6 +112,7 @@ class AuthController extends Controller
                 'token' => $user->createToken("API_TOKEN")->plainTextToken
             ], 201);
         } catch (\Throwable $th) {
+            Log::error('User registration failed: ' . $th->getMessage());
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage()
