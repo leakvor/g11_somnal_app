@@ -62,12 +62,12 @@
         </div>
     </div>
   </div>
-  <Footer class="mt-5" />
+  <Footer  />
 </template>
 <script>
 import NavBar from '@/Components/NavBar.vue'
 import Footer from '@/Components/Footer.vue'
-
+import axios from 'axios';
 export default{
 components:{
   NavBar,
@@ -91,17 +91,26 @@ data() {
     }
   },
   methods: {
-    getCategory() {
-      this.$axios
-        .get("/category/list")
-        .then(response => {
-          this.categories = response.data.data;
-          console.log(this.categories);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
+    // getCategory() {
+    //   this.$axios
+    //     .get("/category/list")
+    //     .then(response => {
+    //       this.categories = response.data.data;
+    //       console.log(this.categories);
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // },
+
+    async getCategory(){
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/api/category/list");
+        this.categories = response.data.data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
    
   },
   mounted() {
