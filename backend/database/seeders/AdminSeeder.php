@@ -22,22 +22,25 @@ class AdminSeeder extends Seeder
             'email'=>'admin@gmail.com',
             'phone'=>'098 989 8399',
             'password'=>bcrypt('password'),
-            'profile' => 'user.avif'
+            'profile' => 'user.avif',
+            'role_id' => 1
         ]);
-
+        
         $writer = User::create([
             'name'=>'User',
             'email'=>'user@gmail.com',
             'phone'=>'098 989 8391',
-            'password'=>bcrypt('password')
-
+            'password'=>bcrypt('password'),
+            'role_id' => 2
+            
         ]);
-
+        
         $company = User::create([
             'name'=>'Company',
             'email'=>'company@gmail.com',
             'phone'=>'098 989 8392',
-            'password'=>bcrypt('password')
+            'password'=>bcrypt('password'),
+            'role_id' => 3
 
         ]);
         
@@ -90,20 +93,6 @@ class AdminSeeder extends Seeder
 
         $permission = Permission::create(['name' => 'Mail access']);
         $permission = Permission::create(['name' => 'Mail edit']);
-
-        $permission = Permission::create(['name' => 'item access']);
-        $permission = Permission::create(['name' => 'item edit']);
-        $permission = Permission::create(['name' => 'item create']);
-        $permission = Permission::create(['name' => 'item delete']);
-        $permission = Permission::create(['name' => 'item update']);
-
-        $permission = Permission::create(['name' => 'category access']);
-        $permission = Permission::create(['name' => 'category edit']);
-        $permission = Permission::create(['name' => 'category create']);
-        $permission = Permission::create(['name' => 'category delete']);
-        $permission = Permission::create(['name' => 'category update']);
-
-        $permission = Permission::create(['name' => 'history access']);
 
 
         $admin->assignRole($admin_role);
