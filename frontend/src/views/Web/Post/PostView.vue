@@ -116,6 +116,7 @@ export default {
         )
         console.log('Response:', response)
         alert('You already buy this item.')
+        this.fetchPosts(),
       } catch (error) {
         alert('You are a user so you do not have permission to buy'), console.error(error)
       }
