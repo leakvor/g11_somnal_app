@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <button
+        <button v-if="user_info.role_id==3"
           :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
           @click="updatePostStatus(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
         >
@@ -67,7 +67,8 @@ export default {
       accountName: '',
       postTitle: '',
       images: [],
-      posts: []
+      posts: [],
+      user_info:null
     }
   },
   methods: {
@@ -79,6 +80,20 @@ export default {
         // this.router.push('/post/request/sell');
       } catch (error) {
         console.error(error)
+      }
+    },
+    async fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.user_info = response.data.data;
+        console.log('Fetched user:', this.user_info);
+      } catch (error) {
+        console.error('Error fetching user:', error);
       }
     },
     async updatePostStatus(postId, newStatus) {
@@ -104,10 +119,11 @@ export default {
       } catch (error) {
         alert('You are a user so you do not have permission to buy'), console.error(error)
       }
-    }
+    },
   },
   mounted() {
     this.fetchPosts()
+    this.fetchUser()
   }
 }
 </script>

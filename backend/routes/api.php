@@ -40,6 +40,7 @@ Route::get('/company', [AuthController::class, 'getCompany']);
 
 //list all post
 Route::get('/post/list', [PostController::class, 'index']);
+Route::get('/post/sell', [PostController::class, 'sell']);
 
 //show each post of user====
 Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);

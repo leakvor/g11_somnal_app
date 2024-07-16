@@ -69,7 +69,7 @@ const router = createRouter({
     },
     {
     path:"/profile",
-    name:"profile",
+    name:"profile user",
     component:() => import('../views/User/UserProfileView.vue')
   },
     {
@@ -112,6 +112,11 @@ const router = createRouter({
       path:"/post/create",
       name:"post",
       component:() => import('../views/Web/Post/PostCreate.vue')
+    },
+      {
+      path:"/create/post",
+      name:"post create in home page",
+      component:() => import('../views/Web/Post/HomepagePost.vue')
     },
       {
       path:"/post/edit/:id",
@@ -174,8 +179,8 @@ const router = createRouter({
     },
     //sell now
     {
-      path: '/sell/now',
-      name: 'sell now',
+      path: '/post/list',
+      name: 'show all sell',
       component: () => import('../views/Web/Post/PostSell.vue') 
     },
 

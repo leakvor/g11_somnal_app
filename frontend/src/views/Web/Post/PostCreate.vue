@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="container ">
     <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
       <div class="mb-3">

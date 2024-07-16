@@ -24,7 +24,12 @@
                       "
                       onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
                     />
-                    <input ref="fileInput" type="file" style="display: none" @change="handleFileChange" />
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      style="display: none"
+                      @change="handleFileChange"
+                    />
                   </li>
                   <div class="mt-3">
                     <h5 style="color: black">{{ userData.name }}</h5>
@@ -37,7 +42,10 @@
                 </ul>
               </div>
             </div>
-            <button @click="openModal" class="update-pf bg-success text-white rounded-circle position-absolute">
+            <button
+              @click="showPostModal()"
+              class="update-pf bg-success text-white rounded-circle position-absolute"
+            >
               <i class="bi bi-plus-lg d-flex justify-content-center"></i>
             </button>
           </div>
@@ -48,36 +56,98 @@
       </div>
     </div>
 
-    <div class="modal" v-if="showModal" @click.self="closeModal">
-      <div class="modal-content">
-        <span class="close-button" @click="closeModal">&times;</span>
-        <h2 style="color: black">Edit Profile</h2>
-        <form @submit.prevent="updateProfile" method="post" enctype="multipart/form-data">
-          <div class="title mt-3 mb-3">
-            <input type="text" class="w-full p-2 border border-gray-300" id="title" name="name" v-model="userData.name" required />
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="postModal"
+      tabindex="-1"
+      aria-labelledby="postModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close-button" @click="closeModal">&times;</span>
+            <h2 style="color: black">Edit Profile</h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
+          <div class="modal-body">
+            <form @submit.prevent="updateProfile" method="post" enctype="multipart/form-data" v-if="user_info">
+              <div class="title mt-3 mb-3">
+                <input
+                  type="text"
+                  class="w-full p-2 border border-gray-300"
+                  id="title"
+                  name="name"
+                  v-model="user_info.name"
+                  required
+                />
+              </div>
 
-          <div class="title mt-3 mb-3">
-            <input type="email" class="w-full p-2 border border-gray-300" name="email" v-model="userData.email" required />
-          </div>
-          <div class="title mt-3 mb-3">
-            <input type="tel" class="w-full p-2 border border-gray-300" name="phone" v-model="userData.phone" required />
-          </div>
+              <div class="title mt-3 mb-3">
+                <input
+                  type="email"
+                  class="w-full p-2 border border-gray-300"
+                  name="email"
+                  v-model="user_info.email"
+                  required
+                />
+              </div>
+              <div class="title mt-3 mb-3">
+                <input
+                  type="tel"
+                  class="w-full p-2 border border-gray-300"
+                  name="phone"
+                  v-model="user_info.phone"
+                  required
+                />
+              </div>
 
-          <div class="mt-3">
-            <div class="relative">
-              <img v-if="imageUrl" :src="imageUrl" alt="Uploaded Image" class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover" @click="triggerFileInput" />
-              <img v-else :src="`http://127.0.0.1:8000/uploads/${userData.profile}`" alt="Default Image" class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover" @click="triggerFileInput" />
-              <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file_input" name="image" @change="handleFileUpload" />
-            </div>
-          </div>
+              <div class="mt-3">
+                <div class="relative">
+                  <img
+                    v-if="imageUrl"
+                    :src="imageUrl"
+                    alt="Uploaded Image"
+                    class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover"
+                    @click="triggerFileInput"
+                  />
+                  <img
+                    v-else
+                    :src="`http://127.0.0.1:8000/uploads/${user_info.profile}`"
+                    alt="Default Image"
+                    class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover"
+                    @click="triggerFileInput"
+                  />
+                  <input
+                    type="file"
+                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    id="file_input"
+                    name="image"
+                    @change="handleFileUpload"
+                  />
+                </div>
+              </div>
 
-          <div class="flex justify-end space-x-10 mt-5">
-            <button type="submit" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-              Save Change
-            </button>
+              <div class="flex justify-end space-x-10 mt-5">
+                <button
+                  type="submit"
+                  class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+                >
+                  Save Change
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -87,7 +157,6 @@
 import NavBar from '@/Components/NavBar.vue'
 import PostCard from '../Web/Post/PostCard.vue'
 import axios from 'axios'
-
 
 export default {
   components: {
@@ -99,10 +168,10 @@ export default {
       posts: [],
       user_info: null,
       showModal: false,
-      imageUrl: '',
       name: '',
       email: '',
-      phone: ''
+      phone: '',
+      imageUrl: ''
     }
   },
   computed: {
@@ -111,8 +180,9 @@ export default {
     }
   },
   methods: {
-    openModal() {
-      this.showModal = true
+    showPostModal() {
+      // this.showModal = true
+      $('#postModal').modal('show')
       this.name = this.userData.name
       this.email = this.userData.email
       this.phone = this.userData.phone
@@ -136,11 +206,14 @@ export default {
     async deletePost(postId) {
       try {
         const token = localStorage.getItem('access_token')
-        const response = await axios.delete(`http://127.0.0.1:8000/api/post/delete/user/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.delete(
+          `http://127.0.0.1:8000/api/post/delete/user/${postId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        })
+        )
 
         if (response.status === 200) {
           this.posts = this.posts.filter((post) => post.id !== postId)
@@ -160,6 +233,7 @@ export default {
           }
         })
         this.user_info = response.data.data
+        console.info('User info:', this.user_info)
       } catch (error) {
         console.error('Error fetching user:', error)
       }
@@ -173,28 +247,29 @@ export default {
       this.$refs.fileInput.files = event.target.files
     },
     async updateProfile() {
+      console.info('Updating profile')
+      this.name=this.user_info.name
+      this.email=this.user_info.email
+      this.phone=this.user_info.phone
       try {
         const formData = new FormData()
-        formData.append('name', this.userData.name)
-        formData.append('email', this.userData.email)
-        formData.append('phone', this.userData.phone)
+        formData.append('name', this.name)
+        formData.append('email', this.email)
+        formData.append('phone', this.phone)
         if (this.$refs.fileInput.files[0]) {
           formData.append('profile', this.$refs.fileInput.files[0])
         }
 
         const token = localStorage.getItem('access_token')
-        const response = await axios.post(
-          'http://127.0.0.1:8000/api/updateProfile',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`
-            }
+        const response = await axios.post('http://127.0.0.1:8000/api/updateProfile', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
           }
-        )
+        })
 
         this.user_info = response.data.data
+        $('#postModal').modal('hide')
         this.closeModal()
       } catch (error) {
         console.error('Error updating profile:', error)
@@ -226,7 +301,6 @@ export default {
   right: 17%;
   bottom: 50%;
   cursor: pointer;
-
 }
 
 @media (max-width: 767px) {
@@ -272,35 +346,5 @@ export default {
     flex: 0 0 75%;
     max-width: 75%;
   }
-}
-
-
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  width: 80%;
-  max-width: 500px;
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
 }
 </style>

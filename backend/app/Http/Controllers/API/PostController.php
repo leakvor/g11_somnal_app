@@ -34,6 +34,14 @@ class PostController extends Controller
         $posts = PostResource::collection($posts);
         return response()->json($posts);
     }
+    public function sell()
+    {
+        $posts = Post::where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $posts = PostResource::collection($posts);
+        return response()->json($posts);
+    }
 
     // see all of my post
     public function show_post(Request $request)

@@ -31,15 +31,28 @@
       </button>
     </div>
 
-    <div class="button-group d-flex justify-content-end pt-5 pe-3">
-      <router-link  to="/sell/now" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
+    <div v-if="authStore.isAuthenticated" class="button-group d-flex justify-content-end pt-5 pe-3">
+      <router-link  v-if="authStore.isAuthenticated" to="/create/post" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
         <i class="material-icons icon-align">add_shopping_cart</i>
         <span>Sale Now</span>
       </router-link>
-      <router-link  to="/post_view" class="buy btn text-white d-flex align-items-center">
+      <router-link  v-if="authStore.isAuthenticatedCompany" to="/post_view" type="button" class="buy btn text-white d-flex align-items-center">
         <i class="material-icons icon-align">shopping_bag</i>
         <span>Buy Now</span>
       </router-link>
+    </div>
+
+    <div v-else class="button-group d-flex justify-content-end pt-5 pe-3">
+      <button type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3" data-bs-toggle="modal"
+      data-bs-target="#loginModal">
+        <i class="material-icons icon-align">add_shopping_cart</i>
+        <span>Sale Now</span>
+      </button>
+      <button type="button" class="buy btn text-white d-flex align-items-center" data-bs-toggle="modal"
+      data-bs-target="#loginModal">
+        <i class="material-icons icon-align">shopping_bag</i>
+        <span>Buy Now</span>
+      </button>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-3 p-3">
@@ -135,6 +148,9 @@
   import axios from 'axios'
   import NavBar from '../../../Components/NavBar.vue'
   import FooterVue from '../../../Components/Footer.vue'
+  import { useAuthStore } from '../../../stores/auth-store.ts'
+  import { useRoute } from 'vue-router'
+  import { computed } from 'vue'
 
   export default {
     name: 'HomePage',
@@ -151,6 +167,13 @@
         itemsPerPage: 5,
       }
     },
+    setup() {
+    const authStore = useAuthStore()
+    console.log(authStore);
+    return {
+      authStore
+    }
+  },
     computed: {
       formattedItems() {
         return this.items.map((item) => ({
