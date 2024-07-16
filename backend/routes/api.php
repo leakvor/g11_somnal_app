@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CompaniesListController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\HistoryMarketPriceController;
 use App\Events\MessageSent;
@@ -45,6 +46,9 @@ Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
 
 //update statusof post
 Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
+
+//get company nearbyme
+Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
 
 
 // Routes that require authentication

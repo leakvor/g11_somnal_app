@@ -91,7 +91,11 @@
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
-            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
+            <router-link
+              to="/post_view"
+              class="nav-link"
+              :class="{ active: isActive('/post_view') }"
+            >
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
@@ -103,12 +107,11 @@
               class="nav-link"
               :class="{ active: isActive('/company/revenue') }"
             >
-            <i class="material-icons">attach_money</i>
+              <i class="material-icons">attach_money</i>
               <span>Revenue</span>
             </router-link>
           </li>
 
-    
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
               to="/company/dashboard"
@@ -126,7 +129,7 @@
               class="nav-link"
               :class="{ active: isActive('/post/request/sell') }"
             >
-            <i class="material-icons">local_mall</i>
+              <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
           </li>
@@ -147,8 +150,7 @@
 
           <li
             class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/about" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
               <span>About Us</span>
@@ -187,6 +189,13 @@
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+            <router-link to="/map" class="nav-link" :class="{ active: isActive('/pmap') }">
+              <i class="material-icons">map</i>
+              <span>Map</span>
+            </router-link>
+          </li>
+
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
               <i class="material-icons">payment</i>
               <span>Payment</span>
@@ -204,13 +213,13 @@
             class="nav-item d-flex align-items-center me-4"
             v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
           >
-            <button
-              
-              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3" data-bs-toggle="modal"
-              data-bs-target="#loginModal"
-              >Login</button>
-            <button to="/register" class="nav-link btn btn-register pe-3 ps-3" data-bs-toggle="modal" data-bs-target="#registerModal"
-              >Register</button
+            <router-link
+              to="/login"
+              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3"
+              >Login</router-link
+            >
+            <router-link to="/register" class="nav-link btn btn-register pe-3 ps-3"
+              >Register</router-link
             >
           </li>
 
@@ -309,6 +318,15 @@
                 </li>
               </ul>
             </div>
+          </li>
+          <li
+            class="nav-item me-4"
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+          >
+            <router-link to="/priceoption" class="nav-link" :class="{ active: isActive('/about') }">
+              <i class="material-icons">info</i>
+              <span>Pricing Option</span>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -561,113 +579,7 @@ export default {
     this.listChatIsRead();
   },
   methods: {
-    async register() {
-        try {
-          const response = await axios.post('http://127.0.0.1:8000/api/register', {
-            name: this.name,
-            phone: this.phone,
-            email: this.email,
-            password: this.password,
-            role_id: this.role_id
-          })
-          console.log(response.data)
-          $('#registerModal').modal('hide')
-          this.name = ''
-          this.phone = ''
-          this.email = ''
-          this.password = ''
-          this.alertMessage = 'Register successfully.';
-          $('#alertModal').modal('show');
-          this.isSuccess = true;
-          this.isError = false;
-
-          setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
-
-        } catch (error) {
-          console.error('Error logging in:', error)
-          $('#registerModal').modal('hide')
-          this.name = ''
-          this.phone = ''
-          this.email = ''
-          this.password = ''
-
-          this.alertMessage = 'Please try to register again.'
-          $('#alertModal').modal('show');
-          
-          this.isSuccess = false;
-          this.isError = true;
-          setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
-        }
-      },
-      async login() {
-        try {
-          const response = await axios.post('http://127.0.0.1:8000/api/login', {
-            email: this.email,
-            password: this.password
-            
-          })
-          const data = response.data
-          this.authStore.login(data)
-
-          console.log(response.data)
-          $('#loginModal').modal('hide')
-          this.email = ''
-          this.password = ''
-          this.alertMessage = 'Login successfully.';
-          $('#alertModal').modal('show');
-
-          this.isSuccess = true;
-          this.isError = false;
-          setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
-        } catch (error) {
-          $('#loginModal').modal('hide')
-          this.email = ''
-          this.password = ''
-
-          this.isSuccess = false;
-          this.isError = true;
-          this.alertMessage = 'Please try to login again.'
-          $('#alertModal').modal('show');
-
-          setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
-        }
-      },
-      togglePasswordVisibility(passwordFieldId) {
-      const passwordField = document.getElementById(passwordFieldId);
-      passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-    },
-    clearModal() {
-    this.name = '';
-    this.phone = '';
-    this.email = '';
-    this.password = '';
-    this.nameError = '';
-    this.phoneError = '';
-    this.emailError = '';
-    this.passwordError = '';
-  },
-  async listChatIsRead() {
-      try {
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        this.totalUnseen = response.data.total
-      } catch (error) {
-        console.error('Error listing chat isRead:', error);
-      }
-    },
-  },
+  }
 }
 </script>
 <style scoped>

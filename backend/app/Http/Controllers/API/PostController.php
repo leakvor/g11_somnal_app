@@ -115,6 +115,7 @@ class PostController extends Controller
     {
         $request->validate([
             'company_id' => 'nullable|integer',
+            
         ]);
         // Set a default status if not provided
         $user_id = $request->user()->id;
