@@ -19,7 +19,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Metal','image'=>'mental_cate.png'],
             ['name' => 'Plastic','image'=>'plastic.png'],
             ['name' => 'Paper','image'=>'magazine.png'],
-            ['name' => 'Electronic','image'=>'electronic.png'],
+            ['name' => 'Electronic','image'=>'electron​ic.png'],
         ];
         foreach ($categories as $category) {
             Category::create($category);
