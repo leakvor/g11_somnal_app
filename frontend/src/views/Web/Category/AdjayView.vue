@@ -162,7 +162,7 @@ export default {
       } catch (error) {
         if (error.response) {
           console.error('Server Error:', error.response.data)
-          alert(error.response.data.error || 'Server error occurred.')
+          alert(error.response.data.error || 'You have not account yet')
         } else if (error.request) {
           console.error('Network Error:', error.request)
           alert('Network error occurred. Please try again.')
