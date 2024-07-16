@@ -14,9 +14,9 @@
                  </div>
                  
                  <div class="flex flex-col space-y-2">
-                        <img id="image-preview" src="/uploads/{{ $category->image}}" alt="Item Image" class="cursor-pointer" width="100" style="border: 1px solid,margin-top">
-                        <input type="file" id="image-input" name="image" style="display: none;">
-                        </div>
+                    <img id="image-preview" src="/uploads/{{ $category->image}}" alt="Item Image" class="cursor-pointer" width="100" style="border: 1px solid,margin-top">
+                    <input type="file" id="image-input" name="image" style="display: none;">
+                  </div>
                  <div class="text-center mt-16 mb-16">
                    <button type="submit" class="bg-blue-500 text-white font-bold px-5 py-1 rounded focus:outline-none shadow hover:bg-blue-500 transition-colors ">Submit</button>
                  </div>

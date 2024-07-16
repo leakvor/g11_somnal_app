@@ -14,12 +14,12 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Can'],
-            ['name' => 'Bottle'],
-            ['name' => 'Glass'],
-            ['name' => 'Metal'],
-            ['name' => 'Plastic'],
-            ['name' => 'Paper'],
+            ['name' => 'Bottle','image'=>'bottle.png'],
+            ['name' => 'Glass','image'=>'Ceramic_Mug.png'],
+            ['name' => 'Metal','image'=>'mental_cate.png'],
+            ['name' => 'Plastic','image'=>'plastic.png'],
+            ['name' => 'Paper','image'=>'magazine.png'],
+            ['name' => 'Electronic','image'=>'electronic.png'],
         ];
         foreach ($categories as $category) {
             Category::create($category);

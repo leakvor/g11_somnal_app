@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 class Item extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['name','image','category_id','price'];
+    protected $fillable = ['name','image','price','description','category_id'];
 
     //relationship with category (one item belong to one category)
     public function category():BelongsTo{
@@ -35,9 +35,10 @@ class Item extends Model
     
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'category_id' => 'sometimes|required|exists:categories,id',
             'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'price' => 'sometimes|nullable|string|max:255',
+            'description' => 'sometimes|nullable|string|max:255',
+            'category_id' => 'sometimes|required|exists:categories,id',
         ], $messages);
     
         // Find the item by ID or create a new instance
@@ -46,6 +47,9 @@ class Item extends Model
         // Update only the specified columns if they are present in the request
         if ($request->has('name')) {
             $item->name = $request->name;
+        }
+        if ($request->has('description')) {
+            $item->description = $request->description;
         }
     
         if ($request->has('category_id')) {
@@ -68,7 +72,7 @@ class Item extends Model
             $img = $request->file('image');
             $ext = $img->getClientOriginalExtension();
             $imageName = time() . '.' . $ext;
-            $img->move(public_path('uploads'), $imageName);
+            $img->move(public_path('scrap'), $imageName);
     
             // Add the image name to the data array
             $item->image = $imageName;

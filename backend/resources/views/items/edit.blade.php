@@ -36,6 +36,11 @@
                         </div>
 
                         <div class="flex flex-col space-y-2">
+                            {{-- <label for="description" class="text-gray-700 select-none font-medium">Description</label> --}}
+                              <textarea name="description" id="description" placeholder="input description" value ="{{old('description', $item->description)}}" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200"></textarea>
+                        </div>
+
+                        <div class="flex flex-col space-y-2">
                         <img id="image-preview" src="/uploads/{{ $item->image}}" alt="Item Image" class="cursor-pointer" width="100" style="border: 1px solid,margin-top">
                         <input type="file" id="image-input" name="image" style="display: none;">
                         </div>
