@@ -209,38 +209,9 @@ export default {
 	mounted() {
 		this.fetchAllChatUsers();
 		this.fetchAllUsers();
-		this.pusherPoll();
-		// this.currentUserId = this.$route.params.id
-		// setInterval(() => {
-		// 	this.fetchAllChatUsers(); // Polling every 5 seconds
-		// 	this.recieverId && this.fetchAllMessages(this.recieverId);
-		// }, 5000);
-		
 		
 	},
 	methods: {
-
-		async pusherPoll(){
-        // Initialize Pusher
-        const pusher = new Pusher('bec132b602f9fc02212e', {
-            cluster: 'ap1',
-            encrypted: true,
-        });
-
-        // Subscribe to a channel
-        const channel = pusher.subscribe(`chat.${this.recieverId}`);
-        channel.bind('App\\Events\\MessageSent', (data) => {
-            // Handle received message data
-            this.messages.push(data);
-			// console.log(data)
-            this.scrollToBottom();
-        });
-
-        // Handle error events
-        channel.bind('pusher:error', (error) => {
-            console.error("Failed to bind to event:", error);
-        });
-    },
 		// show all chat to u
 		async showChats(){
 			this.isChats = true
@@ -302,37 +273,37 @@ export default {
 
 		// get the message by user_id
 		async fetchAllMessages(userId) {
-    try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${CHAT_API_URL}get/message/${userId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await axios.get(`${CHAT_API_URL}get/message/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                // Update recipient ID and show chat box
+                this.recieverId = userId;
+                this.showChatBox = true;
+
+                // Optionally, handle message processing or manipulation here
+                this.messages = response.data;
+
+                // Fetch user profile and mark messages as seen
+                await Promise.all([
+                    this.getUserProfile(userId),
+                    this.seenMessage(userId)
+                ]);
+
+                // Scroll to bottom of chat messages
+                this.scrollToBottom();
+
+                // Optionally return messages or handle further actions
+                return response.data;
+
+            } catch (error) {
+                console.error('Error fetching messages:', error);
             }
-        });
-
-        // Update recipient ID and show chat box
-        this.recieverId = userId;
-        this.showChatBox = true;
-
-        // Optionally, handle message processing or manipulation here
-        this.messages = response.data;
-
-        // Fetch user profile and mark messages as seen
-        await Promise.all([
-            this.getUserProfile(userId),
-            this.seenMessage(userId)
-        ]);
-
-        // Scroll to bottom of chat messages
-        this.scrollToBottom();
-
-        // Optionally return messages or handle further actions
-        return response.data;
-
-    } catch (error) {
-        console.error('Error fetching messages:', error);
-    }
-},
+        },
 
 
 		// edit message

@@ -559,9 +559,6 @@ export default {
     });
 
     this.listChatIsRead();
-    this.intervalId = setInterval(() => {
-      this.listChatIsRead();
-    }, 5000); // call it every 5 seconds
   },
   methods: {
     async register() {
