@@ -154,7 +154,6 @@ import FooterView from "@/Components/Footer.vue";
 import { useAuthStore } from '../../../stores/auth-store.ts'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import Pusher from 'pusher-js';
 
 // base url
 // url of api
