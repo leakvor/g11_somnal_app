@@ -7,7 +7,6 @@
       </router-link>
       <div
         class="profile-dropdown dropdown-one mb-2"
-        v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
       >
         <router-link
           to="/"
@@ -75,7 +74,6 @@
         <ul class="navbar-nav">
           <li
             class="nav-item me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>

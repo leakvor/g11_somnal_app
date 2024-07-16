@@ -29,7 +29,7 @@
               </div>
               <div class="company-info">
                 <h5 class="text-title">{{ company.name }}</h5>
-                <p class="text-card text-danger"><b>Services:</b> {{ company.id }}</p>
+                <!-- <p class="text-card text-danger"><b>Services:</b> {{ company.id }}</p> -->
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"
                   ><b>Phone:</b> {{ company.phone }}</a
                 >
@@ -38,7 +38,7 @@
                 </div>
                 <p class="text-card"><b>Address:</b> {{ company.address }}</p>
               </div>
-              <div class="company-action d-flex justify-content-end">
+              <div v-if="user_info.role_id==2" class="company-action d-flex justify-content-end">
                 <button class="btn btn-success" type="submit" @click="openModal(company.id)">
                   Sales Now
                 </button>
@@ -191,13 +191,10 @@ export default {
   },
   methods: {
     openModal(company) {
-      if(this.user_info.role_id==2){
         $('#postModal').modal('show')
       this.selectedCompany = company
       console.log("id",this.selectedCompany)
-      this.visible = true
-      }
-        
+      this.visible = true  
     },
     closeModal() {
       this.visible = false
@@ -259,6 +256,7 @@ export default {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/item/list')
         this.item_all = response.data.data
+        console.log('Items:', this.item_all)
       } catch (error) {
         console.error('Error getting items:', error)
       }

@@ -36,6 +36,7 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/Web/About/AboutUs.vue')
     },
+    // category
     {
       path:'/adjay/:id',
       name:'adjay',
@@ -46,6 +47,14 @@ const router = createRouter({
       path:"/service",
       name:"service",
       component:() => import('../views/Web/Category/ServiceView.vue')
+
+    }
+    ,
+    {
+      path:"/show_card/:id",
+      name:"show-card",
+      component:()=>import('../views/Web/Category/ShowItemView.vue'),
+      props:true
 
     },
     {
@@ -81,7 +90,7 @@ const router = createRouter({
     {
       path: '/partner',
       name: 'partner',
-      component: () => import('../views/Web/Post/PartnerView.vue')
+      component: () => import('../views/Web/partners/PartnerView.vue')
     },
     {
       path: '/favorite-page',

@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <div class="container mx-auto ">
+  <div class="container mx-auto">
     <div class="flex flex-col lg:flex-row items-center justify-between">
       <div class="text-head lg:ml-10 mb-4 lg:mb-0">
         <h1><b>Increase Your Income with Us</b></h1>
@@ -11,7 +11,7 @@
         <img src="@/assets/partner/partner.png" alt="Partner Image" class="w-full lg:max-w-lg xl:max-w-xl">
       </div>
     </div>
-    <div class="flex" style="margin-top: -10px;">
+    <div class="flex" style="margin-top: -10px;margin: 10px;">
       <div class="flex-grow">
         <h3 class="text-green-700 mb-4">To become our partner, you must meet the following conditions:</h3>
         <ul class="list-disc list-inside mb-4">

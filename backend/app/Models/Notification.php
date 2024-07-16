@@ -11,7 +11,7 @@ class Notification extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['type','post_id','message','user_id'];
+    protected $fillable = ['type','post_id','message','user_id','status'];
 
      //user
      public function user():BelongsTo{

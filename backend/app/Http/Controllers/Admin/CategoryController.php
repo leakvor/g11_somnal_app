@@ -39,7 +39,7 @@ class CategoryController extends Controller
             $img = $request->file('image');
             $ext = $img->getClientOriginalExtension();
             $imageName = time() . '.' . $ext;
-            $img->move(public_path('uploads'), $imageName);
+            $img->move(public_path('scrap'), $imageName);
     
             // Add the image name to the data array
             $data['image'] = $imageName;
@@ -87,16 +87,12 @@ class CategoryController extends Controller
     // Update other category fields as needed
 
     if ($request->hasFile('image')) {
-        // Delete the old image if it exists
-        if ($category->image) {
-            unlink(public_path('uploads/' . $category->image));
-        }
 
         // Upload and store the new image
         $img = $request->file('image');
         $ext = $img->getClientOriginalExtension();
         $imageName = time() . '.' . $ext;
-        $img->move(public_path('uploads'), $imageName);
+        $img->move(public_path('scrap'), $imageName);
 
         // Update the category image field
         $category->image = $imageName;
@@ -106,11 +102,6 @@ class CategoryController extends Controller
 
     return redirect()->route('admin.categories.index')->withSuccess('Category updated!');
 }
-
-
-
-
-
 
 
 

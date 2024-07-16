@@ -9,7 +9,7 @@
         :key="fav.id"
       >
         <img
-          :src="`http://127.0.0.1:8000/uploads/${fav.item.image}`"
+          :src="`http://127.0.0.1:8000/scrap/${fav.item.image}`"
           class="card-img-top mt-5"
           alt="..."
         />

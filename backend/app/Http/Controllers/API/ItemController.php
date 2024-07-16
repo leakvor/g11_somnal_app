@@ -62,18 +62,19 @@ class ItemController extends Controller
         $item = Item::store($request, $id);
         return response()->json(['success' => true, 'message' => 'Item updated successfully']);
     }
-
-    //get relate product
-    public function getRelatedProducts($id)
-    { {
+    
+    // related intems
+    public function getRelatedProducts($id){
+        {
             // Get the item by ID
             $item = Item::findOrFail($id);
-
+        
             $relatedItems = Item::where('category_id', $item->category_id)
-                ->where('id', '!=', $id)
-                ->get();
-
+                                ->where('id', '!=', $id)
+                                ->get();
+        
             return response()->json(['related_items' => $relatedItems]);
         }
     }
+    
 }

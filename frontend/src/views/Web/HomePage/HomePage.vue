@@ -55,9 +55,9 @@
                 <img :src="company.profile" alt="Company Logo"  width="100" height="100" />
               </div>
               <div class="company-info">
-                <h5 class="text-title"><b></b> {{ company.name }}</h5>
-                <p class="text-card text-danger"><b>Services:</b> {{ company.services }}</p>
-                <a :href="'tel:' + company.tel" class="text-card text-decoration-none"><b>Phone:</b> {{ company.phone }}</a>
+                <h5 class="text-title" style="margin: 2px"> {{ company.name }}</h5>
+                <!-- <p class="text-card text-danger"><b>Services:</b> {{ company.services }}</p> -->
+                <a :href="'tel:' + company.tel" class="text-card text-decoration-none" ><b>Phone:</b> {{ company.phone }}</a>
                 <p class="text-card"><b>Email:</b> {{ company.email }}</p>
                 <p class="text-card"><b>Address:</b> {{ company.address}}</p>
               </div>
@@ -327,7 +327,7 @@
 }
 
 .slider-item {
-  min-width: calc(100% / 5);
+  min-width: calc(100% / 4);
   box-sizing: border-box;
   padding: 0 0.5rem;
 }

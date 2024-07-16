@@ -118,7 +118,6 @@ class PostController extends Controller
     {
         $request->validate([
             'company_id' => 'nullable|integer',
-            // Add more validation rules as needed
         ]);
 
         // Set a default status if not provided
@@ -139,7 +138,7 @@ class PostController extends Controller
                 'type' => 'post',
                 'post_id' => $post->id,
                 'message' => "You have a new post from a user who wants to sell their scrap to your company",
-                'status' => 'false',
+                'status' => 0,
             ]);
         }
 
@@ -300,14 +299,14 @@ class PostController extends Controller
                 'type' => 'reply',
                 'post_id' => $post->id,
                 'message' => "Your scrb has been buy.",
-                'status'=>'false',
+                'status'=>0,
             ]);
         } else if ($request->input('status') == 'cancel') {
             Notification::create([
                 'type' => 'reply',
                 'post_id' => $post->id,
                 'message' => "Your scrb has been cancel.",
-                'status'=>'false',
+                'status'=>0,
             ]);
         }else if($request->input('status')=='buy' && $post->company_id!==null){
             Notification::create([
@@ -315,7 +314,7 @@ class PostController extends Controller
                 'post_id' => $post->id,
                 'message' => "Your scrb has been cancel.",
                 'user_id'=>$request->user()->id,
-                'status'=>'false',
+                'status'=>0,
             ]);
         }
         $post->status = $request->input('status');
