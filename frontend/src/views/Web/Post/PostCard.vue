@@ -1,18 +1,16 @@
 <template>
   <div class="container">
     <div class="d-flex justify-content-center row">
-      <div class="col-md-8">
+      <div class="col-md-15">
         <ul class="mb-2">
           <li>
-            <router-link to="/post/create" class="btn btn-success pull-right mt-5 ml-5">
+            <router-link to="/post/create" class="btn btn-success pull-right mt-3 ml-2 p-2.8">
               POST
             </router-link>
           </li>
         </ul>
         <div class="feed p-2">
-          <div
-            class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border"
-          >
+          <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border">
             <div class="feed-text px-2">
               <h6 class="text-black-50 mt-2">What's on your mind</h6>
             </div>
@@ -20,10 +18,8 @@
               <i class="fa fa-long-arrow-up text-black-50"></i>
             </div>
           </div>
-          <div class="bg-white border mt-2" v-for="post in posts" :key="post.id">
-            <div
-              class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom"
-            >
+          <div class="bg-white border shadow rounded mt-2 mb-4" v-for="post in posts" :key="post.id">
+            <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
               <div class="d-flex flex-row align-items-center feed-text px-2">
                 <img
                   class="rounded-circle"
@@ -32,7 +28,7 @@
                   alt="Profile"
                 />
                 <div class="d-flex flex-column flex-wrap ml-2">
-                  <span style="color: black">{{ post.user.name}}</span>
+                  <span style="color: black">{{ post.user.name }}</span>
                   <span class="text-black-50 time">{{ post.created_at }}</span>
                 </div>
               </div>
@@ -58,26 +54,33 @@
               <div
                 v-for="(image, index) in post.images"
                 :key="index"
-                class="col-sm-12 col-md-6 col-lg-4"
+                class="col-12 col-sm-6 col-lg-3"
               >
                 <img
-                  class="img-fluid shadow rounded mb-4 gallery-img"
+                  class="img-fluid shadow rounded mb-4 gallery-img bg-none m-3 w-47 h-48"
                   :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                   :alt="`Image ${index + 1}`"
+                  @click="openImageModal(post.images, index)"
                 />
               </div>
             </div>
-            <button
-              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
+            <button class="buy-sell"
+              :class="post.status === 'buy' ? 'btn btn-danger mt-5' : 'btn btn-success '">
               {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
             </button>
           </div>
-            
         </div>
       </div>
     </div>
+
+    <div v-if="showModal" class="modal mt-5 " @click="closeImageModal">
+      <span class="close" @click="closeImageModal">&times;</span>
+      <img class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
+      <div class="caption">{{ currentImageIndex + 1 }} / {{ modalImages.length }}</div>
+      <a class="prev" @click.stop="prevImage">&#10094;</a>
+      <a class="next" @click.stop="nextImage">&#10095;</a>
+    </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -87,7 +90,11 @@ export default {
   props: ['posts'],
   data() {
     return {
-      showOptions: null
+      showOptions: null,
+      showModal: false,
+      modalImages: [],
+      currentImage: null,
+      currentImageIndex: 0,
     }
   },
   methods: {
@@ -99,6 +106,26 @@ export default {
         this.$emit('delete-post', postId)
       }
     },
+    openImageModal(images, index) {
+      this.modalImages = images
+      this.currentImageIndex = index
+      this.currentImage = images[index]
+      this.showModal = true
+    },
+    closeImageModal() {
+      this.showModal = false
+      this.modalImages = []
+      this.currentImage = null
+      this.currentImageIndex = 0
+    },
+    prevImage() {
+      this.currentImageIndex = (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length
+      this.currentImage = this.modalImages[this.currentImageIndex]
+    },
+    nextImage() {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
+      this.currentImage = this.modalImages[this.currentImageIndex]
+    },
   }
 }
 </script>
@@ -109,6 +136,12 @@ body {
 }
 .time {
   font-size: 9px !important;
+}
+.row img {
+  touch-action: auto;
+}
+li {
+  list-style-type: none;
 }
 .socials i {
   margin-right: 14px;
@@ -144,5 +177,148 @@ body {
   width: 45px;
   height: 45px;
   object-fit: cover;
+}
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 100%;
+  max-width: 700px;
+}
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  user-select: none;
+}
+.prev {
+  left: 0;
+}
+.next {
+  right: 0;
+}
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.caption {
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+}
+.buy-sell{
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+@media (max-width: 767px) {
+  .col-12 {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+  }
+  .feed-text h6 {
+    font-size: 14px;
+  }
+  .feed-icon {
+    font-size: 18px;
+  }
+  .feed-text .time {
+    font-size: 8px;
+  }
+  .modal-content {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .col-sm-6 {
+    flex: 0 10 50%;
+    max-width: 90%;
+  }
+  .feed-text h6 {
+    font-size: 16px;
+  }
+  .feed-icon {
+    font-size: 20px;
+  }
+  .feed-text .time {
+    font-size: 10px;
+  }
+  .modal-content {
+    width: 100%;
+  }
+  .update-pf {
+    right: 25%;
+    bottom: 47%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+  .buy-sell{
+    right: 90%;
+    display: flex;
+    justify-content: start;
+    bottom: 30%;
+    cursor: pointer;
+  }
+  .row{
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .col-lg-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .feed-text h6 {
+    font-size: 18px;
+  }
+  .feed-icon {
+    font-size: 22px;
+  }
+  .feed-text .time {
+    font-size: 12px;
+  }
+  .modal-content {
+    width: 80%;
+  }
 }
 </style>

@@ -1,13 +1,7 @@
 <template>
-<<<<<<< HEAD
   <div class="container">
     <form @submit.prevent="createPost" class="form p-4 " method="POST" enctype="multipart/form-data">
-      <h3 class="text-center m-3">Post Here!!</h3>
-=======
-  <div class="container mt-5">
-    <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
-      <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
->>>>>>> 1828fd19d6ca6e768ad476781fe039615d0fda49
+        <h3 class="text-center m-3">Post Here!!</h3>
       <div class="mb-3">
         <label for="title" class="form-label" style="color: black">Title</label>
         <input
@@ -20,9 +14,9 @@
       </div>
       <div class="mb-3 dropdown">
         <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
-        <div class="mb-3" v-if="selectedItemsNames.length>0">
-        <p style="color:black">{{ selectedItemsNames }}</p>
-      </div>
+        <div class="mb-3" v-if="selectedItemsNames.length > 0">
+          <p style="color:black">{{ selectedItemsNames }}</p>
+        </div>
         <button
           class="form-control shared-style dropdown-toggle"
           type="button"
@@ -74,12 +68,14 @@
           </option>
         </select>
       </div>
-     <div class="submit d-grid gap-2">
+      <div class="d-flex column justify-content-end gap-2">
         <button class="btn btn-success" type="submit">Submit</button>
+        <button class="btn btn-danger " type="button" @click="closeForm">Cancle</button>
       </div>
     </form>
   </div>
 </template>
+
 
 <script>
 import vueFilePond from 'vue-filepond'
@@ -87,7 +83,6 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import VueMultiselect from 'vue-multiselect'
 
 import axios from 'axios'
 import router from '@/router'
@@ -98,7 +93,6 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 export default {
   components: {
     FilePond,
-    VueMultiselect
   },
   data() {
     return {
@@ -107,11 +101,6 @@ export default {
       company_id: '',
       companies: [],
       title: '',
-<<<<<<< HEAD
-      selectedItems: [],
-    };
-=======
-      // status: 'pending',
       selectedItems: []
     }
   },
@@ -122,7 +111,6 @@ export default {
         return item.name;
       });
     }
->>>>>>> 1828fd19d6ca6e768ad476781fe039615d0fda49
   },
   mounted() {
     this.getAllItems()
@@ -168,6 +156,11 @@ export default {
         document.getElementById(`Checkme${item.id}`).checked = false
       })
     },
+    closeForm() {
+      this.resetForm()
+      // Optional: Navigate to another page, e.g., homepage or previous page
+      this.$router.push('/profile')
+    },
     async getAllItems() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/item/list')
@@ -188,6 +181,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .container {
