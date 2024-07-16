@@ -103,8 +103,8 @@ export default {
           this.successMessage = 'Item added to favorites successfully.';
           this.showSuccessMessage = true;
           setTimeout(() => {
-          this.showSuccessMessage = false;
-        }, 2000);
+            this.showSuccessMessage = false;
+          }, 2000);
 
         } else if (response.data.error) {
           alert(response.data.error);
@@ -274,4 +274,3 @@ button {
   }
 }
 </style>
-
