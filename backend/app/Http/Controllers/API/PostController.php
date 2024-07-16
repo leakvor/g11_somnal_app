@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\ShowPostCommentResource;
 use App\Models\Image;
 use App\Models\Item;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Post_Image;
 use App\Models\Post_Image_Item;
@@ -25,13 +26,14 @@ class PostController extends Controller
 
     // all post
     public function index()
-{
-    $posts = Post::where('status', 'pending')
-                  ->whereNull('company_id')
-                  ->get();
-    $posts = PostResource::collection($posts);
-    return response()->json($posts);
-}
+    {
+        $posts = Post::where('status', 'pending')
+            ->whereNull('company_id')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $posts = PostResource::collection($posts);
+        return response()->json($posts);
+    }
 
     // see all of my post
     public function show_post(Request $request)
@@ -40,10 +42,10 @@ class PostController extends Controller
         if (!$request->user()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
+    
         // Retrieve authenticated user
         $user = $request->user();
-
+    
         // Retrieve all posts for the authenticated user with the 'user' relationship loaded
         $posts = Post::where('user_id', $user->id)
             ->with([
@@ -55,16 +57,17 @@ class PostController extends Controller
                     $query->select('post_id', 'item_id');
                 }
             ])
+            ->orderBy('created_at', 'desc') // Sort by created_at in descending order
             ->get();
-
+    
         // If no posts found, return 404 error
         if ($posts->isEmpty()) {
             return response()->json(['message' => 'Posts not found'], 404);
         }
-
+    
         // Transform the collection of posts using PostResource
         $transformedPosts = PostResource::collection($posts);
-
+    
         // Return success response with transformed data
         return response()->json(['success' => true, 'data' => $transformedPosts], 200);
     }
@@ -102,7 +105,7 @@ class PostController extends Controller
     public function show_one_post($id)
     {
         $post = Post::find($id);
-       
+
         if (!$post) {
             return response()->json(['success' => false, 'message' => 'Post not found'], 404);
         }
@@ -115,8 +118,9 @@ class PostController extends Controller
     {
         $request->validate([
             'company_id' => 'nullable|integer',
-            
+            // Add more validation rules as needed
         ]);
+
         // Set a default status if not provided
         $user_id = $request->user()->id;
         $status = $request->input('status', 'pending');
@@ -124,20 +128,27 @@ class PostController extends Controller
         // Create the post
         $post = Post::create([
             'title' => $request->input('title'),
-            'company_id' =>$request->input('company_id')?? null,
-            'status' => "pending",
+            'company_id' => $request->input('company_id') ?? null,
+            'status' => $status, 
             'user_id' => $user_id,
         ]);
 
-        // Handle image uploads and associate with post
+        if ($request->has('company_id')) {
+            // Create notification
+            Notification::create([
+                'type' => 'post',
+                'post_id' => $post->id,
+                'message' => "You have a new post from a user who wants to sell their scrap to your company",
+                'status' => 'false',
+            ]);
+        }
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $img) {
                 try {
                     $ext = $img->getClientOriginalExtension();
-                    $imageName = uniqid() . '.' . $ext; // Generate a unique name for each image
+                    $imageName = uniqid() . '.' . $ext;
                     $img->move(public_path('uploads'), $imageName);
-
-                    // Create an Image record in the database
                     $newImage = Image::create([
                         'image' => $imageName,
                     ]);
@@ -149,7 +160,6 @@ class PostController extends Controller
                     ]);
 
                 } catch (Exception $e) {
-                    // Handle image upload errors
                     return response()->json(['error' => 'Error uploading image: ' . $e->getMessage()], 500);
                 }
             }
@@ -170,8 +180,10 @@ class PostController extends Controller
 
         return response()->json(['message' => 'Post created successfully', 'post' => $post], 201);
     }
-    //edit post
 
+
+
+    //edit post
     public function edit(Request $request, $id)
     {
         // return $request;
@@ -282,6 +294,29 @@ class PostController extends Controller
         }
         if ($request->user()->role_id !== 3) {
             return response()->json(['success' => false, 'message' => 'You are not company owner'], 401);
+        }
+        if ($request->input('status') == 'buy') {
+            Notification::create([
+                'type' => 'reply',
+                'post_id' => $post->id,
+                'message' => "Your scrb has been buy.",
+                'status'=>'false',
+            ]);
+        } else if ($request->input('status') == 'cancel') {
+            Notification::create([
+                'type' => 'reply',
+                'post_id' => $post->id,
+                'message' => "Your scrb has been cancel.",
+                'status'=>'false',
+            ]);
+        }else if($request->input('status')=='buy' && $post->company_id!==null){
+            Notification::create([
+                'type' => 'reply',
+                'post_id' => $post->id,
+                'message' => "Your scrb has been cancel.",
+                'user_id'=>$request->user()->id,
+                'status'=>'false',
+            ]);
         }
         $post->status = $request->input('status');
         $post->save();

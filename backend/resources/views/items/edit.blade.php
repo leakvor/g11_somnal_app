@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="flex flex-col space-y-2">
-                        <img id="image-preview" src="/uploads/{{ $item->image}}" alt="Item Image" class="cursor-pointer" width="100" style="border: 1px solid,margin-top">
+                        <img id="image-preview" src="/scrap/{{ $item->image}}" alt="Item Image" class="cursor-pointer" width="100" style="border: 1px solid,margin-top">
                         <input type="file" id="image-input" name="image" style="display: none;">
                         </div>
                 

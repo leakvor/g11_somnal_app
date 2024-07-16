@@ -32,6 +32,14 @@
               <div class="d-flex flex-row align-items-center feed-text px-2">
                 <img class="rounded-circle" :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`" width="45"
                   alt="Profile" />
+
+                <img
+                  class="rounded-circle"
+                  :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+                  width="45"
+                  alt="Profile"
+                  style="border: 1px solid black"
+                />
                 <div class="d-flex flex-column flex-wrap ml-2">
                   <span style="color: black">{{ post.user.name }}</span>
                   <span class="text-black-50 time">{{ post.created_at }}</span>
@@ -61,6 +69,26 @@
               </div>
             </div>
             <button :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
+
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
+                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+              </span>
+            </div>
+            <div class="row m-3">
+              <div
+                v-for="(image, index) in post.images"
+                :key="index"
+                class="col-sm-12 col-md-6 col-lg-4"
+              >
+                <img
+                  class="img-fluid shadow rounded mb-4 gallery-img"
+                  :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                  :alt="`Image ${index + 1}`"
+                />
+              </div>
+            </div>
+            <button
+              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success m-3'">
               {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
             </button>
           </div>

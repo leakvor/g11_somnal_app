@@ -32,18 +32,44 @@
     </div>
 
     <div class="button-group d-flex justify-content-end pt-5 pe-3">
-      <a href="" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
+      <router-link  to="/sell/now" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
         <i class="material-icons icon-align">add_shopping_cart</i>
         <span>Sale Now</span>
-      </a>
-      <a href="" type="button" class="buy btn text-white d-flex align-items-center">
+      </router-link>
+      <router-link  to="/post_view" class="buy btn text-white d-flex align-items-center">
         <i class="material-icons icon-align">shopping_bag</i>
         <span>Buy Now</span>
-      </a>
+      </router-link>
     </div>
 
+    <div class="d-flex justify-content-between align-items-center mt-3 p-3">
+      <h3 class="text-orange fw-bold">Top Companies</h3>
+      <router-link to="/companies" class="btn btn-success text-decoration-none text-white" id="see-all">See All...</router-link>
+    </div>
+    <div class="slider-container">
+      <div class="slider mt-5">
+        <div class="slider-item" v-for="company in filteredCompanies" :key="company.id">
+          <a href="/companies" class="card company-card text-decoration-none text-dark">
+            <div class="card-body">
+              <div class="company-logo text-center">
+                <img :src="company.profile" alt="Company Logo"  width="100" height="100" />
+              </div>
+              <div class="company-info">
+                <h5 class="text-title"><b></b> {{ company.name }}</h5>
+                <p class="text-card text-danger"><b>Services:</b> {{ company.services }}</p>
+                <a :href="'tel:' + company.tel" class="text-card text-decoration-none"><b>Phone:</b> {{ company.phone }}</a>
+                <p class="text-card"><b>Email:</b> {{ company.email }}</p>
+                <p class="text-card"><b>Address:</b> {{ company.address}}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  
     <div class="table-responsive bg-white mt-5 pe-3 ps-3">
-      <h3 class="text-secondary font-bold pb-3 pt-2">Scrap Price List</h3>
+      <h3 class="text-orange font-bold pb-3 pt-4">Scrap Price List</h3>
       <div class="d-flex justify-content-end">
         <select class="form-select w-25 me-2" aria-label="Default select example" @change="filterByMonth($event)">
           <option value="all" selected>All month</option>
@@ -100,91 +126,29 @@
         </ul>
       </nav>
     </div>
-
-    <div class="list-company mt-3 p-3 bg-white">
-      <h3 class="text-secondary font-bold pb-3">Top 5 Company</h3>
-      <div class="d-flex justify-content-end pt-2 pb-4">
-        <a href="" class="btn btn-success text-decoration-none text-white text-right">See All...</a>
-      </div>
-      <div class="list-container pb-5">
-        <a v-for="(company, index) in companies" :key="index" href=""
-          class="card company-card text-decoration-none text-dark pe-3 ps-3 pb-3">
-          <div class="card-body">
-            <div class="company-logo text-center">
-              <img src="../../../assets/company-logo/company-logo.png" alt="Company Logo" />
-            </div>
-            <div class="company-info">
-              <h5 class="text-title">{{ company.name }}</h5>
-              <p class="text-card text-danger">{{ company.service }}</p>
-              <p class="text-card">{{ company.address }}</p>
-              <a :href="'tel:' + company.tel" class="text-card text-decoration-none">{{ company.tel }}</a>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
+    
+  <FooterVue></FooterVue>
   </div>
-  <Footer></Footer>
 </template>
 
 <script>
   import axios from 'axios'
   import NavBar from '../../../Components/NavBar.vue'
-  import Footer from '../../../Components/Footer.vue'
+  import FooterVue from '../../../Components/Footer.vue'
 
   export default {
     name: 'HomePage',
     components: {
       NavBar,
-      Footer
+      FooterVue
     },
     data() {
       return {
+        companies: [],
+        filteredCompanies: [],
         items: [],
         currentPage: 1,
-        itemsPerPage: 10,
-        companies: [
-          {
-            name: 'Company 1',
-            service: 'service 1',
-            address: 'Phnom Penh',
-            tel: '012 345 6789',
-            image: 'company-logo.png',
-            description: 'Description for Company 1'
-          },
-          {
-            name: 'Company 2',
-            service: 'service 2',
-            address: 'Phnom Penh',
-            tel: '012 345 6789',
-            image: 'company-logo.png',
-            description: 'Description for Company 2'
-          },
-          {
-            name: 'Company 3',
-            service: 'service 3',
-            address: 'Phnom Penh',
-            tel: '012 345 6789',
-            image: 'company-logo.png',
-            description: 'Description for Company 3'
-          },
-          {
-            name: 'Company 4',
-            service: 'service 4',
-            address: 'Phnom Penh',
-            tel: '012 345 6789',
-            image: 'company-logo.png',
-            description: 'Description for Company 4'
-          },
-          {
-            name: 'Company 5',
-            service: 'service 5',
-            address: 'Phnom Penh',
-            tel: '012 345 6789',
-            image: 'company-logo.png',
-            description: 'Description for Company 5'
-          }
-        ]
+        itemsPerPage: 5,
       }
     },
     computed: {
@@ -205,6 +169,7 @@
     },
     mounted() {
       this.fetchData()
+      this.fetchCompanies();
     },
     methods: {
       async fetchData() {
@@ -255,9 +220,43 @@
         if (page > 0 && page <= this.totalPages) {
           this.currentPage = page
         }
+      },
+      async fetchCompanies() {
+      await axios.get('http://127.0.0.1:8000/api/company')
+        .then(response => {
+          this.companies = response.data.data;
+          console.log(response.data.data);
+          this.filteredCompanies = response.data.data;
+        })
+        .catch(error => {
+          alert('Error fetching companies:', error);
+        });
       }
     }
   }
+  document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.querySelector('.slider');
+  const sliderItems = Array.from(slider.children);
+
+  // Clone each slider item to create an infinite loop effect
+  sliderItems.forEach(item => {
+    const clone = item.cloneNode(true);
+    slider.appendChild(clone);
+  });
+
+  // Add hover event listeners to pause/resume animation
+  sliderItems.forEach(item => {
+    item.addEventListener('mouseover', () => {
+      slider.style.animationPlayState = 'paused';
+    });
+    item.addEventListener('mouseout', () => {
+      slider.style.animationPlayState = 'running';
+    });
+  });
+});
+
+
+
 </script>
 
 <style scoped>
@@ -277,14 +276,22 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 1rem;
   }
+    #sider-card{
+      background-color: black;
+      border-radius: 5px;
+    }
+    #sider-card:hover{
+      background-color:  #176122;
+      border-radius: 5px;
+    }
 
   .company-card {
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition:
-      transform 0.3s ease-in-out,
-      box-shadow 0.3s ease-in-out,
-      border-color 0.3s ease-in-out;
+      transform 0.4s ease-in-out,
+      box-shadow 0.4s ease-in-out,
+      border-color 0.4s ease-in-out;
     position: relative;
     overflow: hidden;
     border: 2px solid thick;
@@ -307,13 +314,91 @@
     font-size: 12px;
   }
 
+/* Aoutor slider of company card */
+  .slider-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slider {
+  display: flex;
+  gap: 1rem;
+  animation: scroll 15s linear infinite;
+}
+
+.slider-item {
+  min-width: calc(100% / 5);
+  box-sizing: border-box;
+  padding: 0 0.5rem;
+}
+.company-action button, #see-all{
+  background:rgb(25, 107, 58);
+}
+.company-action button:hover, #see-all:hover{
+  background:orange;
+  color: black;
+  border: none;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 1200px) {
+  .slider-item {
+    min-width: calc(100% / 4);
+  }
+}
+
+@media (max-width: 992px) {
+  .slider-item {
+    min-width: calc(100% / 3);
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-item {
+    min-width: calc(100% / 2);
+  }
+}
+
+@media (max-width: 576px) {
+  .slider-item {
+    min-width: 100%;
+  }
+}
+
+.slider:hover {
+  animation-play-state: paused;
+}
+
+/* end */
+
   @media (min-width: 1200px) {
+    .button-group{
+    position: absolute;
+    top: 76%; 
+    left: 15%;
+    margin: 5px;
+    }
     .list-container {
       grid-template-columns: repeat(5, 1fr);
     }
+
   }
 
   @media (min-width: 768px) and (max-width: 1199px) {
+    .button-group{
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    margin: 5px;
+    }
     .carousel-item img {
       height: 100%;
     }
@@ -324,6 +409,13 @@
   }
 
   @media (max-width: 767px) {
+    .button-group{
+    position: absolute;
+    top: 20%;
+    margin: 5px;
+    font-size: 5px;
+      
+    }
     .carousel-item img {
       height: 200px;
     }

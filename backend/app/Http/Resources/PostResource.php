@@ -29,6 +29,7 @@ class PostResource extends JsonResource
         })->all(),
         'status'=>$this->status,
         'date_created' => $this->created_at->format('d M Y H:i:s'),
+        'created_at' => $this->created_at->diffForHumans(),
     ];
 }
 }

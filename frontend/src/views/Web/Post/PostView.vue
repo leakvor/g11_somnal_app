@@ -3,15 +3,18 @@
     <NavBar />
     <div class="container">
       <div class="post-container" v-for="post in posts" :key="post.id">
-        <div class="post-header d-flex align-items-center">
-          <img
-            :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
-            alt="Account Image"
-            class="account-image rounded-circle"
-            style="border: 1px solid gray"
-          />
-          <h6 class="account-name ml-3 mb-0">{{ post.user.name }}</h6>
-        </div>
+        <div class="d-flex flex-row align-items-center feed-text px-2">
+                <img
+                  class="rounded-circle"
+                  :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+                  width="45"
+                  alt="Profile" style="border: 1px solid black"
+                />
+                <div class="d-flex flex-column flex-wrap ml-2">
+                  <h6 style="color: black">{{ post.user.name}}</h6>
+                  <span class="text-black-50 time">{{ post.created_at }}</span>
+                </div>
+              </div>
         <p class="post-title" style="size: 5px">{{ post.title }}</p>
         <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
         <ul>
