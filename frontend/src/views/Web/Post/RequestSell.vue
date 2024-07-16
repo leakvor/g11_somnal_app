@@ -196,20 +196,20 @@ export default {
 
         const token = localStorage.getItem('access_token')
         if (!token) {
-          throw new Error('No access token found')
+        throw new Error('No access token found')
         }
 
         const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
         }
 
         const data = { status: newStatus }
 
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/post/update/status/${postId}`,
-          data,
-          { headers }
+        `http://127.0.0.1:8000/api/post/update/status/${postId}`,
+        data,
+        { headers }
         )
 
         console.log('Response:', response)
@@ -221,29 +221,26 @@ export default {
         }
 
         const message =
-          newStatus === 'cancel'
-            ? 'You have been cancelled this item.'
-            : 'You have been bought this item.'
+        newStatus === 'cancel'
+          ? 'You have been cancelled this item.'
+          : 'You have been bought this item.'
         alert(message)
-        window.location.reload()
+        this.fecthPostSell()
+        $('#postModal').modal('hide')
       } catch (error) {
         const message =
-          newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
+        newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
         alert(message)
         console.error('Error:', error)
       }
     },
-    async fetchPost() {
-     
-    },
+   
     async showPostModal(postId) {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`)
         this.post = response.data.data
         console.log(this.post)
-        // const postModal = new bootstrap.Modal(document.getElementById('postModal'))
-        // postModal.show()
-      $('#postModal').modal('show')
+        $('#postModal').modal('show')
 
       } catch (error) {
         console.error(error)
@@ -252,10 +249,10 @@ export default {
   },
   mounted() {
     this.fecthPostSell()
-    this.showPostModal()
   }
 }
 </script>
+
 
 
 

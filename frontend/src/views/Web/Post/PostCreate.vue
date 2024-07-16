@@ -139,12 +139,7 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-        if(this.company_id != null){
           this.$router.push('/profile')
-        }else{
-          this.$router.push('/sell/now')
-        }
-        
       } catch (error) {
         console.error('Error creating post:', error)
       }
