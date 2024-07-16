@@ -42,6 +42,7 @@ class ItemController extends Controller
         'category_id' => 'sometimes|required|exists:categories,id',
         // 'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'price' => 'sometimes|nullable|numeric',
+        'description' => 'sometimes|required|string|max:255',
     ]);
 
     // Find the item by ID or create a new instance
@@ -59,13 +60,16 @@ class ItemController extends Controller
     if ($request->has('price')) {
         $item->price = $request->price;
     }
+    if ($request->has('description')) {
+        $item->description = $request->description;
+    }
 
     // Check if the request has an image
     if ($request->hasFile('image')) {
         $img = $request->file('image');
         $ext = $img->getClientOriginalExtension();
         $imageName = time() . '.' . $ext;
-        $img->move(public_path('uploads'), $imageName);
+        $img->move(public_path('scrap'), $imageName);
 
         // Add the image name to the data array
         $item->image = $imageName;
@@ -112,6 +116,7 @@ public function update(Request $request, $id)
               'category_id' => 'sometimes|required|exists:categories,id',
               'image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
               'price' => 'sometimes|nullable|string|max:255',
+              'description' => 'sometimes|nullable|string|max:255',
           ]);
       
           // Find the item by ID or create a new instance
@@ -120,6 +125,9 @@ public function update(Request $request, $id)
           // Update only the specified columns if they are present in the request
           if ($request->has('name')) {
               $item->name = $request->name;
+          }
+          if ($request->has('description')) {
+              $item->description = $request->description;
           }
       
           if ($request->has('category_id')) {
@@ -142,7 +150,7 @@ public function update(Request $request, $id)
               $img = $request->file('image');
               $ext = $img->getClientOriginalExtension();
               $imageName = time() . '.' . $ext;
-              $img->move(public_path('uploads'), $imageName);
+              $img->move(public_path('scrapp'), $imageName);
       
               // Add the image name to the data array
               $item->image = $imageName;

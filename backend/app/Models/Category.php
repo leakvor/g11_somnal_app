@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -30,8 +31,8 @@ class Category extends Model
             $img = $request->file('image');
             $ext = $img->getClientOriginalExtension();
             $imageName = time() . '.' . $ext;
-            $img->move(public_path('uploads'), $imageName);
-            $data['image'] = 'uploads/' . $imageName; // Store the image path
+            $img->move(public_path('scrap'), $imageName);
+            $data['image'] = 'scrap' . $imageName; // Store the image path
         }
     
         return self::updateOrCreate(['id' => $id], $data);

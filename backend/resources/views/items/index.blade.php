@@ -31,6 +31,7 @@
               <th >Id</th>
               <th >Name</th>
               <th >Price</th>
+              <th >Description</th>
               <th >Action</th>
             </tr>
           </thead>
@@ -41,6 +42,7 @@
         <td class="py-4 px-6 border-b border-grey-light" id="name">{{ $loop->index + 1 }} </td>
         <td class="py-4 px-6 border-b border-grey-light" id="name">{{ $item->name }}</td>
         <td class="py-4 px-6 border-b border-grey-light">{{ $item->price}}</td>
+        <td class="py-4 px-6 border-b border-grey-light">{{ $item->description}}</td>
         <td class="py-4 px-6 border-b border-grey-light text-right">
         @can('item edit')
       <a href="{{route('admin.items.edit', $item->id)}}"
