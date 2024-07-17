@@ -88,6 +88,7 @@
 </template>
 
 <script>
+
 import axios from 'axios'
 import NavBar from '@/Components/NavBar.vue'
 import Footer from '@/Components/Footer.vue'

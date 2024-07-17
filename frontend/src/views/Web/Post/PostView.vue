@@ -4,18 +4,19 @@
     <div class="container">
       <div class="post-container" v-for="post in posts" :key="post.id">
         <div class="d-flex flex-row align-items-center feed-text px-2">
-                <img
-                  class="rounded-circle"
-                  :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
-                  width="45"
-                  alt="Profile" style="border: 1px solid black"
-                />
-                <div class="d-flex flex-column flex-wrap ml-2">
-                  <h6 style="color: black">{{ post.user.name}}</h6>
-                  <span class="text-black-50 time">{{ post.created_at }}</span>
-                </div>
-              </div>
-        <p class="post-title" style="size: 5px">{{ post.title }}</p>
+          <img
+            class="rounded-circle"
+            :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+            width="45"
+            alt="Profile"
+            style="border: 1px solid black"
+          />
+          <div class="d-flex flex-column flex-wrap ml-2">
+            <h6 style="color: black">{{ post.user.name }}</h6>
+            <span class="text-black-50 time">{{ post.created_at }}</span>
+          </div>
+        </div>
+        <p class="post-title" >{{ post.title }}</p>
         <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
         <ul>
           <li>
@@ -41,7 +42,7 @@
           </div>
         </div>
 
-        <button v-if="user_info.role_id==3"
+        <button v-if="user_info.role_id == 3"
           :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
           @click="updatePostStatus(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
         >
@@ -53,13 +54,13 @@
 </template>
 
 <script>
-import NavBar from '../../../Components/NavBar.vue'
-import axios from 'axios'
+import NavBar from '../../../Components/NavBar.vue';
+import axios from 'axios';
 
 export default {
   name: 'PostComponent',
   components: {
-    NavBar
+    NavBar,
   },
   data() {
     return {
@@ -68,27 +69,26 @@ export default {
       postTitle: '',
       images: [],
       posts: [],
-      user_info:null
-    }
+      user_info: null,
+    };
   },
   methods: {
     async fetchPosts() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/post/list')
-        this.posts = response.data
-        console.log(this.posts)
-        // this.router.push('/post/request/sell');
+        const response = await axios.get('http://127.0.0.1:8000/api/post/list');
+        this.posts = response.data;
+        console.log(this.posts);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async fetchUser() {
       try {
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
+        const response = await axios.get('http://127.0.0.1:8000/api/me', {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         this.user_info = response.data.data;
         console.log('Fetched user:', this.user_info);
@@ -98,36 +98,38 @@ export default {
     },
     async updatePostStatus(postId, newStatus) {
       try {
-        console.log(newStatus)
-        console.log(postId)
-        const token = localStorage.getItem('access_token')
+        console.log(newStatus);
+        console.log(postId);
+        const token = localStorage.getItem('access_token');
         if (!token) {
-          throw new Error('No access token found')
+          throw new Error('No access token found');
         }
         const headers = {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-        const data = { status: newStatus }
+          'Content-Type': 'application/json',
+        };
+        const data = { status: newStatus };
         const response = await axios.post(
           `http://127.0.0.1:8000/api/post/update/status/${postId}`,
           data,
           { headers }
-        )
-        console.log('Response:', response)
-        alert('You already buy this item.')
-        this.fetchPosts(),
+        );
+        console.log('Response:', response);
+        alert('You already buy this item.');
+        this.fetchPosts();
       } catch (error) {
-        alert('You are a user so you do not have permission to buy'), console.error(error)
+        alert('You are a user so you do not have permission to buy');
+        console.error(error);
       }
     },
   },
   mounted() {
-    this.fetchPosts()
-    this.fetchUser()
-  }
-}
+    this.fetchPosts();
+    this.fetchUser();
+  },
+};
 </script>
+
 
 <style scoped>
 .post-container {

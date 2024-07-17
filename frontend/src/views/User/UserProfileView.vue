@@ -144,9 +144,6 @@
               </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
         </div>
       </div>
     </div>
@@ -247,7 +244,6 @@ export default {
       this.$refs.fileInput.files = event.target.files
     },
     async updateProfile() {
-      console.info('Updating profile')
       this.name=this.user_info.name
       this.email=this.user_info.email
       this.phone=this.user_info.phone

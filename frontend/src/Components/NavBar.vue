@@ -250,13 +250,12 @@
               to="/notifications"
               class="nav-link position-relative"
               :class="{ active: isActive('/notifications') }"
-              @click="resetNotificationCount"
             >
               <span
                 class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger"
                 id="notification_number"
               >
-                {{ displayedNotificationCount }}
+                99
                 <span class="visually-hidden">unread messages</span>
               </span>
               <i class="material-icons icon-align">notifications</i>
@@ -535,10 +534,10 @@ export default {
     const authStore = useAuthStore()
     const route = useRoute()
     const router = useRouter()
-    const toast = useToast()
+    // const toast = useToast()
     const notification_alert = ref([])
-    const user_info = ref(null)
-    const onNotificationsPage = ref(false)
+    // const user_info = ref(null)
+    // const onNotificationsPage = ref(false)
 
 
     const isActive = (path) => route.path === path
@@ -548,69 +547,69 @@ export default {
       router.push('/')
     }
 
-    async function fetchUser() {
-      try {
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        user_info.value = response.data.data
-        // console.log('User Info:', user_info.value)
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      }
-    }
+    // async function fetchUser() {
+    //   try {
+    //     const token = localStorage.getItem('access_token')
+    //     const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`
+    //       }
+    //     })
+    //     user_info.value = response.data.data
+    //     // console.log('User Info:', user_info.value)
+    //   } catch (error) {
+    //     console.error('Error fetching user:', error)
+    //   }
+    // }
 
-    async function getAlert() {
-      try {
-        if (!user_info.value || !user_info.value.role_id) {
-          throw new Error('User info or role_id is not available')
-        }
+    // async function getAlert() {
+    //   try {
+    //     if (!user_info.value || !user_info.value.role_id) {
+    //       throw new Error('User info or role_id is not available')
+    //     }
 
-        let endpoint = ''
-        if (user_info.value.role_id === 2) {
-          endpoint = 'user'
-        } else if (user_info.value.role_id === 3) {
-          endpoint = 'company'
-        }
+    //     let endpoint = ''
+    //     if (user_info.value.role_id === 2) {
+    //       endpoint = 'user'
+    //     } else if (user_info.value.role_id === 3) {
+    //       endpoint = 'company'
+    //     }
 
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get(
-          `http://127.0.0.1:8000/api/notification/${endpoint}/list/alert`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        )
+    //     const token = localStorage.getItem('access_token')
+    //     const response = await axios.get(
+    //       `http://127.0.0.1:8000/api/notification/${endpoint}/list/alert`,
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`
+    //         }
+    //       }
+    //     )
 
-        notification_alert.value = response.data.data
-        console.log('notification', notification_alert.value)
-        for (const notification of notification_alert.value) {
-          toast.info(notification.message)
-          if (notification.id) {
-            markAsSeen(notification.id)
-          }
-        }
-        // console.log('Notifications:', notification_alert.value)
-      } catch (error) {
-        console.error('Error fetching notifications:', error)
-      }
-    }
+    //     notification_alert.value = response.data.data
+    //     console.log('notification', notification_alert.value)
+    //     for (const notification of notification_alert.value) {
+    //       toast.info(notification.message)
+    //       if (notification.id) {
+    //         markAsSeen(notification.id)
+    //       }
+    //     }
+    //     // console.log('Notifications:', notification_alert.value)
+    //   } catch (error) {
+    //     console.error('Error fetching notifications:', error)
+    //   }
+    // }
 
-    async function markAsSeen(id) {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/notification/status/${id}`)
-        console.log(response)
-      } catch (error) {
-        console.error('Error marking notification as seen:', error)
-      }
-    }
-    const displayedNotificationCount = computed(() => {
-      return onNotificationsPage.value ? 0 : notification_alert.value.length
-    })
+    // async function markAsSeen(id) {
+    //   try {
+    //     const response = await axios.get(`http://127.0.0.1:8000/api/notification/status/${id}`)
+    //     console.log(response)
+    //   } catch (error) {
+    //     console.error('Error marking notification as seen:', error)
+    //   }
+    // }
+    // const displayedNotificationCount = computed(() => {
+    //   return onNotificationsPage.value ? 0 : notification_alert.value.length
+    // })
 
 
     onMounted(async () => {
@@ -630,8 +629,8 @@ export default {
         })
       })
       
-      await fetchUser() // Ensure user info is fetched before calling getAlert
-      getAlert() // Call getAlert after fetchUser completes
+      // await fetchUser() // Ensure user info is fetched before calling getAlert
+      // getAlert() // Call getAlert after fetchUser completes
     })
 
     return {
@@ -639,10 +638,10 @@ export default {
       isActive,
       logout,
       notification_alert,
-      fetchUser,
-      getAlert,
-      markAsSeen,
-      displayedNotificationCount
+      // fetchUser,
+      // getAlert,
+      // markAsSeen,
+      // displayedNotificationCount
     }
   },
   mounted() {

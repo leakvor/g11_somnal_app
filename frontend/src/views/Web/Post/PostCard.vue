@@ -46,7 +46,7 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <span v-for="(item, index) in post.items" :key="index">
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
                 {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
               </span>
             </div>
