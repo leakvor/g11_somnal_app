@@ -220,6 +220,7 @@ export default {
 
 .update-pf {
   border: 3px solid #c2c2c2;
+  position: absolute;
   width: 40px;
   height: 40px;
   right: 17%;

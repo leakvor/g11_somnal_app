@@ -51,15 +51,15 @@
         <div class="slider-item" v-for="company in filteredCompanies" :key="company.id">
           <a href="/companies" class="card company-card text-decoration-none text-dark">
             <div class="card-body">
-              <div class="company-logo text-center">
-                <img :src="company.profile" alt="Company Logo"  width="100" height="100" />
+              <div class="company-logo text-center object-fit-cover">
+                <img :src="company.profile" alt="Company Logo"  />
               </div>
               <div class="company-info">
                 <h5 class="text-title"><b></b> {{ company.name }}</h5>
                 <p class="text-card text-danger"><b>Services:</b> {{ company.services }}</p>
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"><b>Phone:</b> {{ company.phone }}</a>
-                <p class="text-card"><b>Email:</b> {{ company.email }}</p>
-                <p class="text-card"><b>Address:</b> {{ company.address}}</p>
+                <h5 class="text-card "><b>Email:</b> {{ company.email }}</h5>
+                <h5 class="text-card"><b>Address:</b> {{ company.address}}</h5>
               </div>
             </div>
           </a>
