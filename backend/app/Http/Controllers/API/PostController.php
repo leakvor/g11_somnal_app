@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\NotificationCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\ShowPostCommentResource;
@@ -142,12 +143,13 @@ class PostController extends Controller
 
         if ($request->has('company_id')) {
             // Create notification
-            Notification::create([
+            $notification=Notification::create([
                 'type' => 'post',
                 'post_id' => $post->id,
                 'message' => "You have a new post from a user who wants to sell their scrap to your company",
                 'status' => 0,
             ]);
+            broadcast(new NotificationCreated($notification))->toOthers();
         }
 
         if ($request->hasFile('images')) {
@@ -300,33 +302,44 @@ class PostController extends Controller
             return response()->json(['success' => false, 'message' => 'Post not found'], 404);
         }
         if ($request->user()->role_id !== 3) {
-            return response()->json(['success' => false, 'message' => 'You are not company owner'], 401);
+            return response()->json(['success' => false, 'message' => 'You are not the company owner'], 401);
         }
-        if ($request->input('status') == 'buy') {
-            Notification::create([
+    
+        $status = $request->input('status');
+        $notification = null;
+    
+        if ($status == 'buy') {
+            $notification = Notification::create([
                 'type' => 'reply',
                 'post_id' => $post->id,
-                'message' => "Your scrb has been buy.",
-                'status'=>0,
+                'message' => "Your scrap has been bought.",
+                'status' => 0,
             ]);
-        } else if ($request->input('status') == 'cancel') {
-            Notification::create([
+        } else if ($status == 'cancel') {
+            $notification = Notification::create([
                 'type' => 'reply',
                 'post_id' => $post->id,
-                'message' => "Your scrb has been cancel.",
-                'status'=>0,
+                'message' => "Your scrap has been canceled.",
+                'status' => 0,
             ]);
-        }else if($request->input('status')=='buy' && $post->company_id!==null){
-            Notification::create([
+        } else if ($status == 'buy' && $post->company_id !== null) {
+            $notification = Notification::create([
                 'type' => 'reply',
                 'post_id' => $post->id,
-                'message' => "Your scrb has been cancel.",
-                'user_id'=>$request->user()->id,
-                'status'=>0,
+                'message' => "Your scrap has been bought.",
+                'user_id' => $request->user()->id,
+                'status' => 0,
             ]);
         }
-        $post->status = $request->input('status');
+    
+        if ($notification) {
+            // Broadcast the event
+            broadcast(new NotificationCreated($notification))->toOthers();
+        }
+    
+        $post->status = $status;
         $post->save();
+    
         return response()->json(['success' => true, 'message' => 'Status updated successfully']);
     }
 
