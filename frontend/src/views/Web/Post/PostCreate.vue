@@ -8,19 +8,14 @@
       </div>
       <div class="mb-3 dropdown">
         <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
-        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
-        <p style="color:black">{{ selectedItemsNames }}</p>
-      </div>
-        <button
-          class="form-control shared-style dropdown-toggle"
-          type="button"
-          id="item-dropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <div class="mb-3" v-if="selectedItemsNames.length > 0">
+          <p style="color:black">{{ selectedItemsNames }}</p>
+        </div>
+        <button class="form-control shared-style dropdown-toggle" type="button" id="item-dropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
           Select items
         </button>
-        <ul class="dropdown-menu scrollable-menu" aria-labelledby="item-dropdown">
+        <ul class="dropdown-menu" aria-labelledby="item-dropdown" style="max-height: 200px; overflow-y: auto;">
           <li v-for="item in item_all" :key="item.id">
             <div class="form-check dropdown-item">
               <input class="form-check-input" type="checkbox" :value="item.id" :id="`Checkme${item.id}`"
@@ -37,20 +32,15 @@
           allow-multiple="true" accepted-file-types="image/jpeg, image/png" @updatefiles="handleFileChange" />
       </div>
       <div class="mb-3">
-        <label for="company-selection" style="color: black" class="form-label">Company Selection</label>
-        <select
-          id="company-selection"
-          name="company"
-          class="form-select shared-style"
-          v-model="company_id"
-        >
+        <label for="company-selection" class="form-label">Company Selection</label>
+        <select id="company-selection" name="company" class="form-select shared-style" v-model="company_id">
           <option disabled selected value="">Select a company</option>
           <option v-for="company in companies" :key="company.id" :value="company.id">
             {{ company.name }}
           </option>
         </select>
       </div>
-     <div class="submit d-grid gap-2">
+      <div class="submit d-grid gap-2">
         <button class="btn btn-success" type="submit">Submit</button>
       </div>
     </form>
@@ -63,6 +53,7 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import VueMultiselect from 'vue-multiselect'
 
 import axios from 'axios'
 import router from '@/router'
@@ -70,10 +61,11 @@ import router from '@/router'
 // Register the plugins
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 
+
 export default {
   components: {
     FilePond,
-    
+    VueMultiselect
   },
   data() {
     return {
@@ -121,12 +113,7 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-        if(this.company_id != null){
-          this.$router.push('/profile')
-        }else{
-          this.$router.push('/sell/now')
-        }
-        
+        this.$router.push('/profile')
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -167,23 +154,15 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-
 }
 
 form {
-  width: 100%;
-  max-width: 800px;
+  width: 40vw;
   margin: auto;
   border-radius: 10px;
   border-top: 7px solid rgb(248, 98, 44);
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
 }
 
 .dropdown .form-control,
@@ -195,11 +174,6 @@ form {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.dropdown-menu.scrollable-menu {
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 .form-check-input {
@@ -214,7 +188,6 @@ form {
   margin-top: 7%;
   margin-bottom: 5%;
 }
-<<<<<<< HEAD
 
 @media screen and (max-width: 1114px) {
   form {
@@ -296,6 +269,7 @@ form {
   }
 }
 
+
 @media screen and (max-width: 884px) {
   form {
     width: 80vw;
@@ -370,18 +344,11 @@ form {
 
   .form-check-label {
     font-size: 24px;
-=======
-
-@media (min-width: 576px) {
-  form {
-    width: 90%;
->>>>>>> e7d8192cfc2f29fa653a978351cf6081e068ea30
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (max-width: 820px) {
   form {
-<<<<<<< HEAD
     width: 90vw;
   }
 
@@ -465,16 +432,11 @@ form {
 
   .form-check-label {
     font-size: 24px;
-=======
-    width: 90%;
-
->>>>>>> e7d8192cfc2f29fa653a978351cf6081e068ea30
   }
 }
 
-@media (min-width: 992px) {
+@media screen and (max-width: 768px) {
   form {
-<<<<<<< HEAD
     width: 80vw;
     height: auto;
   }
@@ -540,15 +502,11 @@ form {
   input[type='checkbox'] {
     width: 20px;
     height: 20px;
-=======
-     width: 90%;
->>>>>>> e7d8192cfc2f29fa653a978351cf6081e068ea30
   }
 }
 
-@media (min-width: 1200px) {
+@media screen and (max-width: 414px) {
   form {
-<<<<<<< HEAD
     width: 90vw;
     height: auto;
   }
@@ -605,6 +563,7 @@ form {
   #company-selection option {
     font-size: 12px;
   }
+
 
   /* Adjust checkbox size */
   input[type='checkbox'] {
@@ -702,9 +661,6 @@ form {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-=======
-    width: 60%;
->>>>>>> e7d8192cfc2f29fa653a978351cf6081e068ea30
   }
 }
 </style>
