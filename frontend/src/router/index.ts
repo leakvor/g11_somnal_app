@@ -54,11 +54,6 @@ const router = createRouter({
       component:() => import('../views/Admin/Auth/RegisterView.vue')
     },
     {
-      path: '/contact',
-      name: 'contactus',
-      component: () => import('../views/Web/Post/ContactusView.vue')
-    },
-    {
     path:"/profile",
     name:"profile",
     component:() => import('../views/User/UserProfileView.vue')
@@ -67,11 +62,6 @@ const router = createRouter({
     path:"/chat",
     name:"chat",
     component:() => import('../views/Web/Chat/ChatView.vue')
-  },
-    {
-    path:"/comment-post",
-    name:"comment-post",
-    component:() => import('../views/Web/commentPost/CommentView.vue')
   },
     {
     path:"/homeview",
