@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import notificationComponent from '../../../Components/notification/notificationComponent.vue';
+import notificationComponent from '../../../Components/Notification/notificationComponent.vue';
 import NavBar from "@/Components/NavBar.vue";
 
 const name = 'notificationView';
