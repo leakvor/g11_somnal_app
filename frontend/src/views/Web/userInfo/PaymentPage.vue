@@ -82,6 +82,7 @@ import { useAuthStore } from '../../../stores/auth-store';
 import { useRouter } from 'vue-router';
 
 export default {
+  props: ['option_paid'],
   data() {
     return {
       cardName: '',
@@ -164,14 +165,16 @@ export default {
         if (!token) {
           throw new Error('No token found');
         }
-
-        const response = await axios.post(
+        if(this.option_paid=='free'){
+          const response = await axios.post(
           'http://127.0.0.1:8000/api/payment/create',
           {
             cardName: this.cardName,
             cardNumber: this.cardNumber,
             cvv: this.cvv,
             expiration_date: this.expiration_date,
+            option_paid:this.option_paid,
+            amount:0
           },
           {
             headers: {
@@ -190,6 +193,64 @@ export default {
           this.authStore.logout();
           this.router.push('/');
         }
+        }else if(this.option_paid=='one_month'){
+          const response = await axios.post(
+          'http://127.0.0.1:8000/api/payment/create',
+          {
+            cardName: this.cardName,
+            cardNumber: this.cardNumber,
+            cvv: this.cvv,
+            expiration_date: this.expiration_date,
+            option_paid:this.option_paid,
+            amount:10
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response.data);
+
+        if (response.data.success) {
+          this.cardNumberMessage = '';
+          this.expirationMessage = '';
+          this.cvvMessage = '';
+          alert('Payment created successfully.');
+          await this.updateProfile();
+          this.authStore.logout();
+          this.router.push('/');
+        }
+        }else if(this.option_paid=='six_months') {
+          const response = await axios.post(
+          'http://127.0.0.1:8000/api/payment/create',
+          {
+            cardName: this.cardName,
+            cardNumber: this.cardNumber,
+            cvv: this.cvv,
+            expiration_date: this.expiration_date,
+            option_paid:this.option_paid,
+            amount:55
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response.data);
+
+        if (response.data.success) {
+          this.cardNumberMessage = '';
+          this.expirationMessage = '';
+          this.cvvMessage = '';
+          alert('Payment created successfully.');
+          await this.updateProfile();
+          this.authStore.logout();
+          this.router.push('/');
+        }
+        }
+        
       } catch (error) {
         this.cardNumberMessage = 'Invalid card number';
       }

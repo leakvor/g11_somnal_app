@@ -28,7 +28,6 @@ class PaymentController extends Controller
         }
         $validatedData = $validator->validated();
         $validatedData['user_id'] = Auth::id();
-        $validatedData['price'] = 200; 
     
         $payment = Payment::create($validatedData);
         return response()->json(['success' => true, 'message' => 'Payment created successfully', 'payment' => $payment], 201);

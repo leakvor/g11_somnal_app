@@ -1,6 +1,6 @@
 <template>
-  <NavBar />
-  <div class="container mx-auto">
+  <div>
+    <div class="container mx-auto">
     <div class="flex flex-col lg:flex-row items-center justify-between">
       <div class="text-head lg:ml-10 mb-4 lg:mb-0">
         <h1><b>Increase Your Income with Us</b></h1>
@@ -27,19 +27,16 @@
       </div>
     </div>
   </div>
-  <FooterView></FooterView>
+  </div>
+  
 </template>
 
 <script>
-import NavBar from '@/Components/NavBar.vue'
-import FooterView from '@/Components/Footer.vue'
+
 
 export default{
   name: 'PartnerView',
-components:{
-  NavBar,
-  FooterView
-  },
+
 }
 </script>
 
