@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CompaniesListController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\HistoryMarketPriceController;
+// use App\Http\Controllers\Admin\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,9 @@ use App\Http\Controllers\Api\HistoryMarketPriceController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// Route::get('/admin/dashboard', [DashboardController::class, 'getData']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

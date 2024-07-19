@@ -8,7 +8,10 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     ItemController,
     HistoryMarketprices,
-    RevenueController
+    RevenueController,
+    DashboardController
+
+
 };
 
 
@@ -41,6 +44,7 @@ Route::get('/test-mail',function(){
 
 });
 
+// Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/dashboard', function () {
     return view('front.dashboard');
@@ -50,12 +54,17 @@ Route::get('/dashboard', function () {
 require __DIR__.'/front_auth.php';
 
 // Admin routes
-Route::get('/admin/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('admin.dashboard');
+// Route::get('/admin/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('admin.dashboard');
+
+// require __DIR__.'/auth.php';
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
-
 
 
 
@@ -71,6 +80,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('companies', CompanyController::class);
         Route::resource('items',ItemController::class);
         Route::resource('history',HistoryMarketprices::class);
+        // Route::resource('dashboard',DashboardController::class);
 
  
 
