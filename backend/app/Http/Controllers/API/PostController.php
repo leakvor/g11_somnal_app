@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Traits\uploadImage;
-use Mockery\CountValidator\Exception;// Import the uploadImage trait
+use Mockery\CountValidator\Exception; // Import the uploadImage trait
 
 class PostController extends Controller
 {
@@ -47,39 +47,39 @@ class PostController extends Controller
 
     // see all of my post
     public function show_post(Request $request)
-{
-    // Ensure user is authenticated
-    if (!$request->user()) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+    {
+        // Ensure user is authenticated
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Retrieve authenticated user
+        $user = $request->user();
+
+        // Retrieve all posts for the authenticated user with the 'user' relationship loaded
+        $posts = Post::where('user_id', $user->id)
+            ->with([
+                'user',
+                'images' => function ($query) {
+                    $query->select('post_id', 'image_id');
+                },
+                'items' => function ($query) {
+                    $query->select('post_id', 'item_id');
+                }
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // If no posts found, return 404 error
+        if ($posts->isEmpty()) {
+            return response()->json(['message' => 'Posts not found'], 404);
+        }
+
+        $transformedPosts = PostResource::collection($posts);
+
+        // Return success response with transformed data
+        return response()->json(['success' => true, 'data' => $transformedPosts], 200);
     }
-
-    // Retrieve authenticated user
-    $user = $request->user();
-
-    // Retrieve all posts for the authenticated user with the 'user' relationship loaded
-    $posts = Post::where('user_id', $user->id)
-        ->with([
-            'user',
-            'images' => function ($query) {
-                $query->select('post_id', 'image_id');
-            },
-            'items' => function ($query) {
-                $query->select('post_id', 'item_id');
-            }
-        ])
-        ->orderBy('created_at', 'desc') 
-        ->get();
-
-    // If no posts found, return 404 error
-    if ($posts->isEmpty()) {
-        return response()->json(['message' => 'Posts not found'], 404);
-    }
-
-    $transformedPosts = PostResource::collection($posts);
-
-    // Return success response with transformed data
-    return response()->json(['success' => true, 'data' => $transformedPosts], 200);
-}
 
 
     //update
@@ -137,13 +137,13 @@ class PostController extends Controller
         $post = Post::create([
             'title' => $request->input('title'),
             'company_id' => $request->input('company_id') ?? null,
-            'status' => $status, 
+            'status' => $status,
             'user_id' => $user_id,
         ]);
 
         if ($request->has('company_id')) {
             // Create notification
-            $notification=Notification::create([
+            $notification = Notification::create([
                 'type' => 'post',
                 'post_id' => $post->id,
                 'message' => "You have a new post from a user who wants to sell their scrap to your company",
@@ -167,7 +167,6 @@ class PostController extends Controller
                         'post_id' => $post->id,
                         'image_id' => $newImage->id,
                     ]);
-
                 } catch (Exception $e) {
                     return response()->json(['error' => 'Error uploading image: ' . $e->getMessage()], 500);
                 }
@@ -304,10 +303,10 @@ class PostController extends Controller
         if ($request->user()->role_id !== 3) {
             return response()->json(['success' => false, 'message' => 'You are not the company owner'], 401);
         }
-    
+
         $status = $request->input('status');
         $notification = null;
-    
+
         if ($status == 'buy') {
             $notification = Notification::create([
                 'type' => 'reply',
@@ -331,18 +330,68 @@ class PostController extends Controller
                 'status' => 0,
             ]);
         }
-    
+
         if ($notification) {
             // Broadcast the event
             broadcast(new NotificationCreated($notification))->toOthers();
         }
-    
+
         $post->status = $status;
         $post->save();
-    
+
         return response()->json(['success' => true, 'message' => 'Status updated successfully']);
     }
 
+//================get all post that buy from each company====================
 
+    // public function historyPost(Request $request)
+    // {
+    //     $posts = Post::where('status', 'buy')
+    //         ->where('company_id', $request->user()->id)
+    //         ->orderBy('created_at', 'desc')
+    //         ->get();
+    //     $posts = PostResource::collection($posts);
+    //     return response()->json($posts);
+    // }
 
+    public function historyPost(Request $request)
+    {
+        $posts = Post::where('status', 'buy')
+            ->where('company_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        if ($posts->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot found post for this company'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => PostResource::collection($posts)
+        ]);
+    }
+    // retrive post spacifict in each company
+    public function getPostByCompany(Request $request, $id)
+    {
+        $company_id = $request->user()->id;
+        $post = Post::where('id', $id)
+            ->where('company_id', $company_id)
+            ->first();
+        if (!$post) {
+            return response()->json([
+                'success' => false, 'message' => 'Post not found for this company'
+            ], 404);
+        }
+        // return post specifict of company
+        $postResource = new PostResource($post);
+        return response()->json([
+            'success' => true, 
+            'data' => $postResource
+        ], 200);
+        
+        // result that I wnat 
+        // $history ={'id','post_id','company_id','created_at','status}
+    }
 }

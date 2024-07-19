@@ -83,6 +83,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/company/buy', [PostController::class, 'post_buy']);
         //update statusof post
         Route::post('/update/status/{id}', [PostController::class, 'update_status']);
+
+        // get all posts
+        Route::get('/company/history', [PostController::class, 'historyPost']);
+        // get specifect post by company
+        Route::get('/company/history/show/{id}', [PostController::class, 'getPostByCompany']);
     });
 
     // Comment routes
