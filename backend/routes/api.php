@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\NotificationConControlller;
+use App\Http\Controllers\API\OptionPaidController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Models\OptionPaid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -60,6 +62,11 @@ Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
 //update notification status
 Route::get('/notification/status/{id}',[NotificationConControlller::class,'markAsSeen']);
 
+//list all payment
+Route::get('/payment/list', [PaymentController::class, 'index']);
+
+//list all option
+Route::get('/option/list', [OptionPaidController::class, 'index']);
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -108,7 +115,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //payment
     Route::prefix('payment')->group(function () {
-        Route::get('/list', [PaymentController::class, 'index']);
         Route::post('/create', [PaymentController::class, 'store']);
     });
 

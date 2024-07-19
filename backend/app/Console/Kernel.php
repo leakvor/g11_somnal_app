@@ -25,6 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // $schedule->command('payments:check-deadlines')->daily();
+        $schedule->call('App\Http\Controllers\Api\PaymentController@createNotification')->daily();
     }
 
     /**

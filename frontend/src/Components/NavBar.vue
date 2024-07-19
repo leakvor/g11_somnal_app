@@ -1,5 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-success">
+  <div>
+    <nav class="navbar navbar-expand-lg bg-success">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand text-white">
         <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10" />
@@ -117,6 +118,7 @@
             </router-link>
           </li> -->
 
+
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link
               to="/post/request/sell"
@@ -209,6 +211,7 @@
             </router-link>
           </li>
 
+
           <li
             class="nav-item d-flex align-items-center me-4"
             v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
@@ -250,19 +253,20 @@
               to="/notifications"
               class="nav-link position-relative"
               :class="{ active: isActive('/notifications') }"
+              @click="resetNotificationCount"
             >
               <span
                 class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger"
                 id="notification_number"
               >
-                99
+                {{ displayedNotificationCount }}
                 <span class="visually-hidden">unread messages</span>
               </span>
               <i class="material-icons icon-align">notifications</i>
               <span class="text-below-icon">Notifications</span>
             </router-link>
           </li>
-
+          <!-- <NotificationComponent /> -->
           <li
             class="nav-item d-flex align-items-center" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
           >
@@ -304,6 +308,7 @@
                     Favorite
                   </router-link>
                 </li> -->
+
 
                 <!-- <li>
                   <router-link to="/addPost" class="dropdown-item d-flex align-items-center">
@@ -394,6 +399,7 @@
                 <small class="text-danger">{{emailError }}</small>
             </div>
 
+
             <div class="mb-3">
               <input type="password" class="form-control" id="registerPassword" v-model="password"
                 placeholder="Password" pattern=".{8,}" required />
@@ -427,19 +433,23 @@
   </div>
 </div>
 
-  
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
+// import { useToast } from 'vue-toastification'
+import NotificationComponent from './notification/NotificationComponents.vue'
 import { ref, onMounted,computed } from 'vue'
 
 
 export default {
   name: 'NavBar',
+  components:{
+    NotificationComponent
+  },
   data() {
     return {
         name: '',
@@ -474,6 +484,7 @@ export default {
       this.nameError = '';
     }
   },
+
 
   email(newEmail) {
   if(newEmail === ""){
@@ -534,10 +545,6 @@ export default {
     const authStore = useAuthStore()
     const route = useRoute()
     const router = useRouter()
-    // const toast = useToast()
-    const notification_alert = ref([])
-    // const user_info = ref(null)
-    // const onNotificationsPage = ref(false)
 
 
     const isActive = (path) => route.path === path
@@ -546,70 +553,6 @@ export default {
       authStore.logout()
       router.push('/')
     }
-
-    // async function fetchUser() {
-    //   try {
-    //     const token = localStorage.getItem('access_token')
-    //     const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`
-    //       }
-    //     })
-    //     user_info.value = response.data.data
-    //     // console.log('User Info:', user_info.value)
-    //   } catch (error) {
-    //     console.error('Error fetching user:', error)
-    //   }
-    // }
-
-    // async function getAlert() {
-    //   try {
-    //     if (!user_info.value || !user_info.value.role_id) {
-    //       throw new Error('User info or role_id is not available')
-    //     }
-
-    //     let endpoint = ''
-    //     if (user_info.value.role_id === 2) {
-    //       endpoint = 'user'
-    //     } else if (user_info.value.role_id === 3) {
-    //       endpoint = 'company'
-    //     }
-
-    //     const token = localStorage.getItem('access_token')
-    //     const response = await axios.get(
-    //       `http://127.0.0.1:8000/api/notification/${endpoint}/list/alert`,
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`
-    //         }
-    //       }
-    //     )
-
-    //     notification_alert.value = response.data.data
-    //     console.log('notification', notification_alert.value)
-    //     for (const notification of notification_alert.value) {
-    //       toast.info(notification.message)
-    //       if (notification.id) {
-    //         markAsSeen(notification.id)
-    //       }
-    //     }
-    //     // console.log('Notifications:', notification_alert.value)
-    //   } catch (error) {
-    //     console.error('Error fetching notifications:', error)
-    //   }
-    // }
-
-    // async function markAsSeen(id) {
-    //   try {
-    //     const response = await axios.get(`http://127.0.0.1:8000/api/notification/status/${id}`)
-    //     console.log(response)
-    //   } catch (error) {
-    //     console.error('Error marking notification as seen:', error)
-    //   }
-    // }
-    // const displayedNotificationCount = computed(() => {
-    //   return onNotificationsPage.value ? 0 : notification_alert.value.length
-    // })
 
 
     onMounted(async () => {
@@ -629,19 +572,13 @@ export default {
         })
       })
       
-      // await fetchUser() // Ensure user info is fetched before calling getAlert
-      // getAlert() // Call getAlert after fetchUser completes
     })
 
     return {
       authStore,
       isActive,
       logout,
-      notification_alert,
-      // fetchUser,
-      // getAlert,
-      // markAsSeen,
-      // displayedNotificationCount
+
     }
   },
   mounted() {
@@ -727,6 +664,7 @@ export default {
           this.password = ''
           this.alertMessage = 'Login successfully.';
           $('#alertModal').modal('show');
+
 
           this.isSuccess = true;
           this.isError = false;

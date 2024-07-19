@@ -16,11 +16,18 @@ class Payment extends Model
         'cvv',
         'expiration_date',
         'user_id',
-        'price'
+        'price',
+        'option_paid_id',
+        'status',
     ];
 
     // Relationship with user
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
+    }
+
+    //Relationship with option paid
+    public function optionPaid(): BelongsTo{
+        return $this->belongsTo(OptionPaid::class);
     }
 }

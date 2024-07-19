@@ -9,9 +9,7 @@ use App\Http\Controllers\Admin\{
     ItemController,
     HistoryMarketprices,
     RevenueController,
-    DashboardController
-
-
+    OptionPayController
 };
 
 
@@ -80,7 +78,7 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('companies', CompanyController::class);
         Route::resource('items',ItemController::class);
         Route::resource('history',HistoryMarketprices::class);
-        // Route::resource('dashboard',DashboardController::class);
+        Route::resource('optionPaid',OptionPayController::class);
 
  
 

@@ -194,6 +194,9 @@ class AuthController extends Controller
             if($request->has('longitude')){
                 $user->longitude = $request->longitude;
             }
+            if($request->has('address')){
+                $user->address = $request->address;
+            }
     
             $user->save();
     

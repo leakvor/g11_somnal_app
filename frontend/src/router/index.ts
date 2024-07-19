@@ -131,9 +131,10 @@ const router = createRouter({
     },
     //pyment
       {
-      path:"/payment",
+      path:"/payment/:id",
       name:"payment",
-      component:() => import('../views/Web/userInfo/PaymentPage.vue')
+      component:() => import('../views/Web/userInfo/PaymentPage.vue'),
+      props:true
     },
     {
       path: '/company/dashboard',

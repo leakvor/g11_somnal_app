@@ -80,8 +80,10 @@
 import axios from 'axios';
 import { useAuthStore } from '../../../stores/auth-store';
 import { useRouter } from 'vue-router';
+import leaflet from 'leaflet';
 
 export default {
+  props: ['id'],
   data() {
     return {
       cardName: '',
@@ -153,6 +155,7 @@ export default {
       }
     },
     async fetchPayment() {
+      console.log(this.updateProfile());
       try {
         this.validateCVV(this.cvv);
         
@@ -164,14 +167,14 @@ export default {
         if (!token) {
           throw new Error('No token found');
         }
-
-        const response = await axios.post(
+          const response = await axios.post(
           'http://127.0.0.1:8000/api/payment/create',
           {
             cardName: this.cardName,
             cardNumber: this.cardNumber,
             cvv: this.cvv,
             expiration_date: this.expiration_date,
+            option_paid_id:this.id,
           },
           {
             headers: {
@@ -189,13 +192,14 @@ export default {
           await this.updateProfile();
           this.authStore.logout();
           this.router.push('/');
-        }
+        } 
       } catch (error) {
         this.cardNumberMessage = 'Invalid card number';
       }
     },
     //update role
     async updateProfile() {
+      
   try {
     const token = localStorage.getItem('access_token');
     if (!token) {
@@ -206,12 +210,24 @@ export default {
     const longitude = Math.random() * (104.92 - 104.85) + 104.85;
     const latitude = Math.random() * (11.58 - 11.55) + 11.55;
 
+    // Reverse geocoding to get the address using Nominatim API
+    const nominatimUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`;
+
+    const geocodeResponse = await axios.get(nominatimUrl);
+
+    if (!geocodeResponse.data) {
+      throw new Error('Failed to reverse geocode coordinates');
+    }
+
+    const address = geocodeResponse.data.display_name || 'Unknown address';
+    console.log('update',address);
     const response = await axios.post(
       'http://127.0.0.1:8000/api/updateProfile',
       {
         role_id: this.role_id,
         longitude,
         latitude,
+        address,
       },
       {
         headers: {
@@ -221,11 +237,12 @@ export default {
       }
     );
 
-    // Handle response
+    // Handle the response as needed
   } catch (error) {
-    console.error(error);
+    console.error('Error updating profile:', error);
   }
 }
+
   },
 }
 </script>

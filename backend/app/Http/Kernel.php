@@ -66,4 +66,6 @@ class Kernel extends HttpKernel
         'front'  => \App\Http\Middleware\FrontMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
+
+    
 }
