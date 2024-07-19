@@ -342,56 +342,27 @@ class PostController extends Controller
         return response()->json(['success' => true, 'message' => 'Status updated successfully']);
     }
 
-//================get all post that buy from each company====================
+//================history====================
 
-    // public function historyPost(Request $request)
-    // {
-    //     $posts = Post::where('status', 'buy')
-    //         ->where('company_id', $request->user()->id)
-    //         ->orderBy('created_at', 'desc')
-    //         ->get();
-    //     $posts = PostResource::collection($posts);
-    //     return response()->json($posts);
-    // }
-
+// get all post that buy from each company
     public function historyPost(Request $request)
     {
         $posts = Post::where('status', 'buy')
             ->where('company_id', $request->user()->id)
             ->orderBy('created_at', 'desc')
             ->get();
+            // check if company no post
         if ($posts->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Cannot found post for this company'
             ], 404);
         }
-
+        // return if have post on company
         return response()->json([
             'success' => true,
+
             'data' => PostResource::collection($posts)
         ]);
-    }
-    // retrive post spacifict in each company
-    public function getPostByCompany(Request $request, $id)
-    {
-        $company_id = $request->user()->id;
-        $post = Post::where('id', $id)
-            ->where('company_id', $company_id)
-            ->first();
-        if (!$post) {
-            return response()->json([
-                'success' => false, 'message' => 'Post not found for this company'
-            ], 404);
-        }
-        // return post specifict of company
-        $postResource = new PostResource($post);
-        return response()->json([
-            'success' => true, 
-            'data' => $postResource
-        ], 200);
-        
-        // result that I wnat 
-        // $history ={'id','post_id','company_id','created_at','status}
     }
 }

@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand-lg bg-success">
+  <nav class="navbar navbar-expand-lg bg-success">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand text-white">
         <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10" />
@@ -54,105 +53,71 @@
           </li>
 
           <li>
-            <button @click="logout" class="dropdown-item d-flex align-items-center">
-                    <i class="material-icons icon-align">logout</i>Logout
-                  </button>
+            <router-link to="/logout" @click="authStore.logout()" class="dropdown-item d-flex align-items-center">
+              <i class="material-icons icon-align">logout</i>Logout
+            </router-link>
           </li>
         </ul>
       </div>
-      <button
-        class="navbar-toggler position"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler position" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li
-            class="nav-item me-4"
-          >
+          <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
           </li>
 
-          <!-- <li
-            class="nav-item me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
-            <router-link
-              to="/post_view"
-              class="nav-link"
-              :class="{ active: isActive('/post_view') }"
-            >
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
-          </li> -->
+          </li>
 
-          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link
-              to="/company/revenue"
-              class="nav-link"
-              :class="{ active: isActive('/company/revenue') }"
-            >
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+            <router-link to="/company/revenue" class="nav-link" :class="{ active: isActive('/company/revenue') }">
               <i class="material-icons">attach_money</i>
               <span>Revenue</span>
             </router-link>
-          </li> -->
-
-          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link
-              to="/company/dashboard"
-              class="nav-link"
-              :class="{ active: isActive('/company/dashboard') }"
-            >
-              <i class="material-icons">dashboard</i>
-              <span>Dashboard</span>
-            </router-link>
-          </li> -->
+          </li>
 
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link
-              to="/post/request/sell"
-              class="nav-link"
-              :class="{ active: isActive('/post/request/sell') }"
-            >
+            <router-link to="/company/dashboard" class="nav-link" :class="{ active: isActive('/company/dashboard') }">
+              <i class="material-icons">dashboard</i>
+              <span>Dashboard</span>
+            </router-link>
+          </li>
+
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+            <router-link to="/post/request/sell" class="nav-link" :class="{ active: isActive('/post/request/sell') }">
               <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item me-4"
-            v-if="
-              authStore.isAuthenticatedUser ||
-              !authStore.isAuthenticatedUser ||
-              !authStore.isAuthenticatedCompany
-            "
-          >
+          <li class="nav-item me-4" v-if="
+            authStore.isAuthenticatedUser ||
+            !authStore.isAuthenticatedUser ||
+            !authStore.isAuthenticatedCompany
+          ">
             <router-link to="/service" class="nav-link" :class="{ active: isActive('/service') }">
               <i class="material-icons">engineering</i>
               <span>Services</span>
             </router-link>
           </li>
 
-          <!-- <li
-            class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
+          <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/about" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
               <span>About Us</span>
             </router-link>
-          </li> -->
+          </li>
           <!-- <li
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
@@ -169,11 +134,8 @@
             </router-link>
           </li> -->
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-            <router-link
-              to="/favorite-page"
-              class="nav-link position-relative"
-              :class="{ active: isActive('/favorite-page') }"
-            >
+            <router-link to="/favorite-page" class="nav-link position-relative"
+              :class="{ active: isActive('/favorite-page') }">
               <i class="material-icons">favorite</i>
               <span>Favorite Item</span>
             </router-link>
@@ -191,18 +153,11 @@
           </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-            <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
-              <i class="material-icons">map</i>
-              <span>Map</span>
-            </router-link>
-          </li>
-
-          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
               <i class="material-icons">payment</i>
               <span>Payment</span>
             </router-link>
-          </li> -->
+          </li>
 
           <li class="nav-item me-4" v-if="!authStore.isAuthenticatedCompany">
             <router-link to="/partner" class="nav-link" :class="{ active: isActive('/partner') }">
@@ -211,81 +166,42 @@
             </router-link>
           </li>
 
-
-          <li
-            class="nav-item d-flex align-items-center me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
-            <button
-              
-              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3" data-bs-toggle="modal"
-              data-bs-target="#loginModal"
-              >Login</button>
-            <button to="/register" class="nav-link btn btn-register pe-3 ps-3" data-bs-toggle="modal" data-bs-target="#registerModal"
-              >Register</button
-            >
+          <li class="nav-item d-flex align-items-center me-4"
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
+            <router-link to="/login"
+              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3">Login</router-link>
+            <router-link to="/register" class="nav-link btn btn-register pe-3 ps-3">Register</router-link>
           </li>
 
-          <li
-            class="nav-item d-flex align-items-center me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
-            <router-link
-              to="/chat"
-              class="nav-link position-relative"
-              :class="{ active: isActive('/chat') }"
-            >
-              <span
-                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                >+99 <span class="visually-hidden">unread messages</span></span
-              >
+          <li class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+            <router-link to="/chat" class="nav-link position-relative" :class="{ active: isActive('/chat') }">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">+99 <span
+                  class="visually-hidden">unread messages</span></span>
 
               <i class="material-icons icon-align">chat_bubble</i>
               <span class="text-below-icon">Chat</span>
             </router-link>
           </li>
 
-          <li
-            class="nav-item d-flex align-items-center me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
-          <router-link
-              to="/notifications"
-              class="nav-link position-relative"
-              :class="{ active: isActive('/notifications') }"
-              @click="resetNotificationCount"
-            >
-              <span
-                class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger"
-                id="notification_number"
-              >
-                {{ displayedNotificationCount }}
-                <span class="visually-hidden">unread messages</span>
-              </span>
+          <li class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+            <router-link to="/notifications" class="nav-link position-relative"
+              :class="{ active: isActive('/notifications') }">
+              <span class="position-absolute top-0 start-50 ms-3 translate-middle badge rounded-pill bg-danger"
+                id="notification_number">+99 <span class="visually-hidden">unread messages</span></span>
               <i class="material-icons icon-align">notifications</i>
-              <span class="text-below-icon">Notifications</span>
+              <span class="text-below-icon">Notifications </span>
             </router-link>
           </li>
-          <!-- <NotificationComponent /> -->
-          <li
-            class="nav-item d-flex align-items-center" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-          >
+
+          <li class="nav-item d-flex align-items-center"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
             <div class="profile-dropdown dropdown-two">
-              <router-link
-                to="/"
-                href="#"
-                class="d-flex align-items-center"
-                role="button"
-                id="profileDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-                  alt="Profile"
-                  class="mb-2"
-                  style="width: 40px; height: 40px; border-radius: 50%"
-                />
+              <router-link to="/" href="#" class="d-flex align-items-center" role="button" id="profileDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
+                  alt="Profile" class="mb-2" style="width: 40px; height: 40px; border-radius: 50%" />
               </router-link>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li>
@@ -309,7 +225,6 @@
                   </router-link>
                 </li> -->
 
-
                 <!-- <li>
                   <router-link to="/addPost" class="dropdown-item d-flex align-items-center">
                     <i class="material-icons icon-align">post_add</i>
@@ -325,15 +240,6 @@
               </ul>
             </div>
           </li>
-          <!-- <li
-            class="nav-item me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-          >
-            <router-link to="/companies" class="nav-link" :class="{ active: isActive('/about') }">
-              <i class="material-icons">info</i>
-              <span>Companies</span>
-            </router-link>
-          </li> -->
         </ul>
       </div>
     </div>
@@ -399,7 +305,6 @@
                 <small class="text-danger">{{emailError }}</small>
             </div>
 
-
             <div class="mb-3">
               <input type="password" class="form-control" id="registerPassword" v-model="password"
                 placeholder="Password" pattern=".{8,}" required />
@@ -433,23 +338,19 @@
   </div>
 </div>
 
-</div>
+  
 </template>
 
 <script>
 import axios from 'axios'
 import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
-// import { useToast } from 'vue-toastification'
-// import NotificationComponent from './notification/NotificationComponents.vue'
+import { useToast } from 'vue-toastification'
 import { ref, onMounted,computed } from 'vue'
 
 
 export default {
   name: 'NavBar',
-  components:{
-    // NotificationComponent
-  },
   data() {
     return {
         name: '',
@@ -484,7 +385,6 @@ export default {
       this.nameError = '';
     }
   },
-
 
   email(newEmail) {
   if(newEmail === ""){
@@ -546,7 +446,6 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
-
     const isActive = (path) => route.path === path
 
     const logout = () => {
@@ -554,31 +453,10 @@ export default {
       router.push('/')
     }
 
-
-    onMounted(async () => {
-      const navLinks = document.querySelectorAll('.nav-link')
-      navLinks.forEach((navLink) => {
-        navLink.addEventListener('click', (event) => {
-          navLinks.forEach((link) => link.classList.remove('active'))
-          event.currentTarget.classList.add('active')
-
-          if (window.innerWidth <= 995) {
-            const navbarToggle = document.querySelector('.navbar-toggler')
-            const navbarNav = document.getElementById('navbarNav')
-            if (navbarNav.classList.contains('show')) {
-              navbarToggle.click()
-            }
-          }
-        })
-      })
-      
-    })
-
     return {
       authStore,
       isActive,
-      logout,
-
+      logout
     }
   },
   mounted() {
@@ -665,7 +543,6 @@ export default {
           this.alertMessage = 'Login successfully.';
           $('#alertModal').modal('show');
 
-
           this.isSuccess = true;
           this.isError = false;
           setTimeout(() => {
@@ -701,11 +578,27 @@ export default {
     this.passwordError = '';
   }
   },
+  mounted() {
+    const navLinks = document.querySelectorAll('.nav-link')
+    navLinks.forEach((navLink) => {
+      navLink.addEventListener('click', (event) => {
+        navLinks.forEach((link) => link.classList.remove('active'))
+        event.currentTarget.classList.add('active')
+
+        if (window.innerWidth <= 995) {
+          const navbarToggle = document.querySelector('.navbar-toggler')
+          const navbarNav = document.getElementById('navbarNav')
+          if (navbarNav.classList.contains('show')) {
+            navbarToggle.click()
+          }
+        }
+      })
+    })
+  },
+  methods: {
+  }
 }
-
 </script>
-
-
 <style scoped>
 .navbar {
   background-color: #fff;
@@ -835,6 +728,7 @@ export default {
     display: block;
     position: relative;
   }
+
   .nav-item {
     width: 100%;
   }
