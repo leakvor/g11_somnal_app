@@ -29,6 +29,10 @@
                               placeholder="Enter Price" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200"
                           />
                       </div>
+                      <div class="flex flex-col space-y-2">
+                          <label for="description" class="text-gray-700 select-none font-medium">Description</label>
+                            <textarea name="description" id="description" placeholder="input description" value ="{{old('description')}}" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200"></textarea>
+                      </div>
 
                       <div class="flex flex-col space-y-2">
                           <label for="image" class="text-gray-700 select-none font-medium">Image</label>

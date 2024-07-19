@@ -36,6 +36,7 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/Web/About/AboutUs.vue')
     },
+    // category
     {
       path:'/adjay/:id',
       name:'adjay',
@@ -46,6 +47,14 @@ const router = createRouter({
       path:"/service",
       name:"service",
       component:() => import('../views/Web/Category/ServiceView.vue')
+
+    }
+    ,
+    {
+      path:"/show_card/:id",
+      name:"show-card",
+      component:()=>import('../views/Web/Category/ShowItemView.vue'),
+      props:true
 
     },
     {
@@ -60,7 +69,7 @@ const router = createRouter({
     },
     {
     path:"/profile",
-    name:"profile",
+    name:"profile user",
     component:() => import('../views/User/UserProfileView.vue')
   },
     {
@@ -82,7 +91,100 @@ const router = createRouter({
       path: '/partner',
       name: 'partner',
       component: () => import('../views/Web/partners/PartnerView.vue')
-    }
+    },
+    {
+      path: '/favorite-page',
+      name: 'favorite page',
+      component: () => import('../views/Web/userInfo/FavoritePage.vue')
+    },
+    {
+      path:"/post",
+      name:"post",
+      component:() => import('../views/Web/Post/PostCard.vue')
+    },
+    //post view
+    {
+      path:"/post_view",
+      name:"post view",
+      component:() => import('../views/Web/Post/PostView.vue')
+    },
+      {
+      path:"/post/create",
+      name:"post",
+      component:() => import('../views/Web/Post/PostCreate.vue')
+    },
+      {
+      path:"/create/post",
+      name:"post create in home page",
+      component:() => import('../views/Web/Post/HomepagePost.vue')
+    },
+      {
+      path:"/post/edit/:id",
+      name:"edit_post",
+      component:() => import('../views/Web/Post/PostEdit.vue'),
+      props: true,
+    },
+      {
+      path:"/messenger",
+      name:"messenger",
+      component:() => import('../views/Web/Chat/UserChat.vue')
+    },
+    //pyment
+      {
+      path:"/payment/:id",
+      name:"payment",
+      component:() => import('../views/Web/userInfo/PaymentPage.vue'),
+      props:true
+    },
+    {
+      path: '/company/dashboard',
+      name: 'CompanyDashboard',
+      component: () => import('../views/Company/CompanyDashboard.vue')
+    },
+    //company revenues
+    {
+      path: '/company/revenue',
+      name: 'companyRevenue',
+      component: () => import('../views/Web/Company/CompanyRevenue.vue')
+    },
+    // see all company
+    {
+      path: '/companies',
+      name: 'companies',
+      component: () => import('../views/Web/Company/ShowAllCompanies.vue')
+    },
+
+    // customer post to sell in specific company
+    {
+      path:"/post/request/sell",
+      name:"requestSell",
+      component:() => import('../views/Web/Post/RequestSell.vue')
+    },
+    {
+      path:"/show/post/:id",
+      name:"showPost",
+      component:() => import('../views/Web/Post/ShowPost.vue'),
+      props: true,
+    },
+    //show map
+    {
+      path:"/map",
+      name:"show Map",
+      component:() => import('../views/Web/Map/MapView.vue'),
+      props: true,
+    },
+    {
+      path: '/notifications',
+      name: 'notifications',
+    component: () => import('../views/Web/notification/NotificationVue.vue') 
+    },
+    //sell now
+    {
+      path: '/post/list',
+      name: 'show all sell',
+      component: () => import('../views/Web/Post/PostSell.vue') 
+    },
+
 
   ]
 })

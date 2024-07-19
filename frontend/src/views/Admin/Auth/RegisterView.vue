@@ -43,7 +43,6 @@ import { useRouter } from 'vue-router'
 export default {
   setup() {
     const router = useRouter()
-
     const { handleSubmit, isSubmitting, errors } = useForm({
       validationSchema: yup.object({
         email: yup
