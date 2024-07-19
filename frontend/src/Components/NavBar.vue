@@ -441,14 +441,14 @@ import axios from 'axios'
 import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
 // import { useToast } from 'vue-toastification'
-import NotificationComponent from './notification/NotificationComponents.vue'
+// import NotificationComponent from './notification/NotificationComponents.vue'
 import { ref, onMounted,computed } from 'vue'
 
 
 export default {
   name: 'NavBar',
   components:{
-    NotificationComponent
+    // NotificationComponent
   },
   data() {
     return {
