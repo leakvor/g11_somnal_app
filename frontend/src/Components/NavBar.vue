@@ -664,15 +664,20 @@
       </div>
     </div>
   </div>
+<EmailNotification v-if="showEmailNotification"></EmailNotification>
 </template>
 
 <script>
 import axios from 'axios';
 import { useAuthStore } from '../stores/auth-store';
 import { useRoute, useRouter } from 'vue-router';
+import EmailNotification from './dialogs/EmailNotification.vue';
 
 export default {
   name: 'NavBar',
+  components:{
+    EmailNotification
+  },
   data() {
     return {
       name: '',
@@ -705,6 +710,7 @@ export default {
       // resetLinkSent: false,
       // passwordReset: false,
       // apiError: '',
+      showEmailNotification:false
 
     };
   },
@@ -843,7 +849,13 @@ export default {
     $('#resetCodeModal').on('hidden.bs.modal', this.clearModal);
   },
   methods: {
+    async showNotification() {
+      // Emit the 'show-notification' event on event bus
+      Vue.prototype.$bus.$emit('show-notification');
+    },
     async register() {
+      this.showEmailNotification = true;
+      $('#registerModal').modal('hide');
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/register', {
           name: this.name,
@@ -852,18 +864,18 @@ export default {
           password: this.password,
           role_id: this.role_id,
         });
-        console.log(response.data);
-        $('#registerModal').modal('hide');
+        this.showEmailNotification = false;
         this.clearModal();
         this.alertMessage = 'Register successfully.';
         $('#alertModal').modal('show');
         this.isSuccess = true;
         this.isError = false;
-
+        
         setTimeout(() => {
           $('#alertModal').modal('hide');
         }, 2000);
       } catch (error) {
+        this.showEmailNotification = false;
         console.error('Error registering:', error);
         $('#registerModal').modal('hide');
         this.clearModal();
@@ -912,10 +924,13 @@ export default {
     }
   },
     async sendResetLink() {
+      this.showEmailNotification = true;
+      $('#forgotPasswordModal').modal('hide');
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/forgotPassword', {
         email: this.email,
       });
+      this.showEmailNotification= false;
       this.resetEmail = this.email; // store the email address
       $('#forgotPasswordModal').modal('hide');
       $('#resetCodeModal').modal('show');
@@ -1084,6 +1099,7 @@ export default {
   background: #ced4da;
 }
 
+
 @media (max-width: 991.98px) {
   .navbar-nav {
     flex-direction: column;
@@ -1126,6 +1142,7 @@ export default {
     top: 0;
   }
 }
+
 
 @media (max-width: 885px) {
   .dropdown-one {
