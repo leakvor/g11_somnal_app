@@ -35,6 +35,7 @@ class PostController extends Controller
         $posts = PostResource::collection($posts);
         return response()->json($posts);
     }
+
     public function sell()
     {
         $posts = Post::where('status', 'pending')
@@ -46,40 +47,39 @@ class PostController extends Controller
 
     // see all of my post
     public function show_post(Request $request)
-    {
-        // Ensure user is authenticated
-        if (!$request->user()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-    
-        // Retrieve authenticated user
-        $user = $request->user();
-    
-        // Retrieve all posts for the authenticated user with the 'user' relationship loaded
-        $posts = Post::where('user_id', $user->id)
-            ->with([
-                'user',
-                'images' => function ($query) {
-                    $query->select('post_id', 'image_id');
-                },
-                'items' => function ($query) {
-                    $query->select('post_id', 'item_id');
-                }
-            ])
-            ->orderBy('created_at', 'desc') // Sort by created_at in descending order
-            ->get();
-    
-        // If no posts found, return 404 error
-        if ($posts->isEmpty()) {
-            return response()->json(['message' => 'Posts not found'], 404);
-        }
-    
-        // Transform the collection of posts using PostResource
-        $transformedPosts = PostResource::collection($posts);
-    
-        // Return success response with transformed data
-        return response()->json(['success' => true, 'data' => $transformedPosts], 200);
+{
+    // Ensure user is authenticated
+    if (!$request->user()) {
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    // Retrieve authenticated user
+    $user = $request->user();
+
+    // Retrieve all posts for the authenticated user with the 'user' relationship loaded
+    $posts = Post::where('user_id', $user->id)
+        ->with([
+            'user',
+            'images' => function ($query) {
+                $query->select('post_id', 'image_id');
+            },
+            'items' => function ($query) {
+                $query->select('post_id', 'item_id');
+            }
+        ])
+        ->orderBy('created_at', 'desc') 
+        ->get();
+
+    // If no posts found, return 404 error
+    if ($posts->isEmpty()) {
+        return response()->json(['message' => 'Posts not found'], 404);
+    }
+
+    $transformedPosts = PostResource::collection($posts);
+
+    // Return success response with transformed data
+    return response()->json(['success' => true, 'data' => $transformedPosts], 200);
+}
 
 
     //update

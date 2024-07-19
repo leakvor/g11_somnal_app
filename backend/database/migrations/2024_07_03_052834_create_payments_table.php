@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string("cardName")->nullable();
-            $table->string("cardNumber")->nullable();
-            $table->string('cvv',3)->nullable();
-            $table->string('expiration_date', 5)->nullable();
-            $table->integer('user_id')->nullable();
-            $table->integer('option_paid_id')->nullable();
+            $table->string("cardName");
+            $table->string("cardNumber");
+            $table->string('cvv',3);
+            $table->string('expiration_date', 5);
+            $table->integer('user_id');
+            $table->integer('option_paid_id');
             $table->boolean('status')->default(false);
             $table->softDeletes();
             $table->timestamps();
