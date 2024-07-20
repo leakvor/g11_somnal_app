@@ -37,6 +37,16 @@ class Post extends Model
        return $this->hasMany(Post_Image::class, 'post_id');
     }
 
+    // public function items(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Item::class, 'post_items', 'post_id', 'item_id');
+    // }
+
+    // // Images relationship
+    // public function images(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Image::class, 'post_images', 'post_id', 'image_id');
+    // }
 
 
     //comment
