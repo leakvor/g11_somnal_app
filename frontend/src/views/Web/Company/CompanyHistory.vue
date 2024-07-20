@@ -34,21 +34,19 @@
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
-          <th>ID</th>
-          <th>User ID</th>
           <th>Post ID</th>
+          <th>User ID</th>
           <th>Date</th>
           <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="post in  posts" :key="post.id">
-          <td>{{ post.id }}</td>
-            <td>{{ post.user.id }}</td>
-            <!-- <td>{{ post.post.id }}</td> -->
-            <td>{{ new Date(post.created_at).toLocaleDateString() }}</td>
-            <td>{{ post.status }}</td>
+        <tr v-for="history in  posts" :key="history.id">
+          <td>{{ history.id }}</td>
+            <td>{{ history.user.id }}</td>
+            <td>{{ new Date(history.created_at).toLocaleDateString() }}</td>
+            <td>{{ history.status }}</td>
           <td>
             <button class="w-20 bg-green-500 hover:bg-orange-600 text-white p-2 rounded border-0">
                 <i class="fas fa-eye"></i>
