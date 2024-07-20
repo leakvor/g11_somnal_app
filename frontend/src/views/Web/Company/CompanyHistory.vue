@@ -43,17 +43,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="history in  histories" :key="history.id">
-        <!-- <tr> -->
-          <td>{{ history.id }}</td>
-            <td>{{ history.user_id }}</td>
-            <td>{{ history.post_id }}</td>
-            <td>{{ new Date(history.created_at).toLocaleDateString() }}</td>
-            <td>{{ history.status }}</td>
+        <tr v-for="post in  posts" :key="post.id">
+          <td>{{ post.id }}</td>
+            <td>{{ post.user.id }}</td>
+            <!-- <td>{{ post.post.id }}</td> -->
+            <td>{{ new Date(post.created_at).toLocaleDateString() }}</td>
+            <td>{{ post.status }}</td>
           <td>
             <button class="w-20 bg-green-500 hover:bg-orange-600 text-white p-2 rounded border-0">
                 <i class="fas fa-eye"></i>
-              </button>    
+              </button>  
           </td>
         </tr>
       </tbody>
@@ -71,33 +70,24 @@ export default {
   data() {
     return {
       searchInput: '',
-      histories: []
+      posts: []
     }
   },
   methods: { 
-      async getHistory() {
+    async getHistory(){
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/post/company/history", {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/post/company/history', {
           headers: {
-            'Authorization': `Bearer ${this.token}`
+            Authorization: `Bearer ${token}`
           }
-        });
-        this.histories = response.data.data;
-        console.log('this.histories', this.histories);
+        })
+        this.posts = response.data.data
+        console.log('coma',this.posts)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    }
-    // async getHistory(){
-    //   try {
-    //     const response = await axios.get("http://127.0.0.1:8000/api/post/company/history");
-    //     this.histories = response.data.data;
-    //     console.log('this.histories');   
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-     
-    // },
+  },
   },
   mounted(){
     this.getHistory();
