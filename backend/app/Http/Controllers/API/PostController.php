@@ -125,8 +125,10 @@ class PostController extends Controller
     // create post with multiple images===============
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'company_id' => 'nullable|integer',
+            'items'=>'nullable|string'
         ]);
 
         // Set a default status if not provided
@@ -174,18 +176,21 @@ class PostController extends Controller
             }
         }
 
-        // Attach items to the post
-        $items = explode(',', $request->input('items'));
-        foreach ($items as $itemId) {
-            if (Item::where('id', $itemId)->exists()) {
-                Post_Item::create([
-                    'post_id' => $post->id,
-                    'item_id' => $itemId,
-                ]);
-            } else {
-                return response()->json(['error' => "Item ID $itemId does not exist"], 422);
+        if($request->items!=null ){
+            $items = explode(',', $request->input('items'));
+            foreach ($items as $itemId) {
+                if (Item::where('id', $itemId)->exists()) {
+                    Post_Item::create([
+                        'post_id' => $post->id,
+                        'item_id' => $itemId,
+                    ]);
+                } else {
+                    return response()->json(['error' => "Item ID $itemId does not exist"], 422);
+                }
             }
         }
+        // Attach items to the post
+       
 
         return response()->json(['message' => 'Post created successfully', 'post' => $post], 201);
     }
@@ -195,15 +200,14 @@ class PostController extends Controller
     //edit post
     public function edit(Request $request, $id)
     {
-        // return $request;
         // Get the post
         $post = Post::findOrFail($id);
-        // return $post->user_id;
+    
         // Check if the current user is the post owner
         if ($post->user_id != $request->user()->id) {
             return response()->json(['error' => 'You are not authorized to update this post'], 403);
         }
-
+    
         // Update the post
         $post->update([
             'title' => $request->input('title', $post->title),
@@ -211,62 +215,102 @@ class PostController extends Controller
             'status' => $request->input('status', $post->status),
             'user_id' => $request->user()->id,
         ]);
-        return $post;
+    
+        // // Handle image updates
+        // if ($request->hasFile('images')) {
+        //     // $post->images()->delete();
+        //     foreach ($request->file('images') as $img) {
+        //         try {
+        //             $ext = $img->getClientOriginalExtension();
+        //             $imageName = uniqid() . '.' . $ext;
+        //             $img->move(public_path('uploads'), $imageName);
+        //             $newImage = Image::create([
+        //                 'image' => $imageName,
+        //             ]);
 
-        // Handle image updates
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                try {
-                    // Check if the image already exists
-                    $existingImage = Image::where('image', $image->getClientOriginalName())->first();
-                    if ($existingImage) {
-                        // Update the existing image
-                        $existingImage->update([
-                            'image' => $image->getClientOriginalName(),
-                        ]);
-                        $post->images()->syncWithoutDetaching($existingImage->id);
-                    } else {
-                        // Create a new image
-                        $imageName = $image->getClientOriginalName();
-                        $imagePath = $image->storeAs('public/images', $imageName);
-                        $newImage = Image::create([
-                            'image' => $imageName,
-                            // 'path' => Storage::url($imagePath),
-                        ]);
-                        $post->images()->attach($newImage->id);
-                    }
-                } catch (Exception $e) {
-                    // Handle image upload errors
-                    return response()->json(['error' => 'Error uploading image: ' . $e->getMessage()], 500);
-                }
-            }
-        }
+        //             // Associate the image with the post
+        //             Post_Image::create([
+        //                 'post_id' => $post->id,
+        //                 'image_id' => $newImage->id,
+        //             ]);
+
+        //         } catch (Exception $e) {
+        //             return response()->json(['error' => 'Error uploading image: ' . $e->getMessage()], 500);
+        //         }
+        //     }
+        // }
 
         // Handle item updates
         if ($request->input('items')) {
+            // Detach old items
+            $post->items()->delete(); // This deletes the records in the pivot table
+    
             $items = explode(',', $request->input('items'));
             foreach ($items as $itemId) {
                 // Check if the item already exists
                 $existingItem = Item::find($itemId);
                 if ($existingItem) {
-                    // Update the existing item
-                    $existingItem->update([
-                        'name' => $request->input('item_name'),
+                    // Associate the existing item with the post
+                    Post_Item::create([
+                        'post_id' => $post->id,
+                        'item_id' => $existingItem->id,
                     ]);
-                    $post->items()->syncWithoutDetaching($existingItem->id);
                 } else {
                     // Create a new item
                     $newItem = Item::create([
                         'name' => $request->input('item_name'),
                     ]);
-                    $post->items()->attach($newItem->id);
+                    Post_Item::create([
+                        'post_id' => $post->id,
+                        'item_id' => $newItem->id,
+                    ]);
                 }
             }
         }
-
+    
         return response()->json(['message' => 'Post updated successfully', 'post' => $post], 200);
     }
-
+    
+    //add new image to post
+    public function add_image_post(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+    
+        if ($request->hasFile('image')) {
+    
+            // Validate the image
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+    
+            // Upload the new image
+            $newImage = $request->file('image');
+            $name = uniqid() . '.' . $newImage->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            $newImage->move($destinationPath, $name);
+    
+            // Create the new image record in the database
+            $newImageRecord = Image::create(['image' => $name]);
+    
+            // Create the post-image relationship
+            Post_Image::create([
+                'post_id' => $post->id,
+                'image_id' => $newImageRecord->id,
+            ]);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Image uploaded and associated with the post successfully.',
+                'data' => $newImageRecord
+            ]);
+        }
+    
+        return response()->json([
+            'success' => false,
+            'message' => 'No image uploaded.'
+        ], 400);
+    }
+    
 
     //get all post to each company
     public function post_add_to_company(Request $request)

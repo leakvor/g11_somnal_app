@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\NotificationConControlller;
 use App\Http\Controllers\API\OptionPaidController;
 use App\Http\Controllers\Api\PaymentController;
@@ -150,3 +151,10 @@ Route::prefix('history')->group(function () {
     Route::get('/list', [HistoryMarketPriceController::class, 'index']);
     Route::delete('/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
 });
+
+
+//update image
+Route::post('/images/update/{id}', [ImageController::class, 'update'])->name('images.update');
+
+//add image to post
+Route::post('posts/{id}/add-image', [PostController::class, 'add_image_post']);
