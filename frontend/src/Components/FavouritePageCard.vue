@@ -1,29 +1,45 @@
-<!-- FavouritePageCard.vue -->
 <template>
-  <div class="container px-5 py-10 mx-auto">
-    <h1 class="font-bold mb-15 text-black">Favourites Page</h1>
-    <div class="adjay mt-10 p-10 d-flex flex-wrap gap-5">
+  <div class="container">
+    <h1 class="mt-20 color-dark text-center mb-4">List favorit of items</h1>
+    <div class="input-group hover:bg-orange-600 p-2">
+      <input
+        type="search"
+        class="form-control"
+        id="search-btn"
+        name="search"
+        placeholder="Search term..."
+        v-model="textInput"
+      />
+      <button type="button" class="btn btn-success">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    <!-- ===============list favorite=================== -->
+    <div class="favorit mt-10 mb-3 d-flex justify-content-start flex-wrap gap-5">
       <div
-        class="card bg-white-200 hover:bg-gray-200 shadow-lg"
-        v-for="fav in favorites"
+        class="card bg-gray-200 hover:bg-green-200 shadow-lg"
+        v-for="fav in filteredFavItems"
         :key="fav.id"
       >
-        <img
-          :src="`http://127.0.0.1:8000/scrap/${fav.item.image}`"
-          class="card-img-top mt-5"
-          alt="..."
-        />
         <div class="card-body">
-          <div class="title text-center">
-            <h3 class="card-title">{{ fav.item.name }}</h3>
-            <h5>{{ fav.item.price }}$</h5>
+          <img
+            :src="`http://127.0.0.1:8000/scrap/${fav.item.image}`"
+            class="card-img-top"
+            alt="..."
+          />
+          <div class="title text-start mt-3">
+            <h5 class="card-title">{{ fav.item.name }}</h5>
+            <p class="des">{{ fav.item.description }}</p>
+            <h5 class="card-text -mt-3">{{ fav.item.price }}៛</h5>
           </div>
-
-          <div class="icon d-flex justify-content-evenly w-100 justify-content-around mt-4 mb-3">
-            <a href="#" class="circle-icon" style="background: green">
-              <i class="bi bi-chat-dots" ></i>
-            </a>
-            <button @click="confirmDeletePost(fav.id)" class="circle-icon delete-button">
+          <div class="icon d-flex justify-content-between mt-4">
+            <button class="w-20 btn btn-outline-success rounded hover:bg-orange-600">
+              <i class="bi bi-chat-dots"></i>
+            </button>
+            <button
+              class="w-20 btn btn-outline-success rounded hover:bg-red-600"
+              @click="confirmDeletePost(fav.id)"
+            >
               <i class="fa fa-trash"></i>
             </button>
           </div>
@@ -31,76 +47,50 @@
       </div>
     </div>
   </div>
+  <Footer class="mt-5" />
 </template>
 
 <script>
 export default {
   name: 'FavouriteCard',
   props: ['favorites'],
-  mounted() {
-    this.favorites
+  data() {
+    return {
+      textInput: '',
+    };
+  },
+  computed: {
+    filteredFavItems() {
+      if (!this.textInput) {
+        return this.favorites;
+      }
+      return this.favorites.filter((fav) =>
+        fav.item.name.toLowerCase().includes(this.textInput.toLowerCase())
+      );
+    },
   },
   methods: {
     confirmDeletePost(favId) {
       if (window.confirm('Are you sure you want to delete this fav?')) {
-        this.$emit('delete-fav', favId)
+        this.$emit('delete-fav', favId);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
-/* i {
-  border-radius: 50px;
-  background-color: green;
-  color: white;
-  padding: 10px;
-} */
-i:hover {
-  background: orangered;
-}
-.card {
-  width: 22.5%;
+.favorit .card {
+  width: 22%;
+  height: 80%;
+  padding: 2%;
 }
 .card img {
-  width: 50%;
-  height: 70%;
-  margin: auto;
+  height: 150px;
   object-fit: cover;
 }
 
-.card:hover {
-  box-shadow:
-    0 4px 8px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-.circle-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px; /* Adjust size as needed */
-  height: 40px; /* Adjust size as needed */
-  border-radius: 50%;
-  background-color: #f1f1f1; /* Background color for the circle */
-  text-align: center;
-}
-
-.circle-icon i {
-  color: #000; /* Icon color */
-}
-
-.delete-button {
-  background-color: red;
-  border: 1px solid white;
-}
-
-.delete-button i {
-  color: white;
-}
-
 @media (min-width: 320px) and (max-width: 568px) {
- 
   .card img {
     width: 40%;
     height: 10%;
@@ -148,7 +138,6 @@ i:hover {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
   }
   .adjay .card {
     width: 27.5%;
@@ -157,11 +146,10 @@ i:hover {
 @media (min-width: 1100px) and (max-width: 1290px) {
   .adjay {
     display: flex;
-    gap:3px;
-  
+    gap: 3px;
   }
-  .card{
+  .card {
     width: 21%;
-  }  
+  }
 }
 </style>

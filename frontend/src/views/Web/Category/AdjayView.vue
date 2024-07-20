@@ -22,9 +22,6 @@
         <span>All</span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdown-category">
-        <li>
-          <a href="/service">Back</a>
-        </li>
         <li v-for="item in filteredItems" :key="item.id">
           <a class="dropdown-item" href="#">{{ item.name }}</a>
         </li>
@@ -45,7 +42,7 @@
     <!-- list items-->
     <div class="adjay mt-10 mb-3 d-flex justify-content-start flex-wrap gap-5">
       <div
-        class="card bg-white-200 hover:bg-green-200 shadow-lg"
+        class="card bg-gray-200 hover:bg-green-200 shadow-lg"
         v-for="item in filteredItems"
         :key="item.id"
       >
@@ -186,8 +183,6 @@ export default {
   height: 150px;
   object-fit: cover;
 }
-/*action*/
-
 @media (min-width: 320px) and (max-width: 568px) {
   .card img {
     width: 40%;

@@ -118,6 +118,12 @@
               <span>About Us</span>
             </router-link>
           </li>
+          <li class="nav-item me-4">
+            <router-link to="/history" class="nav-link" :class="{ active: isActive('/history') }">
+              <i class="material-icons">history</i>
+              <span>History</span>
+            </router-link>
+          </li>
           <!-- <li
             class="nav-item me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">

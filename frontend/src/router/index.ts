@@ -153,6 +153,12 @@ const router = createRouter({
       name: 'companies',
       component: () => import('../views/Web/Company/ShowAllCompanies.vue')
     },
+    // history
+    {
+      path:'/history',
+      name:'history',
+      component:()=>import('../views/Web/Company/CompanyHistory.vue')
+    },
 
     // customer post to sell in specific company
     {
