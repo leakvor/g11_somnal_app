@@ -1,18 +1,22 @@
 <template>
   <div>
-    <input type="text" v-model="searchQuery" @input="suggestLocations" placeholder="Search for a location in Cambodia" />
-    <button class="btn btn-success" @click="resetMap">Start Again</button>
-    <div id="map"></div>
-    <ul v-if="suggestions.length > 0" id="suggestions-list">
-      <li v-for="(suggestion, index) in suggestions" :key="index" @click="selectSuggestion(suggestion)">
-        {{ suggestion.display_name }}
-      </li>
-    </ul>
+    <NavBar />
+    <div >
+      <button class="btn m-3 " style="background-color: orange;color:white" @click="resetMap">Start to destination Again</button>
+      <div id="map">
+        <input type="text" v-model="searchQuery" style="font-size: 17px" @input="suggestLocations" placeholder="Search for a location in Cambodia" />
+        <ul v-if="suggestions.length > 0" id="suggestions-list">
+          <li v-for="(suggestion, index) in suggestions" :key="index" @click="selectSuggestion(suggestion)">
+            {{ suggestion.display_name }}
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
-
 <script setup lang="ts">
+import NavBar from '../../../Components/NavBar.vue'
 import { ref, onMounted, watchEffect } from 'vue';
 import leaflet from 'leaflet';
 import axios from 'axios';
@@ -30,14 +34,11 @@ let userGeoMarker: leaflet.Marker | null = null;
 let companyMarkers: leaflet.Marker[] = [];
 let routingControl: any = null;
 
-const greenIcon = leaflet.icon({
-  iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-  shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-  iconSize: [38, 95],
-  shadowSize: [50, 64],
-  iconAnchor: [22, 94],
-  shadowAnchor: [4, 62],
-  popupAnchor: [-3, -76]
+const simplePointIcon = leaflet.divIcon({
+  className: 'custom-div-icon',
+  html: '<div style="background-color: #000; width: 12px; height: 12px; border-radius: 50%;"></div>',
+  iconSize: [12, 12],
+  iconAnchor: [6, 6]
 });
 
 onMounted(() => {
@@ -105,7 +106,7 @@ function getNearbyCompanies() {
 
 function suggestLocations() {
   if (searchQuery.value.trim() === '') return;
-  const searchUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery.value)}&limit=5&addressdetails=1`;
+  const searchUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery.value)}&limit=5&addressdetails=1&countrycodes=KH&accept-language=km`;
   axios.get(searchUrl)
     .then(response => {
       suggestions.value = response.data;
@@ -121,7 +122,7 @@ function selectSuggestion(suggestion: any) {
   const lat = parseFloat(suggestion.lat);
   const lon = parseFloat(suggestion.lon);
   map.setView([lat, lon], 13);
-  const searchMarker = leaflet.marker([lat, lon], { icon: greenIcon })
+  const searchMarker = leaflet.marker([lat, lon], { icon: simplePointIcon })
     .addTo(map)
     .bindPopup(`Selected Location: ${suggestion.display_name}`);
   searchMarker.openPopup();
@@ -138,7 +139,7 @@ function calculateRoute(start: [number, number], end: [number, number], companyN
       leaflet.latLng(end[0], end[1])
     ],
     createMarker: function(i, waypoint, n) {
-      return leaflet.marker(waypoint.latLng, { icon: greenIcon }).bindPopup(`Waypoint ${i + 1}`);
+      return leaflet.marker(waypoint.latLng, { icon: simplePointIcon }).bindPopup(`Waypoint ${i + 1}`);
     },
     lineOptions: {
       styles: [{ color: '#6FA1EC', weight: 4 }]
@@ -149,7 +150,6 @@ function calculateRoute(start: [number, number], end: [number, number], companyN
     routeWhileDragging: false,
   }).addTo(map);
 
-  
   routingControl.on('routesfound', function(e) {
     const routes = e.routes;
     const summary = routes[0].summary;
@@ -157,7 +157,7 @@ function calculateRoute(start: [number, number], end: [number, number], companyN
     const travelTimeInMinutes = Math.round(summary.totalTime / 60);
     const directionInfo = `<strong>${companyName}</strong><br>Distance: ${distanceInKm.toFixed(2)} km, Travel time: ${travelTimeInMinutes} minutes`;
 
-  //   // Display the information in a custom popup
+    // Display the information in a custom popup
     const directionPopup = leaflet.popup()
       .setLatLng(end)
       .setContent(`<p>${directionInfo}</p>`)
@@ -165,6 +165,7 @@ function calculateRoute(start: [number, number], end: [number, number], companyN
   });
   customizeRouteInstructionsStyle();
 }
+
 function customizeRouteInstructionsStyle() {
   // Delay to ensure Leaflet has rendered the instructions
   setTimeout(() => {
@@ -175,6 +176,9 @@ function customizeRouteInstructionsStyle() {
       container.style.padding = '10px';
       container.style.borderRadius = '5px';
       container.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+      container.style.fontSize = '15px';
+      container.style.maxHeight = '70vh'; // Limit the height to 50% of the viewport height
+      container.style.overflowY = 'auto'; // Add scrollbar if content exceeds the container height
     });
   }, 100); // Adjust the delay as needed based on your application's rendering time
 }
@@ -188,7 +192,15 @@ function resetMap() {
 </script>
 
 
+
+
 <style scoped>
+.custom-div-icon {
+  background-color: #000;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
 #suggestions-list {
   position: absolute;
   top: 40px;
@@ -234,4 +246,3 @@ input[type="text"] {
 }
 
 </style>
-

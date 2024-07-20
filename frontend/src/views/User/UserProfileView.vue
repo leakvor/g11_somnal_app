@@ -77,7 +77,12 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="updateProfile" method="post" enctype="multipart/form-data" v-if="user_info">
+            <form
+              @submit.prevent="updateProfile"
+              method="post"
+              enctype="multipart/form-data"
+              v-if="user_info"
+            >
               <div class="title mt-3 mb-3">
                 <input
                   type="text"
@@ -244,9 +249,9 @@ export default {
       this.$refs.fileInput.files = event.target.files
     },
     async updateProfile() {
-      this.name=this.user_info.name
-      this.email=this.user_info.email
-      this.phone=this.user_info.phone
+      this.name = this.user_info.name
+      this.email = this.user_info.email
+      this.phone = this.user_info.phone
       try {
         const formData = new FormData()
         formData.append('name', this.name)

@@ -1,5 +1,5 @@
 <template>
-  <div class="container ">
+  <div class="container">
     <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
       <div class="mb-3">
@@ -13,10 +13,10 @@
         />
       </div>
       <div class="mb-3 dropdown">
-        <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
-        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
-        <p style="color:black">{{ selectedItemsNames }}</p>
-      </div>
+        <label for="item-dropdown" class="form-label" style="color: black">Item selection</label>
+        <div class="mb-3" v-if="selectedItemsNames.length > 0">
+          <p style="color: black">{{ selectedItemsNames }}</p>
+        </div>
         <button
           class="form-control shared-style dropdown-toggle"
           type="button"
@@ -54,8 +54,10 @@
           @updatefiles="handleFileChange"
         />
       </div>
-      <div class="mb-3">
-        <label for="company-selection" style="color: black" class="form-label">Company Selection</label>
+      <div class="mb-3" v-if="user_info && user_info.role_id == 2">
+        <label for="company-selection" style="color: black" class="form-label"
+          >Company Selection</label
+        >
         <select
           id="company-selection"
           name="company"
@@ -68,7 +70,7 @@
           </option>
         </select>
       </div>
-     <div class="submit d-grid gap-2">
+      <div class="submit d-grid gap-2">
         <button class="btn btn-success" type="submit">Submit</button>
       </div>
     </form>
@@ -90,8 +92,7 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 
 export default {
   components: {
-    FilePond,
-    
+    FilePond
   },
   data() {
     return {
@@ -101,22 +102,39 @@ export default {
       companies: [],
       title: '',
       // status: 'pending',
-      selectedItems: []
+      selectedItems: [],
+      user_info: null
     }
   },
   computed: {
     selectedItemsNames() {
-      return this.selectedItems.map(id => {
-        const item = this.item_all.find(item => item.id === id);
-        return item.name;
-      });
+      return this.selectedItems.map((id) => {
+        const item = this.item_all.find((item) => item.id === id)
+        return item.name
+      })
     }
   },
   mounted() {
     this.getAllItems()
     this.getAllCompanies()
+    this.fetchUser()
   },
   methods: {
+    async fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        this.user_info = response.data.data
+        console.log(this.user_info.role_id)
+        console.log('Fetched user:', this.user_info)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
     async createPost() {
       console.log('title', this.title)
       console.log('image', this.images)
@@ -139,7 +157,7 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-          this.$router.push('/profile')
+        this.$router.push('/profile')
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -184,8 +202,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  
-
 }
 
 form {
@@ -196,7 +212,6 @@ form {
   border-top: 7px solid rgb(248, 98, 44);
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
 }
 
 .dropdown .form-control,
@@ -236,13 +251,12 @@ form {
 @media (min-width: 768px) {
   form {
     width: 90%;
-
   }
 }
 
 @media (min-width: 992px) {
   form {
-     width: 90%;
+    width: 90%;
   }
 }
 
