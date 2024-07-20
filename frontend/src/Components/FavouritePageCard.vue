@@ -47,10 +47,12 @@
       </div>
     </div>
   </div>
-  <Footer class="mt-5" />
+  <Footer />
 </template>
 
 <script>
+import Footer from '@/Components/Footer.vue'
+
 export default {
   name: 'FavouriteCard',
   props: ['favorites'],
@@ -59,6 +61,10 @@ export default {
       textInput: '',
     };
   },
+  components:{
+    Footer
+  }
+  ,
   computed: {
     filteredFavItems() {
       if (!this.textInput) {

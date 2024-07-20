@@ -27,7 +27,7 @@
         <tr>
           <th>Post ID</th>
           <th>User ID</th>
-          <th>Date</th>
+          <th>Date</th>                   
           <th>Status</th>
           <th>Action</th>
         </tr>
