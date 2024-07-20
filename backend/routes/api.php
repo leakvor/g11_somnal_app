@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\NotificationConControlller;
 use App\Http\Controllers\API\OptionPaidController;
 use App\Http\Controllers\Api\PaymentController;
@@ -62,6 +63,8 @@ Route::get('/payment/list', [PaymentController::class, 'index']);
 
 //list all option
 Route::get('/option/list', [OptionPaidController::class, 'index']);
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -69,8 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
-    Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
-    Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
+
+  
 
 
     // Post routes
@@ -86,8 +89,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // get all posts
         Route::get('/company/history', [PostController::class, 'historyPost']);
-        // get specifect post by company
-        Route::get('/company/history/show/{id}', [PostController::class, 'getPostByCompany']);
     });
 
     // Comment routes
@@ -155,3 +156,10 @@ Route::prefix('history')->group(function () {
     Route::get('/list', [HistoryMarketPriceController::class, 'index']);
     Route::delete('/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
 });
+
+
+//update image
+Route::post('/images/update/{id}', [ImageController::class, 'update'])->name('images.update');
+
+//add image to post
+Route::post('posts/{id}/add-image', [PostController::class, 'add_image_post']);
