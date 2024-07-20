@@ -3,15 +3,6 @@
   <div class="container mt-5">
     <h3 class="text-center mb-3">Company Information</h3>
     <div class="input-group mt-3 mb-5">
-      <button
-        class="dropdown-toggle btn btn-success"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        id="dropdown-category"
-        style="border: none"
-      >
-        <span>All</span>
-      </button>
       <ul class="dropdown-menu" aria-labelledby="dropdown-category">
         <li>
           <router-link class="link font-bold py-2 px-4 no-underline text-center"
@@ -42,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="history in  posts" :key="history.id">
+        <tr v-for="history in filteredPosts" :key="history.id">
           <td>{{ history.id }}</td>
             <td>{{ history.user.id }}</td>
             <td>{{ new Date(history.created_at).toLocaleDateString() }}</td>
@@ -57,18 +48,28 @@
     </table>
    
   </div>
+  <Footer class="mt-5"/>
 </template>
 <script>
 import NavBar from '@/Components/NavBar.vue'
+import Footer from '@/Components/Footer.vue'
 import axios from 'axios';
 export default {
   components: {
-    NavBar
+    NavBar,
+    Footer
   },
   data() {
     return {
       searchInput: '',
       posts: []
+    }
+  },
+  computed: {
+    filteredPosts() {
+      return this.posts.filter(post =>
+        post.id.toString().includes(this.searchInput)
+      );
     }
   },
   methods: { 

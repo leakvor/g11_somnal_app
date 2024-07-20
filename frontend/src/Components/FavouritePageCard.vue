@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="mt-20 color-dark text-center mb-4">List favorit of items</h1>
-    <div class="input-group hover:bg-orange-600 p-2">
+    <div class="input-group p-2">
       <input
         type="search"
         class="form-control"

@@ -11,7 +11,7 @@
       <h1 class="mt-20 color-dark text-center mb-4">List items of Category {{ category.name }}</h1>
     </div>
     <!-- items dropdown -->
-    <div class="input-group hover:bg-orange-600 p-2">
+    <div class="input-group p-2">
       <button
         class="dropdown-toggle btn btn-success"
         data-bs-toggle="dropdown"
@@ -52,12 +52,12 @@
             :to="{ name: 'show-card', params: { id: item.id } }"
           >
             <img :src="`http://127.0.0.1:8000/scrap/${item.image}`" class="card-img" alt="..." />
+          </router-link>
             <div class="title text-start mt-3">
               <h5 class="card-title">{{ item.name }}</h5>
               <p class="des">{{ item.description }}</p>
               <h5 class="card-text -mt-3">{{ item.price }}៛</h5>
             </div>
-          </router-link>
           <div class="icon d-flex justify-content-between mt-4">
             <button class="w-20 btn btn-outline-success rounded hover:bg-orange-600">
               <i class="bi bi-chat-dots"></i>

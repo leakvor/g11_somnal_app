@@ -103,10 +103,7 @@ data() {
   width: 80%;
   margin: auto;
 }
-.input-group:hover {
-  background:orangered;
-  padding: 5px;
-}
+
 .category .card {
   width: 22%;
   padding: 2%;
