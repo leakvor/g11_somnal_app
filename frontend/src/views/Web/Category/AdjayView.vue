@@ -21,6 +21,7 @@
     </div>
   </div>
   <!-- ////////// -->
+
   <div class="container">
     <div v-if="category">
       <h1 class="mt-20 color-dark text-center mb-4">List items of Category {{ category.name }}</h1>
@@ -136,12 +137,12 @@ export default {
     }
   },
   mounted() {
-    this.fetchCategoryDetails();
+    this.fetchCategoryDetails()
   },
   methods: {
     async fetchCategoryDetails() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/category/show/${this.id}`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/category/show/${this.id}`)
         if (response.data.data && response.data.data.length > 0) {
           this.category = response.data.data[0]
           this.items = this.category.items
@@ -149,14 +150,14 @@ export default {
         
         }
       } catch (error) {
-        console.error('Error fetching category details:', error);
+        console.error('Error fetching category details:', error)
       }
     },
     async addFavorite(itemId) {
       try {
-        const token = localStorage.getItem('access_token');
+        const token = localStorage.getItem('access_token')
         if (!token) {
-          throw new Error('No token found');
+          throw new Error('No token found')
         }
 
         const response = await axios.post(
@@ -167,8 +168,10 @@ export default {
               Authorization: `Bearer ${token}`
             }
           }
-        );
-        console.log(response.data);
+        )
+
+        console.log(response.data)
+
         if (response.data.success) {
           this.successMessage = 'Item added to favorites successfully.';
           this.showSuccessMessage = true;
@@ -177,7 +180,6 @@ export default {
           }, 2000);
 
         } else if (response.data.error) {
-          // alert(response.data.error);
           this.errorMessage = response.data.error;
           this.showErrorMessage = true;
           setTimeout(() => {
@@ -186,8 +188,6 @@ export default {
         }
       } catch (error) {
         if (error.response) {
-          // console.error('Server Error:', error.response.data);
-          // alert(error.response.data.error || 'Server error occurred.');
           console.error('Server Error:', error.response.data);
           this.errorMessage = error.response.data.error || 'Server error occurred.';
           this.showErrorMessage = true;
@@ -195,8 +195,6 @@ export default {
             this.showErrorMessage = false;
           }, 2000);
         } else if (error.request) {
-          // console.error('Network Error:', error.request);
-          // alert('Network error occurred. Please try again.');
           console.error('Network Error:', error.request);
           this.errorMessage = 'Network error occurred. Please try again.';
           this.showErrorMessage = true;
@@ -204,8 +202,6 @@ export default {
             this.showErrorMessage = false;
           }, 2000);
         } else {
-          // console.error('Error:', error.message);
-          // alert(error.message);
           console.error('Error:', error.message);
           this.errorMessage = error.message;
           this.showErrorMessage = true;
@@ -214,22 +210,12 @@ export default {
           }, 2000);
         }
       }
+
     }
   }
-};
+}
 </script>
-
 <style scoped>
-.adjay .card {
-  width: 22%;
-  height: 80%;
-  padding: 2%;
-}
-.adjay .card .card-body img {
-  height: 150px;
-  object-fit: cover;
-}
-<<<<<<< HEAD
 .alertModal {
   position: fixed;
   top: 20px;
@@ -244,138 +230,23 @@ export default {
   color: green;
 }
 
-i {
-  border-radius: 50px;
-  background-color: green;
-  color: white;
-  padding: 10px;
+.adjay .card {
+  width: 22%;
+  height: 80%;
+  padding: 2%;
 }
-
-i:hover {
-  background: orangered;
-}
-
-button {
-  background-color: white;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-}
-
-.card {
-  width: 22.5%;
-}
-
-.card img {
-  width: 50%;
-  height: 70%;
-  margin: auto;
+.adjay .card .card-body img {
+  height: 150px;
   object-fit: cover;
 }
-
-.card:hover {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.circle-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #f1f1f1;
-  text-align: center;
-}
-
-.circle-icon i {
-  color: #000;
-}
-
-.delete-button {
-  background-color: red;
-  border: 1px solid white;
-}
-
-.delete-button i {
-  color: white;
-}
-
-=======
->>>>>>> 0eb88866936eff511f3211238a6d63be6d46a235
 @media (min-width: 320px) and (max-width: 568px) {
   .card img {
     width: 40%;
     height: 10%;
   }
-
   .adjay .card {
     width: 200px;
     margin: auto;
-  }
-}
-
-@media (max-width: 768px) {
-  .adjay {
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-  }
-
-  .card {
-    width: 98%;
-    margin: auto;
-  }
-
-  .card-title {
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 428px) {
-  .adjay .card {
-    width: 90%;
-    margin: auto;
-  }
-
-  .card-title {
-    font-size: 20px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .adjay {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .adjay .card {
-    width: 45%;
-  }
-}
-
-@media (min-width: 800px) and (max-width: 1214px) {
-  .adjay {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .adjay .card {
-    width: 27.5%;
-  }
-}
-
-@media (min-width: 1100px) and (max-width: 1290px) {
-  .adjay {
-    display: flex;
-    gap: 3px;
-  }
-
-  .card {
-    width: 21%;
   }
 }
 </style>

@@ -47,7 +47,8 @@ class ItemSeeder extends Seeder
             ['name' => 'File Document', 'category_id' => $categories->where('name', 'Paper')->first()->id, 'price' => '100', 'description' => "it is the type of item that we accept to buy.", 'image' => 'fileDocument.png'],
             // glass
             ['name' => 'Tea Cup', 'category_id' => $categories->where('name', 'Glass')->first()->id, 'price' => '3400', 'description' => "it is the type of item that we accept to buy.", 'image' => 'tea-cup.png'],
-            ['name' => 'Vacuum Cup', 'category_id' => $categories->where('name', 'Glass')->first()->id, 'price' => '3400', 'description' => "it is the type of item that we accept to buy.", 'image' => 'VacuumCup.jpg'],
+            ['name' => 'Vacuum Cup', 'category_id' => $categories->where('name', 'Glass')->first()->id, 'price' => '3400', 'description' => "it is the type of item that we accept to buy.", 'image' => 'VacuumCup.png'],
+            ['name' => 'glass bottle', 'category_id' => $categories->where('name', 'Glass')->first()->id, 'price' => '3400', 'description' => "it is the type of item that we accept to buy.", 'image' => 'glass.png'],
             // electronic
 
             ['name' => 'Projector', 'category_id' => $categories->where('name', 'Electronic')->first()->id, 'price' => '3400', 'description' => "it is the type of item that we accept to buy.", 'image' => 'projector.png'],

@@ -1,4 +1,3 @@
-
 <template>
   <NavBar />
 
@@ -227,6 +226,5 @@ data() {
   }
   
 }
-
 
 </style>
