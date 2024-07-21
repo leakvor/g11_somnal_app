@@ -91,29 +91,11 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-<<<<<<< HEAD
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
                 'profile'=>'1720074967.png',
                 'role_id' => 2,               
             ]);      
-=======
-                'phone'=> $request->phone,
-                'password' => Hash::make($request->password),
-                'profile' => '1720074967.png',
-                'role_id' => 2,
-
-            ]);
-
-            // Send the welcome email to the registered user's email
-            try {
-                Mail::to($user->email)->send(new WelcomeMail($user));
-                Log::info('Welcome email sent to: ' . $user->email);
-            } catch (\Exception $e) {
-                Log::error('Failed to send email: ' . $e->getMessage());
-            }
-            // return $user->email;
->>>>>>> origin/email_sender
             return response()->json([
                 'status' => true,
                 'message' => 'User created successfully',
@@ -210,7 +192,6 @@ class AuthController extends Controller
                 $user->profile = $imageName;
             }
 
-<<<<<<< HEAD
             if($request->has('latitude')){
                 $user->latitude = $request->latitude;
             }
@@ -221,8 +202,6 @@ class AuthController extends Controller
                 $user->address = $request->address;
             }
     
-=======
->>>>>>> origin/email_sender
             $user->save();
 
             return response()->json([
@@ -324,10 +303,9 @@ class AuthController extends Controller
         $email = $request->email;
 
         $isUnique = !User::where('email', $email)->exists();
-
-<<<<<<< HEAD
+    }
 //get company nearby me
-public function getNearbyCompanies(Request $request)
+    public function getNearbyCompanies(Request $request)
 {
     $latitude = $request->input('latitude');
     $longitude = $request->input('longitude');
@@ -339,17 +317,11 @@ public function getNearbyCompanies(Request $request)
 
     return response()->json($companies);
 }
+// get company
+public function getCompany(Request $request)
+{
+    $companies = User::where('role_id', 3)->get();
+    return response()->json(['success' => true, 'message' => 'Company details', 'data' => $companies]);
+}
 
-=======
-        return response()->json(['unique' => $isUnique, 'message' => $isUnique ? 'Email is available' : 'Email already exists']);
-    }
-
-
-    // get company
-    public function getCompany(Request $request)
-    {
-        $companies = User::where('role_id', 3)->get();
-        return response()->json(['success' => true, 'message' => 'Company details', 'data' => $companies]);
-    }
->>>>>>> origin/email_sender
 }

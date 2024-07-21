@@ -16,7 +16,6 @@ class Payment extends Model
         'cvv',
         'expiration_date',
         'user_id',
-        'price',
         'option_paid_id',
         'status',
     ];

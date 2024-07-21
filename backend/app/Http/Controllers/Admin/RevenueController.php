@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\Revenue;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class RevenueController extends Controller
     {
         // Fetch payments with related user and optionPaid
         $payments = Payment::with(['user', 'optionPaid'])->get();
+        $payments = PaymentResource::collection($payments);
 
         // Pass the payments to the view
         return view('revenue.index', compact('payments'));

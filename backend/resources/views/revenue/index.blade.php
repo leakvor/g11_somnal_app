@@ -43,10 +43,10 @@
                     <tbody>
                         @foreach($payments as $payment)
                             <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 border-b whitespace-nowrap">{{ $payment->user->name }}</td>
+                                <td class="py-3 px-4 border-b whitespace-nowrap">{{ $payment->user->name ?? 'N/A' }}</td>
                                 <td class="py-3 px-4 border-b whitespace-nowrap">{{ $payment->created_at->format('d-M-Y') }}</td>
-                                <td class="py-3 px-4 border-b whitespace-nowrap">{{ $payment->optionPaid->option_paid }}</td>
-                                <td class="py-3 px-4 border-b text-red-700 whitespace-nowrap fee">${{ number_format($payment->optionPaid->amount, 2) }}</td>
+                                <td class="py-3 px-4 border-b whitespace-nowrap">{{ $payment->optionPaid->option_paid ?? 'N/A' }}</td>
+                                <td class="py-3 px-4 border-b text-red-700 whitespace-nowrap fee">${{ number_format($payment->optionPaid->amount ?? 0, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -55,6 +55,7 @@
         </div>
     </main>
 </x-app-layout>
+
 
 <script>
     function filterByMonth(selectedMonth) {
