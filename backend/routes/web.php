@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PaymentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
@@ -9,7 +10,8 @@ use App\Http\Controllers\Admin\{
     ItemController,
     HistoryMarketprices,
     RevenueController,
-    OptionPayController
+    OptionPayController,
+    DashboardController,
 };
 
 
@@ -42,6 +44,7 @@ Route::get('/test-mail',function(){
 
 });
 
+// Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/dashboard', function () {
     return view('front.dashboard');
@@ -57,6 +60,11 @@ Route::get('/admin/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('admin.dashboard');
+
+require __DIR__.'/auth.php';
 
 
 
@@ -73,17 +81,18 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('items',ItemController::class);
         Route::resource('history',HistoryMarketprices::class);
         Route::resource('optionPaid',OptionPayController::class);
-
  
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
         Route::get('/mail',[MailSettingController::class,'index'])->name('mail.index');
-        Route::put('/mail-update/{mailsetting}',[MailSettingController::class,'update'])->name('mail.update');
-
-
+        Route::put('/mail-update/{mailsetting}',[MailSettingController::class,'update'])->name('mail.update');   
         
+        Route::get('/revenue', [RevenueController::class, 'index'])->name('revenue.index');
+
         
 });
+
+
 
 
