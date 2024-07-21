@@ -9,6 +9,13 @@
         <span class="text-green-500">{{ successMessage }}</span>
       </div>
     </div>
+     <!-- Error Message -->
+     <div class="alertModal flex justify-center" v-if="showErrorMessage">
+      <div class="alert alert-error mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md">
+        <i class="fa fa-times-circle text-red-500"></i>
+        <span class="text-red-500">{{ errorMessage }}</span>
+      </div>
+    </div>
     <!-- ////////// -->
     <div v-if="category">
       <h1 class="mt-20 color-dark text-center">{{ category.name }}</h1>
@@ -58,7 +65,9 @@ export default {
       items: [],
       backendUrl: 'http://127.0.0.1:8000',
       showSuccessMessage: false,
-      successMessage: ''
+      successMessage: '',
+      showErrorMessage: false,
+      errorMessage: ''
     };
   },
   mounted() {
@@ -107,18 +116,41 @@ export default {
           }, 2000);
 
         } else if (response.data.error) {
-          alert(response.data.error);
+          // alert(response.data.error);
+          this.errorMessage = response.data.error;
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         }
       } catch (error) {
         if (error.response) {
+          // console.error('Server Error:', error.response.data);
+          // alert(error.response.data.error || 'Server error occurred.');
           console.error('Server Error:', error.response.data);
-          alert(error.response.data.error || 'Server error occurred.');
+          this.errorMessage = error.response.data.error || 'Server error occurred.';
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         } else if (error.request) {
+          // console.error('Network Error:', error.request);
+          // alert('Network error occurred. Please try again.');
           console.error('Network Error:', error.request);
-          alert('Network error occurred. Please try again.');
+          this.errorMessage = 'Network error occurred. Please try again.';
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         } else {
+          // console.error('Error:', error.message);
+          // alert(error.message);
           console.error('Error:', error.message);
-          alert(error.message);
+          this.errorMessage = error.message;
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         }
       }
     }
