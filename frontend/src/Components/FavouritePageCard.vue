@@ -13,21 +13,8 @@
 
     <!-- Favourites List -->
     <div class="adjay mt-10 p-10 d-flex flex-wrap gap-5">
-<<<<<<< HEAD
-      <div
-        class="card bg-white-200 hover:bg-gray-200 shadow-lg"
-        v-for="fav in favorites"
-        :key="fav.id"
-      >
-        <img
-          :src="`http://127.0.0.1:8000/scrap/${fav.item.image}`"
-          class="card-img-top mt-5"
-          alt="..."
-        />
-=======
       <div class="card bg-white-200 hover:bg-gray-200 shadow-lg" v-for="fav in favorites" :key="fav.id">
         <img :src="`http://127.0.0.1:8000/uploads/${fav.item.image}`" class="card-img-top mt-5" alt="..." />
->>>>>>> origin/before_production
         <div class="card-body">
           <div class="title text-center">
             <h3 class="card-title">{{ fav.item.name }}</h3>
