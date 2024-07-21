@@ -5,23 +5,12 @@
         <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10" />
         <span class="text-xl font-bold ms-1">SOMNAL</span>
       </router-link>
-      <div
-        class="profile-dropdown dropdown-one mb-2"
-      >
-        <router-link
-          to="/"
-          href="#"
-          class="d-flex align-items-center"
-          role="button"
-          id="profileDropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-            alt="Profile"
-            style="width: 40px; height: 40px; border-radius: 50%"
-          />
+      <div class="profile-dropdown dropdown-one mb-2"
+        v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+        <router-link to="/" href="#" class="d-flex align-items-center" role="button" id="profileDropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
+            alt="Profile" style="width: 40px; height: 40px; border-radius: 50%" />
         </router-link>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
           <li>
@@ -345,9 +334,6 @@
 import axios from 'axios'
 import { useAuthStore } from '../stores/auth-store'
 import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import { ref, onMounted,computed } from 'vue'
-
 
 export default {
   name: 'NavBar',

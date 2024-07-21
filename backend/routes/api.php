@@ -87,8 +87,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // get all posts
         Route::get('/company/history', [PostController::class, 'historyPost']);
-        // get specifect post by company
-        Route::get('/company/history/show/{id}', [PostController::class, 'getPostByCompany']);
     });
 
     // Comment routes

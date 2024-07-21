@@ -4,39 +4,22 @@
       <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
       <div class="mb-3">
         <label for="title" class="form-label" style="color: black">Title</label>
-        <input
-          type="text"
-          class="form-control shared-style"
-          id="title"
-          name="title"
-          v-model="title"
-        />
+        <input type="text" class="form-control shared-style" id="title" name="title" v-model="title" />
       </div>
       <div class="mb-3 dropdown">
         <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
-        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
-        <p style="color:black">{{ selectedItemsNames }}</p>
-      </div>
-        <button
-          class="form-control shared-style dropdown-toggle"
-          type="button"
-          id="item-dropdown"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
+        <div class="mb-3" v-if="selectedItemsNames.length > 0">
+          <p style="color:black">{{ selectedItemsNames }}</p>
+        </div>
+        <button class="form-control shared-style dropdown-toggle" type="button" id="item-dropdown"
+          data-bs-toggle="dropdown" aria-expanded="false">
           Select items
         </button>
-        <ul class="dropdown-menu scrollable-menu" aria-labelledby="item-dropdown">
+        <ul class="dropdown-menu" aria-labelledby="item-dropdown" style="max-height: 200px; overflow-y: auto;">
           <li v-for="item in item_all" :key="item.id">
             <div class="form-check dropdown-item">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                :value="item.id"
-                :id="`Checkme${item.id}`"
-                name="item_ids[]"
-                v-model="selectedItems"
-              />
+              <input class="form-check-input" type="checkbox" :value="item.id" :id="`Checkme${item.id}`"
+                name="item_ids[]" v-model="selectedItems" />
               <label class="form-check-label" :for="`Checkme${item.id}`">{{ item.name }}</label>
             </div>
           </li>
@@ -44,31 +27,20 @@
       </div>
       <div class="mb-3">
         <label for="formFile" class="form-label" style="color: black">File image post</label>
-        <FilePond
-          name="images[]"
-          v-model="images"
-          ref="pond"
+        <FilePond name="images[]" v-model="images" ref="pond"
           label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
-          allow-multiple="true"
-          accepted-file-types="image/jpeg, image/png"
-          @updatefiles="handleFileChange"
-        />
+          allow-multiple="true" accepted-file-types="image/jpeg, image/png" @updatefiles="handleFileChange" />
       </div>
       <div class="mb-3">
-        <label for="company-selection" style="color: black" class="form-label">Company Selection</label>
-        <select
-          id="company-selection"
-          name="company"
-          class="form-select shared-style"
-          v-model="company_id"
-        >
+        <label for="company-selection" class="form-label">Company Selection</label>
+        <select id="company-selection" name="company" class="form-select shared-style" v-model="company_id">
           <option disabled selected value="">Select a company</option>
           <option v-for="company in companies" :key="company.id" :value="company.id">
             {{ company.name }}
           </option>
         </select>
       </div>
-     <div class="submit d-grid gap-2">
+      <div class="submit d-grid gap-2">
         <button class="btn btn-success" type="submit">Submit</button>
       </div>
     </form>
@@ -81,6 +53,7 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+import VueMultiselect from 'vue-multiselect'
 
 import axios from 'axios'
 import router from '@/router'
@@ -88,10 +61,11 @@ import router from '@/router'
 // Register the plugins
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 
+
 export default {
   components: {
     FilePond,
-    
+    VueMultiselect
   },
   data() {
     return {
@@ -139,7 +113,11 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
+<<<<<<< HEAD
           this.$router.push('/profile')
+=======
+        this.$router.push('/profile')
+>>>>>>> origin/before_production
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -180,38 +158,26 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-
 }
 
 form {
-  width: 100%;
-  max-width: 800px;
+  width: 40vw;
   margin: auto;
   border-radius: 10px;
   border-top: 7px solid rgb(248, 98, 44);
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
 }
 
 .dropdown .form-control,
 .dropdown-menu {
   width: 100%;
 }
+
 .dropdown .form-control {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.dropdown-menu.scrollable-menu {
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 .form-check-input {
@@ -227,28 +193,478 @@ form {
   margin-bottom: 5%;
 }
 
-@media (min-width: 576px) {
+@media screen and (max-width: 1114px) {
   form {
-    width: 90%;
+    width: 90vw;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+
+  #company-selection option {
+    font-size: 14px;
+  }
+
+  .submit {
+    margin-top: 10%;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 50px;
+    height: 50px;
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (max-width: 1280px) {
   form {
-    width: 90%;
+    width: 80vw;
+  }
 
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+
+  #company-selection option {
+    font-size: 14px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .form-check-label {
+    font-size: 24px;
+  }
+
+  .form-select option {
+    font-size: 16px;
   }
 }
 
-@media (min-width: 992px) {
+
+@media screen and (max-width: 884px) {
   form {
-     width: 90%;
+    width: 80vw;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+    margin: 5px;
+  }
+
+  .form-label {
+    font-size: 26px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn {
+    font-size: 22px;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    /* Adjust width */
+    height: 30px;
+    /* Adjust height */
+  }
+
+  .form-check-label {
+    font-size: 24px;
   }
 }
 
-@media (min-width: 1200px) {
+@media screen and (max-width: 834px) {
   form {
-    width: 60%;
+    width: 80vw;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .form-check-label {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  form {
+    width: 90vw;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .form-check-label {
+    font-size: 24px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  form {
+    width: 90vw;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+    margin: 5px;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .form-check-label {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  form {
+    width: 80vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 50px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 26px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+  }
+
+  .submit {
+    margin-top: 6%;
+  }
+}
+
+@media screen and (max-width: 428px) {
+  form {
+    width: 80vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  form {
+    width: 90vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 412px) {
+  form {
+    width: 90vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+
+  /* Adjust checkbox size */
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media screen and (max-width: 393px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  form {
+    width: 90vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+
+  #company-selection option {
+    font-size: 11px;
+  }
+
+  .submit {
+    margin-top: 3%;
+  }
+
+  .form-check-input {
+    width: 20px;
+    height: 10px;
+  }
+
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  form {
+    width: 80vw;
+    height: auto;
+  }
+
+  .mb-3 .btn,
+  .mb-3 input,
+  .mb-3 select,
+  .submit .btn {
+    height: 35px;
+  }
+
+  .dropdown .form-control,
+  .mb-3 #formFile,
+  .mb-3 .form-select,
+  .submit .btn,
+  .form-label,
+  .form-check-label {
+    font-size: 18px;
+  }
+
+  #company-selection option {
+    font-size: 12px;
+  }
+
+  .submit {
+    margin-top: 4%;
+  }
+
+  .form-check-input {
+    width: 20px;
+    height: 10px;
+  }
+
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
   }
 }
 </style>

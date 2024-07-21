@@ -1052,6 +1052,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v10.48.16",
             "source": {
                 "type": "git",
@@ -1062,6 +1063,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/f9a3a50fae399d75e125b0eea637dda90c99eae7",
                 "reference": "f9a3a50fae399d75e125b0eea637dda90c99eae7",
+=======
+            "version": "v10.48.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "2c6816d697a4362c09c066118addda251b70b98a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2c6816d697a4362c09c066118addda251b70b98a",
+                "reference": "2c6816d697a4362c09c066118addda251b70b98a",
+>>>>>>> origin/before_production
                 "shasum": ""
             },
             "require": {
@@ -1255,7 +1268,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
             "time": "2024-07-09T15:25:22+00:00"
+=======
+            "time": "2024-06-18T16:46:35+00:00"
+>>>>>>> origin/before_production
         },
         {
             "name": "laravel/prompts",
@@ -6951,6 +6968,7 @@
         {
             "name": "phpunit/phpunit",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "10.5.28",
             "source": {
                 "type": "git",
@@ -6963,6 +6981,9 @@
                 "reference": "ff7fb85cdf88131b83e721fb2a327b664dbed275",
 =======
             "version": "10.5.26",
+=======
+            "version": "10.5.22",
+>>>>>>> origin/before_production
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
@@ -6970,9 +6991,14 @@
             },
             "dist": {
                 "type": "zip",
+<<<<<<< HEAD
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/42e2f13ceaa2e34461bc89bea75407550b40b2aa",
                 "reference": "42e2f13ceaa2e34461bc89bea75407550b40b2aa",
 >>>>>>> origin/merge_category
+=======
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/8afb89b399b17c2ce2618015bdc9f81a117c5ee1",
+                "reference": "8afb89b399b17c2ce2618015bdc9f81a117c5ee1",
+>>>>>>> origin/before_production
                 "shasum": ""
             },
             "require": {
@@ -7045,10 +7071,14 @@
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.28"
 =======
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.26"
 >>>>>>> origin/merge_category
+=======
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.22"
+>>>>>>> origin/before_production
             },
             "funding": [
                 {
@@ -7065,10 +7095,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2024-07-18T14:54:16+00:00"
 =======
             "time": "2024-07-08T05:30:46+00:00"
 >>>>>>> origin/merge_category
+=======
+            "time": "2024-06-19T05:29:34+00:00"
+>>>>>>> origin/before_production
         },
         {
             "name": "sebastian/cli-parser",
@@ -8051,6 +8085,7 @@
         },
         {
             "name": "spatie/error-solutions",
+<<<<<<< HEAD
             "version": "1.0.5",
             "source": {
                 "type": "git",
@@ -8061,6 +8096,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/spatie/error-solutions/zipball/4bb6c734dc992b2db3e26df1ef021c75d2218b13",
                 "reference": "4bb6c734dc992b2db3e26df1ef021c75d2218b13",
+=======
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/error-solutions.git",
+                "reference": "202108314a6988ede156fba1b3ea80a784c1734a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/error-solutions/zipball/202108314a6988ede156fba1b3ea80a784c1734a",
+                "reference": "202108314a6988ede156fba1b3ea80a784c1734a",
+>>>>>>> origin/before_production
                 "shasum": ""
             },
             "require": {
@@ -8113,7 +8160,11 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/error-solutions/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/spatie/error-solutions/tree/1.0.5"
+=======
+                "source": "https://github.com/spatie/error-solutions/tree/1.0.0"
+>>>>>>> origin/before_production
             },
             "funding": [
                 {
@@ -8121,7 +8172,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
             "time": "2024-07-09T12:13:32+00:00"
+=======
+            "time": "2024-06-12T14:49:54+00:00"
+>>>>>>> origin/before_production
         },
         {
             "name": "spatie/flare-client-php",
