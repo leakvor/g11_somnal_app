@@ -63,6 +63,8 @@ Route::get('/payment/list', [PaymentController::class, 'index']);
 
 //list all option
 Route::get('/option/list', [OptionPaidController::class, 'index']);
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -70,8 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
-    Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
-    Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
+
+  
 
 
     // Post routes

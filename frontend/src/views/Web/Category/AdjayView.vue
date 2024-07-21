@@ -26,7 +26,7 @@
       <h1 class="mt-20 color-dark text-center mb-4">List items of Category {{ category.name }}</h1>
     </div>
     <!-- items dropdown -->
-    <div class="input-group hover:bg-orange-600 p-2">
+    <div class="input-group p-2">
       <button
         class="dropdown-toggle btn btn-success"
         data-bs-toggle="dropdown"
@@ -37,9 +37,6 @@
         <span>All</span>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdown-category">
-        <li>
-          <a href="/service">Back</a>
-        </li>
         <li v-for="item in filteredItems" :key="item.id">
           <a class="dropdown-item" href="#">{{ item.name }}</a>
         </li>
@@ -60,7 +57,7 @@
     <!-- list items-->
     <div class="adjay mt-10 mb-3 d-flex justify-content-start flex-wrap gap-5">
       <div
-        class="card bg-white-200 hover:bg-green-200 shadow-lg"
+        class="card bg-gray-200 hover:bg-green-200 shadow-lg"
         v-for="item in filteredItems"
         :key="item.id"
       >
@@ -70,12 +67,12 @@
             :to="{ name: 'show-card', params: { id: item.id } }"
           >
             <img :src="`http://127.0.0.1:8000/scrap/${item.image}`" class="card-img" alt="..." />
+          </router-link>
             <div class="title text-start mt-3">
               <h5 class="card-title">{{ item.name }}</h5>
               <p class="des">{{ item.description }}</p>
               <h5 class="card-text -mt-3">{{ item.price }}៛</h5>
             </div>
-          </router-link>
           <div class="icon d-flex justify-content-between mt-4">
             <button class="w-20 btn btn-outline-success rounded hover:bg-orange-600">
               <i class="bi bi-chat-dots"></i>
@@ -232,6 +229,7 @@ export default {
   height: 150px;
   object-fit: cover;
 }
+<<<<<<< HEAD
 .alertModal {
   position: fixed;
   top: 20px;
@@ -304,6 +302,8 @@ button {
   color: white;
 }
 
+=======
+>>>>>>> 0eb88866936eff511f3211238a6d63be6d46a235
 @media (min-width: 320px) and (max-width: 568px) {
   .card img {
     width: 40%;
