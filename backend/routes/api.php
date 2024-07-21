@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\ImageController;
+use App\Http\Controllers\Api\NotificationConControlller;
+use App\Http\Controllers\API\OptionPaidController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Models\OptionPaid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -39,6 +43,7 @@ Route::get('/company', [AuthController::class, 'getCompany']);
 
 //list all post
 Route::get('/post/list', [PostController::class, 'index']);
+Route::get('/post/sell', [PostController::class, 'sell']);
 
 //show each post of user====
 Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
@@ -49,6 +54,15 @@ Route::post('/post/update/status/{id}', [PostController::class, 'update_status']
 //get company nearbyme
 Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
 
+
+//update notification status
+Route::get('/notification/status/{id}',[NotificationConControlller::class,'markAsSeen']);
+
+//list all payment
+Route::get('/payment/list', [PaymentController::class, 'index']);
+
+//list all option
+Route::get('/option/list', [OptionPaidController::class, 'index']);
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -97,11 +111,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //payment
     Route::prefix('payment')->group(function () {
-        Route::get('/list', [PaymentController::class, 'index']);
         Route::post('/create', [PaymentController::class, 'store']);
     });
 
+    //notification
+    Route::prefix('notification')->group(function () {
+        Route::get('/company/list',[NotificationConControlller::class,'company_notifications']);
+        Route::get('/user/list',[NotificationConControlller::class,'user_notification']);
+        Route::get('/user/list/alert',[NotificationConControlller::class,'user_notification_alert']);
+        Route::get('/company/list/alert',[NotificationConControlller::class,'company_notification_alert']);
+    });
+
 });
+
+
+
 
 // Category routes
 Route::prefix('category')->group(function () {
@@ -119,6 +143,7 @@ Route::prefix('item')->group(function () {
     Route::delete('/delete/{id}', [ItemController::class, 'destroy']);
     Route::get('/show/{id}', [ItemController::class, 'show']);
     Route::post('/update/{id}', [ItemController::class, 'update']);
+    Route::get('/relate/{id}', [ItemController::class, 'getRelatedProducts']);
 });
 
 // History Market Price routes
@@ -126,3 +151,10 @@ Route::prefix('history')->group(function () {
     Route::get('/list', [HistoryMarketPriceController::class, 'index']);
     Route::delete('/delete/{id}', [HistoryMarketPriceController::class, 'destroy']);
 });
+
+
+//update image
+Route::post('/images/update/{id}', [ImageController::class, 'update'])->name('images.update');
+
+//add image to post
+Route::post('posts/{id}/add-image', [PostController::class, 'add_image_post']);

@@ -36,6 +36,7 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/Web/About/AboutUs.vue')
     },
+    // category
     {
       path:'/adjay/:id',
       name:'adjay',
@@ -46,6 +47,14 @@ const router = createRouter({
       path:"/service",
       name:"service",
       component:() => import('../views/Web/Category/ServiceView.vue')
+
+    }
+    ,
+    {
+      path:"/show_card/:id",
+      name:"show-card",
+      component:()=>import('../views/Web/Category/ShowItemView.vue'),
+      props:true
 
     },
     {
@@ -60,7 +69,7 @@ const router = createRouter({
     },
     {
     path:"/profile",
-    name:"profile",
+    name:"profile user",
     component:() => import('../views/User/UserProfileView.vue')
   },
     {
@@ -81,7 +90,7 @@ const router = createRouter({
     {
       path: '/partner',
       name: 'partner',
-      component: () => import('../views/Web/Post/PartnerView.vue')
+      component: () => import('../views/Web/partners/PartnerView.vue')
     },
     {
       path: '/favorite-page',
@@ -105,6 +114,11 @@ const router = createRouter({
       component:() => import('../views/Web/Post/PostCreate.vue')
     },
       {
+      path:"/create/post",
+      name:"post create in home page",
+      component:() => import('../views/Web/Post/HomepagePost.vue')
+    },
+      {
       path:"/post/edit/:id",
       name:"edit_post",
       component:() => import('../views/Web/Post/PostEdit.vue'),
@@ -117,9 +131,10 @@ const router = createRouter({
     },
     //pyment
       {
-      path:"/payment",
+      path:"/payment/:id",
       name:"payment",
-      component:() => import('../views/Web/userInfo/PaymentPage.vue')
+      component:() => import('../views/Web/userInfo/PaymentPage.vue'),
+      props:true
     },
       {
       path:"/priceoption",
@@ -164,6 +179,18 @@ const router = createRouter({
       component:() => import('../views/Web/Map/MapView.vue'),
       props: true,
     },
+    {
+      path: '/notifications',
+      name: 'notifications',
+    component: () => import('../views/Web/notification/NotificationVue.vue') 
+    },
+    //sell now
+    {
+      path: '/post/list',
+      name: 'show all sell',
+      component: () => import('../views/Web/Post/PostSell.vue') 
+    },
+
 
   ]
 })

@@ -87,6 +87,7 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
+                'phone' => $request->phone,
                 'password' => Hash::make($request->password),
                 'profile'=>'1720074967.png',
                 'role_id' => 2,               
@@ -192,6 +193,9 @@ class AuthController extends Controller
             }
             if($request->has('longitude')){
                 $user->longitude = $request->longitude;
+            }
+            if($request->has('address')){
+                $user->address = $request->address;
             }
     
             $user->save();

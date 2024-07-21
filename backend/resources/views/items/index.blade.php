@@ -26,21 +26,27 @@
 
       <div class="bg-white shadow-md rounded my-6">
         <table id="category" class="dataTable table table-striped table-bordered" style="width:100%">
-          <thead>
-            <tr>
-              <th >Id</th>
-              <th >Name</th>
-              <th >Price</th>
-              <th >Action</th>
-            </tr>
-          </thead>
+              <thead>
+                <tr>
+                  <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">
+                    Id</th>
+                  <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">
+                    Name</th>
+                  <th
+                    class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light text-right">
+                    Price</th>
+                  <th
+                    class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light text-right">
+                    Action</th>
+                </tr>
+              </thead>
           <tbody>
             @can('item access')
         @foreach ($items as $item)
       <tr class="hover:bg-grey-lighter">
         <td class="py-4 px-6 border-b border-grey-light" id="name">{{ $loop->index + 1 }} </td>
         <td class="py-4 px-6 border-b border-grey-light" id="name">{{ $item->name }}</td>
-        <td class="py-4 px-6 border-b border-grey-light">{{ $item->price}}</td>
+        <td class="py-4 px-6 border-b border-grey-light">{{ $item->price}} ៛</td>
         <td class="py-4 px-6 border-b border-grey-light text-right">
         @can('item edit')
       <a href="{{route('admin.items.edit', $item->id)}}"
@@ -86,15 +92,15 @@
     let foundItem = false;
 
     trs.forEach(tr => {
-        let name = tr.querySelector('#name').textContent.toLowerCase();
-        if (name.includes(searchTerm)) {
-            tr.style.display = '';
-            foundItem = true;
-        } else {
-            tr.style.display = 'none';
-        }
+      let name = tr.querySelector('#name').textContent.toLowerCase();
+      if (name.includes(searchTerm)) {
+        tr.style.display = '';
+        foundItem = true;
+      } else {
+        tr.style.display = 'none';
+      }
     });
 
-   
-}
+
+  }
 </script>

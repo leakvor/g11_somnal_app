@@ -31,10 +31,21 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            // Add more validation rules as needed
         ]);
-
-        $category = Category::create($request->all());
+    
+        $data = $request->all(); // Create an array to store the validated data
+    
+        if ($request->hasFile('image')) {
+            $img = $request->file('image');
+            $ext = $img->getClientOriginalExtension();
+            $imageName = time() . '.' . $ext;
+            $img->move(public_path('scrap'), $imageName);
+    
+            // Add the image name to the data array
+            $data['image'] = $imageName;
+        }
+    
+        $category = Category::create($data);
         return redirect()->route('admin.categories.index')->withSuccess('Category created !!!');
     }
     public function show($id)
@@ -62,21 +73,35 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            // Add more validation rules as needed
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        // Add more validation rules as needed
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Add image validation rule
+    ]);
 
-        $category = Category::findOrFail($id);
-        $category->update($request->all());
-        return redirect()->route('admin.categories.index')->withSuccess('Category updated!');
+    $category = Category::findOrFail($id);
+
+    // Update category data
+    $category->name = $request->input('name');
+    // Update other category fields as needed
+
+    if ($request->hasFile('image')) {
+
+        // Upload and store the new image
+        $img = $request->file('image');
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time() . '.' . $ext;
+        $img->move(public_path('scrap'), $imageName);
+
+        // Update the category image field
+        $category->image = $imageName;
     }
 
+    $category->save();
 
-
-
-
+    return redirect()->route('admin.categories.index')->withSuccess('Category updated!');
+}
 
 
 

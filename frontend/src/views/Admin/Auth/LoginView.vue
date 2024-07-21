@@ -70,7 +70,7 @@ const onSubmit = handleSubmit(async (values) => {
     const data = response.data;
     authStore.login(data); 
     if (data.user.role_id === 2) {
-      router.push('/profile'); 
+      router.push('/'); 
     } else if (data.user.role_id === 3) {
       router.push('/company/dashboard');
     } else {

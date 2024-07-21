@@ -31,20 +31,33 @@
       </button>
     </div>
 
-    <div class="button-group d-flex justify-content-end pt-5 pe-3">
-      <a href="" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
+    <div v-if="authStore.isAuthenticated" class="button-group d-flex justify-content-end pt-5 pe-3">
+      <router-link  v-if="authStore.isAuthenticated" to="/create/post" type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3">
         <i class="material-icons icon-align">add_shopping_cart</i>
         <span>Sale Now</span>
-      </a>
-      <a href="" type="button" class="buy btn text-white d-flex align-items-center">
+      </router-link>
+      <router-link  v-if="authStore.isAuthenticatedCompany" to="/post_view" type="button" class="buy btn text-white d-flex align-items-center">
         <i class="material-icons icon-align">shopping_bag</i>
         <span>Buy Now</span>
-      </a>
+      </router-link>
+    </div>
+
+    <div v-else class="button-group d-flex justify-content-end pt-5 pe-3">
+      <button type="button" class="sale btn btn-success d-flex align-items-center me-3 p-3" data-bs-toggle="modal"
+      data-bs-target="#loginModal">
+        <i class="material-icons icon-align">add_shopping_cart</i>
+        <span>Sale Now</span>
+      </button>
+      <button type="button" class="buy btn text-white d-flex align-items-center" data-bs-toggle="modal"
+      data-bs-target="#loginModal">
+        <i class="material-icons icon-align">shopping_bag</i>
+        <span>Buy Now</span>
+      </button>
     </div>
 
     <div class="d-flex justify-content-between align-items-center mt-3 p-3">
       <h3 class="text-orange fw-bold">Top Companies</h3>
-      <a href="/companies" class="btn btn-success text-decoration-none text-white" id="see-all">See All...</a>
+      <router-link to="/companies" class="btn btn-success text-decoration-none text-white" id="see-all">See All...</router-link>
     </div>
     <div class="slider-container">
       <div class="slider mt-5">
@@ -125,20 +138,23 @@
       </nav>
     </div>
     
-  <Footer></Footer>
+  <FooterVue></FooterVue>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
   import NavBar from '../../../Components/NavBar.vue'
-  import Footer from '../../../Components/Footer.vue'
+  import FooterVue from '../../../Components/Footer.vue'
+  import { useAuthStore } from '../../../stores/auth-store.ts'
+  import { useRoute } from 'vue-router'
+  import { computed } from 'vue'
 
   export default {
     name: 'HomePage',
     components: {
       NavBar,
-      Footer
+      FooterVue
     },
     data() {
       return {
@@ -149,6 +165,13 @@
         itemsPerPage: 5,
       }
     },
+    setup() {
+    const authStore = useAuthStore()
+    console.log(authStore);
+    return {
+      authStore
+    }
+  },
     computed: {
       formattedItems() {
         return this.items.map((item) => ({
@@ -271,7 +294,7 @@
 
   .list-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
     #sider-card{
@@ -320,6 +343,7 @@
 
 .slider-item {
   min-width: calc(100% / 4);
+  min-width: calc(100% / 4);
   box-sizing: border-box;
   padding: 0 0.5rem;
 }
@@ -335,6 +359,9 @@
 @keyframes scroll {
   100% {
     transform: translateX(-30%);
+  }
+  0% {
+    transform: translateX(0);
   }
   
 }

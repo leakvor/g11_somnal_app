@@ -26,13 +26,17 @@
 
       <div class="bg-white shadow-md rounded my-6">
         <table id="category" class="dataTable table table-striped table-bordered" style="width:100%">
-          <thead>
-            <tr>
-              <th class="text-left">Id</th>
-              <th class="text-left">Name</th>
-              <th class="text-left">Action</th>
-            </tr>
-          </thead>
+        <thead>
+                <tr>
+                  <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">
+                    Id</th>
+                  <th class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light">
+                    Name</th>
+                  <th
+                    class="py-4 px-6 bg-grey-lightest font-bold text-sm text-grey-dark border-b border-grey-light text-right">
+                    Action</th>
+                </tr>
+              </thead>
        
           <tbody>
             @can('category access')

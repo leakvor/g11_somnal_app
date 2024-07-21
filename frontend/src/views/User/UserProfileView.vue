@@ -24,7 +24,12 @@
                       "
                       onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
                     />
-                    <input ref="fileInput" type="file" style="display: none" @change="handleFileChange" />
+                    <input
+                      ref="fileInput"
+                      type="file"
+                      style="display: none"
+                      @change="handleFileChange"
+                    />
                   </li>
                   <div class="mt-3">
                     <h5 style="color: black">{{ userData.name }}</h5>
@@ -98,10 +103,10 @@ export default {
       posts: [],
       user_info: null,
       showModal: false,
-      imageUrl: '',
       name: '',
       email: '',
-      phone: ''
+      phone: '',
+      imageUrl: ''
     }
   },
   computed: {
@@ -110,8 +115,9 @@ export default {
     }
   },
   methods: {
-    openModal() {
-      this.showModal = true
+    showPostModal() {
+      // this.showModal = true
+      $('#postModal').modal('show')
       this.name = this.userData.name
       this.email = this.userData.email
       this.phone = this.userData.phone
@@ -159,6 +165,7 @@ export default {
           }
         })
         this.user_info = response.data.data
+        console.info('User info:', this.user_info)
       } catch (error) {
         console.error('Error fetching user:', error)
       }
@@ -172,28 +179,28 @@ export default {
       this.$refs.fileInput.files = event.target.files
     },
     async updateProfile() {
+      this.name=this.user_info.name
+      this.email=this.user_info.email
+      this.phone=this.user_info.phone
       try {
         const formData = new FormData()
-        formData.append('name', this.userData.name)
-        formData.append('email', this.userData.email)
-        formData.append('phone', this.userData.phone)
+        formData.append('name', this.name)
+        formData.append('email', this.email)
+        formData.append('phone', this.phone)
         if (this.$refs.fileInput.files[0]) {
           formData.append('profile', this.$refs.fileInput.files[0])
         }
 
         const token = localStorage.getItem('access_token')
-        const response = await axios.post(
-          'http://127.0.0.1:8000/api/updateProfile',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`
-            }
+        const response = await axios.post('http://127.0.0.1:8000/api/updateProfile', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
           }
-        )
+        })
 
         this.user_info = response.data.data
+        $('#postModal').modal('hide')
         this.closeModal()
       } catch (error) {
         console.error('Error updating profile:', error)
@@ -273,33 +280,67 @@ export default {
     max-width: 75%;
   }
 }
-
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.container {
+  padding: 0 15px;
 }
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  width: 80%;
-  max-width: 500px;
+.row {
+  margin: 0 -15px;
+}
+.panel {
   position: relative;
 }
 
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
+.update-pf {
+  border: 3px solid #c2c2c2;
+  width: 40px;
+  height: 40px;
+  right: 17%;
+  bottom: 50%;
   cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .update-pf {
+    right: 25%;
+    bottom: 47%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .col-md-4,
+  .col-md-8 {
+    flex: 0 0 50%;
+    max-width: 100%;
+  }
+  .col-md-4 {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
+  .update-pf {
+    right: 10%;
+    bottom: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-lg-3,
+  .col-lg-9 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .col-lg-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
 }
 </style>

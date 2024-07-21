@@ -3,7 +3,7 @@
   <div class="container mt-3 ps-3">
     <h2 class="dashboard-title text-dark">Company Dashboard</h2>
     <div class="card-container row mt-6 px-4">
-      <<router-link  to="/paid-adjay" class="col-md-5 card text-decoration-none text-dark mx-auto">
+      <router-link  to="/paid-adjay" class="col-md-5 card text-decoration-none text-dark mx-auto">
         <div class="card-body text-center">
           <img src="../../assets/company/revenue-icon.png" alt="Revenue" />
           <p class="mt-3">Revenue</p>

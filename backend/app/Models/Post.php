@@ -37,6 +37,16 @@ class Post extends Model
        return $this->hasMany(Post_Image::class, 'post_id');
     }
 
+    // public function items(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Item::class, 'post_items', 'post_id', 'item_id');
+    // }
+
+    // // Images relationship
+    // public function images(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Image::class, 'post_images', 'post_id', 'image_id');
+    // }
 
 
     //comment
@@ -52,6 +62,12 @@ class Post extends Model
         return Post::where('user_id',$id)->get();
     }
 
+      // Define relationship to notifications
+      public function notifications()
+      {
+          return $this->hasMany(Notification::class);
+      }
+      
     //create or update post 
     public static function store($request, $id = null)
 {

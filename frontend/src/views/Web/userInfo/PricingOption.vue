@@ -41,14 +41,9 @@
 </template>
 
 <script>
-import NavBar from "../../../Components/NavBar.vue";
-import Footer from "../../../Components/Footer.vue";
+
 export default {
   name: "PricingOptions",
-  components: {
-    NavBar,
-    Footer
-  }
 };
 </script>
 

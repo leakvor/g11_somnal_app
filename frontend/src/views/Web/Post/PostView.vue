@@ -3,17 +3,23 @@
     <NavBar />
     <div class="container">
       <div class="post-container" v-for="post in posts" :key="post.id">
-        <div class="post-header d-flex align-items-center">
+        <div class="d-flex flex-row align-items-center feed-text px-2">
           <img
+            class="rounded-circle"
             :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
-            alt="Account Image"
-            class="account-image rounded-circle"
-            style="border: 1px solid gray"
+            width="45"
+            alt="Profile"
+            style="border: 1px solid black"
           />
-          <h6 class="account-name ml-3 mb-0">{{ post.user.name }}</h6>
+          <div class="d-flex flex-column flex-wrap ml-2">
+            <h6 style="color: black">{{ post.user.name }}</h6>
+            <span class="text-black-50 time">{{ post.created_at }}</span>
+          </div>
         </div>
         <p class="post-title">{{ post.title }}</p>
         <p class="text-danger">Type of scrap:</p>
+        <p class="post-title" >{{ post.title }}</p>
+        <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
         <ul>
           <li>
             <p class="comment-text">
@@ -69,14 +75,14 @@
 
 
 <script>
-import NavBar from '../../../Components/NavBar.vue'
-import axios from 'axios'
+import NavBar from '../../../Components/NavBar.vue';
+import axios from 'axios';
 
 export default {
   name: 'PostComponent',
   
   components: {
-    NavBar
+    NavBar,
   },
   data() {
     return {
@@ -94,36 +100,51 @@ export default {
   methods: {
     async fetchPosts() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/post/list')
-        this.posts = response.data
-        console.log(this.posts)
-        // this.router.push('/post/request/sell');
+        const response = await axios.get('http://127.0.0.1:8000/api/post/list');
+        this.posts = response.data;
+        console.log(this.posts);
       } catch (error) {
-        console.error(error)
+        console.error(error);
+      }
+    },
+    async fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get('http://127.0.0.1:8000/api/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.user_info = response.data.data;
+        console.log('Fetched user:', this.user_info);
+      } catch (error) {
+        console.error('Error fetching user:', error);
       }
     },
     async updatePostStatus(postId, newStatus) {
       try {
-        console.log(newStatus)
-        console.log(postId)
-        const token = localStorage.getItem('access_token')
+        console.log(newStatus);
+        console.log(postId);
+        const token = localStorage.getItem('access_token');
         if (!token) {
-          throw new Error('No access token found')
+          throw new Error('No access token found');
         }
         const headers = {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-        const data = { status: newStatus }
+          'Content-Type': 'application/json',
+        };
+        const data = { status: newStatus };
         const response = await axios.post(
           `http://127.0.0.1:8000/api/post/update/status/${postId}`,
           data,
           { headers }
-        )
-        console.log('Response:', response)
-        alert('You already buy this item.')
+        );
+        console.log('Response:', response);
+        alert('You already buy this item.');
+        this.fetchPosts();
       } catch (error) {
-        alert('You are a user so you do not have permission to buy'), console.error(error)
+        alert('You are a user so you do not have permission to buy');
+        console.error(error);
       }
     },
     openImageModal(images, index) {
@@ -152,6 +173,7 @@ export default {
     }
 }
 </script>
+
 
 <style scoped>
 .post-container {

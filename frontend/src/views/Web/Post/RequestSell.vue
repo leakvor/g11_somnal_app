@@ -74,6 +74,15 @@
           </div>
           <div class="modal-body">
             <div class="post-container" v-if="post">
+              <div class="post-header d-flex align-items-center">
+                <img
+                  :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+                  alt="Account Image"
+                  class="account-image rounded-circle"
+                  style="border: 1px solid gray"
+                />
+                <h6 class="account-name ml-3 mb-0" style="color:black">{{ post.user.name }}</h6>
+              </div>
               <p class="post-title" style="size: 5px;color:black">{{ post.title }}</p>
               <p class="text-danger" style="margin-top: -20px;color:black">Type of scrap:</p>
               <ul>
@@ -187,20 +196,20 @@ export default {
 
         const token = localStorage.getItem('access_token')
         if (!token) {
-          throw new Error('No access token found')
+        throw new Error('No access token found')
         }
 
         const headers = {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
         }
 
         const data = { status: newStatus }
 
         const response = await axios.post(
-          `http://127.0.0.1:8000/api/post/update/status/${postId}`,
-          data,
-          { headers }
+        `http://127.0.0.1:8000/api/post/update/status/${postId}`,
+        data,
+        { headers }
         )
 
         console.log('Response:', response)
@@ -212,29 +221,26 @@ export default {
         }
 
         const message =
-          newStatus === 'cancel'
-            ? 'You have been cancelled this item.'
-            : 'You have been bought this item.'
+        newStatus === 'cancel'
+          ? 'You have been cancelled this item.'
+          : 'You have been bought this item.'
         alert(message)
-        window.location.reload()
+        this.fecthPostSell()
+        $('#postModal').modal('hide')
       } catch (error) {
         const message =
-          newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
+        newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
         alert(message)
         console.error('Error:', error)
       }
     },
-    async fetchPost() {
-     
-    },
+   
     async showPostModal(postId) {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`)
         this.post = response.data.data
         console.log(this.post)
-        // const postModal = new bootstrap.Modal(document.getElementById('postModal'))
-        // postModal.show()
-      $('#postModal').modal('show')
+        $('#postModal').modal('show')
 
       } catch (error) {
         console.error(error)
@@ -243,10 +249,10 @@ export default {
   },
   mounted() {
     this.fecthPostSell()
-    this.showPostModal()
   }
 }
 </script>
+
 
 
 
@@ -280,7 +286,93 @@ button.btn-secondary {
   background-color: #6c757d;
   color: white;
 }
+.post-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.post-header {
+  display: flex;
+  align-items: center;
+}
 
+.account-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.account-name {
+  margin-left: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.post-title {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #333;
+}
+li p {
+  font-size: 15px;
+  color: black;
+  margin-top: -20px;
+}
+
+.post-image {
+  height: 300px; /* Set a fixed height */
+
+  width: 100%; /* Ensure images fill their containers */
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.more-images-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 1.2em;
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+
+.buy-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1em;
+  border-radius: 5px;
+  transition:
+    background 0.3s,
+    transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: block;
+  margin-top: 20px;
+}
+
+.buy-button:hover {
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+.buy-button:active {
+  transform: scale(1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+h6 {
+  color: black;
+}
 /* Mobile */
 @media (max-width: 767px) {
   .table thead {

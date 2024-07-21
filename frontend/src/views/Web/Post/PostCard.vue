@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="d-flex justify-content-center row">
-      <div class="col-md-10">
+      <div class="col-md-15">
         <ul class="mb-2">
           <li>
             <router-link to="/post/create" class="btn btn-success pull-right mt-3 ml-2 p-2.8">
@@ -46,7 +46,7 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <span v-for="(item, index) in post.items" :key="index">
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
                 {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
               </span>
             </div>
@@ -81,6 +81,7 @@
 
 <script>
 import axios from 'axios';
+
 
 export default {
   props: ['posts'],

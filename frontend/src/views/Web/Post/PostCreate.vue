@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <form @submit.prevent="createPost" class="form p-4 " method="POST" enctype="multipart/form-data">
-        <h3 class="text-center m-3">Post Here!!</h3>
+  <div class="container ">
+    <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
+      <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
       <div class="mb-3">
         <label for="title" class="form-label" style="color: black">Title</label>
         <input
@@ -17,6 +17,9 @@
         <div class="mb-3" v-if="selectedItemsNames.length > 0">
           <p style="color:black">{{ selectedItemsNames }}</p>
         </div>
+        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
+        <p style="color:black">{{ selectedItemsNames }}</p>
+      </div>
         <button
           class="form-control shared-style dropdown-toggle"
           type="button"
@@ -55,7 +58,7 @@
         />
       </div>
       <div class="mb-3">
-        <label for="company-selection" class="form-label">Company Selection</label>
+        <label for="company-selection" style="color: black" class="form-label">Company Selection</label>
         <select
           id="company-selection"
           name="company"
@@ -93,6 +96,7 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 export default {
   components: {
     FilePond,
+    
   },
   data() {
     return {
@@ -101,6 +105,7 @@ export default {
       company_id: '',
       companies: [],
       title: '',
+      // status: 'pending',
       selectedItems: []
     }
   },
@@ -139,7 +144,7 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-        this.$router.push('/profile')
+          this.$router.push('/profile')
       } catch (error) {
         console.error('Error creating post:', error)
       }

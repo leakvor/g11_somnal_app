@@ -14,7 +14,7 @@
     </div>
     <div class="flex" style="margin-top: -10px;margin: 10px;">
       <div class="flex-grow">
-        <h4 class="text-green-700 mb-4">To become our partner, you must meet the following conditions:</h4>
+        <h3 class="text-green-700 mb-4">To become our partner, you must meet the following conditions:</h3>
         <ul class="list-disc list-inside mb-4">
           <li>You are a business owner who buys scrabs.</li>
           <li>You have the right to make decisions about your business and services.</li>
@@ -36,17 +36,9 @@
 
 <script>
 
-import Navbar from '../../Components/NavBar.vue';
-import PricingOPtion from '../../views/Web/userInfo/PricingOption.vue';
-import Footer from '../../Components/Footer.vue';
 
 export default{
   name: 'PartnerView',
-  components: {
-    Navbar,
-    PricingOPtion,
-    Footer
-  },
 
 }
 </script>
