@@ -27,7 +27,8 @@ class Payment extends Model
     }
 
     //Relationship with option paid
-    public function optionPaid(): BelongsTo{
-        return $this->belongsTo(OptionPaid::class);
+    public function optionPaid(): BelongsTo
+    {
+        return $this->belongsTo(OptionPaid::class, 'option_paid_id');
     }
 }
