@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     showPostModal() {
-      // this.showModal = true
+      this.showModal = true
       $('#postModal').modal('show')
       this.name = this.userData.name
       this.email = this.userData.email

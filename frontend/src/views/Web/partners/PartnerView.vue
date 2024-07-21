@@ -3,7 +3,6 @@
     <NavBar />
     <PartnerComponent />
     <OptionPaid />
-    <PricingOption/>
     <FooterVue />
   </div>
 </template>
@@ -13,7 +12,7 @@ import NavBar from '../../../Components/NavBar.vue'
 import FooterVue from '../../../Components/Footer.vue'
 import PartnerComponent from '../../../Components/dialogs/PartnerComponent.vue'
 
-import PricingOption from '../../Web/userInfo/PricingOption.vue'
+
 import OptionPaid from '../partners/OptionPaid.vue'
 export default {
   name: 'PartnerPage',
@@ -22,7 +21,6 @@ export default {
     PartnerComponent,
     OptionPaid,
     NavBar,
-    PricingOption, 
     FooterVue
   }
 

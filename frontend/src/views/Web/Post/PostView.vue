@@ -7,7 +7,7 @@
           <img
             class="rounded-circle"
             :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
-            width="45"
+            width="45" height="45"
             alt="Profile"
             style="border: 1px solid black"
           />
@@ -18,8 +18,7 @@
         </div>
         <p class="post-title">{{ post.title }}</p>
         <p class="text-danger">Type of scrap:</p>
-        <p class="post-title" >{{ post.title }}</p>
-        <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
+       
         <ul>
           <li>
             <p class="comment-text">
@@ -45,7 +44,7 @@
           </div>
         </div>
 
-        <div v-else>
+        <div v-if="post.images.length == 1">
           <img
             class="img-fluid shadow rounded mb-4 single-img"
             :src="`http://127.0.0.1:8000/uploads/${post.images[0].image}`"
@@ -102,7 +101,7 @@ export default {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/post/list');
         this.posts = response.data;
-        console.log(this.posts);
+        console.log('post',this.posts);
       } catch (error) {
         console.error(error);
       }
