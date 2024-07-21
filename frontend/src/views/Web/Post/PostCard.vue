@@ -1,4 +1,13 @@
 <template>
+  <!-- /////Alert deleted successfully///// -->
+   <div class="alertModal flex justify-center ">
+      <div class="alert alert-success mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md"
+        v-if="showSuccessMessage">
+      <i class="fa fa-check-circle"></i> {{ successMessage }}
+        <!-- <span class="text-green-500">{{ successMessage }}</span> -->
+      </div>
+    </div>
+  <!-- /// -->
   <div class="container">
     <div class="d-flex justify-content-center row">
       <div class="col-md-15">
@@ -18,6 +27,7 @@
               <i class="fa fa-long-arrow-up text-black-50"></i>
             </div>
           </div>
+<<<<<<< HEAD
           <div class="bg-white border shadow rounded mt-2 mb-4" v-for="post in posts" :key="post.id">
             <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
               <div class="d-flex flex-row align-items-center feed-text px-2">
@@ -27,6 +37,13 @@
                   width="45"
                   alt="Profile"
                 />
+=======
+          <div class="bg-white border mt-2" v-for="post in posts" :key="post.id">
+            <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
+              <div class="d-flex flex-row align-items-center feed-text px-2">
+                <img class="rounded-circle" :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`" width="45"
+                  alt="Profile" />
+>>>>>>> origin/before_production
                 <div class="d-flex flex-column flex-wrap ml-2">
                   <span style="color: black">{{ post.user.name }}</span>
                   <span class="text-black-50 time">{{ post.created_at }}</span>
@@ -46,11 +63,11 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <span style="color: black" v-for="(item, index) in post.items" :key="index">
-                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
-              </span>
+              <span v-for="(item, index) in post.items" :key="index">
+                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }} </span>
             </div>
             <div class="row">
+<<<<<<< HEAD
               <div
                 v-for="(image, index) in post.images"
                 :key="index"
@@ -66,6 +83,14 @@
             </div>
             <button class="buy-sell"
               :class="post.status === 'buy' ? 'btn btn-danger mt-5' : 'btn btn-success '">
+=======
+              <div v-for="(image, index) in post.images" :key="index" class="col-sm-12 col-md-6 col-lg-4">
+                <img class="img-fluid shadow rounded mb-4 gallery-img"
+                  :src="`http://127.0.0.1:8000/uploads/${image.image}`" :alt="`Image ${index + 1}`" />
+              </div>
+            </div>
+            <button :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
+>>>>>>> origin/before_production
               {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
             </button>
           </div>
@@ -92,19 +117,31 @@ export default {
   data() {
     return {
       showOptions: null,
+<<<<<<< HEAD
       showModal: false,
       modalImages: [],
       currentImage: null,
       currentImageIndex: 0,
+=======
+      showSuccessMessage: false,
+      successMessage: ''
+>>>>>>> origin/before_production
     }
   },
   methods: {
     toggleOptions(postId) {
       this.showOptions = this.showOptions === postId ? null : postId
     },
+    // confirmDeletePost(postId) {
+    //   if (window.confirm('Are you sure you want to delete this post?')) {
+    //     this.$emit('delete-post', postId)
+    //   }
+    // }
+
     confirmDeletePost(postId) {
-      if (window.confirm('Are you sure you want to delete this post?')) {
+      // if (window.confirm('Are you sure you want to delete this post?')) {
         this.$emit('delete-post', postId)
+<<<<<<< HEAD
       }
     },
     openImageModal(images, index) {
@@ -127,6 +164,16 @@ export default {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
       this.currentImage = this.modalImages[this.currentImageIndex]
     },
+=======
+        this.successMessage = 'Post deleted successfully!'
+        this.showSuccessMessage = true
+        setTimeout(() => {
+          this.showSuccessMessage = false
+        }, 2000)
+      // }
+    }
+
+>>>>>>> origin/before_production
   }
 }
 </script>
@@ -135,25 +182,32 @@ export default {
 body {
   background-color: #eee;
 }
+
 .time {
   font-size: 9px !important;
 }
+<<<<<<< HEAD
 .row img {
   touch-action: auto;
 }
 li {
   list-style-type: none;
 }
+=======
+
+>>>>>>> origin/before_production
 .socials i {
   margin-right: 14px;
   font-size: 17px;
   color: #d2c8c8;
   cursor: pointer;
 }
+
 .feed-image img {
   width: 100%;
   height: auto;
 }
+
 .options {
   position: absolute;
   background-color: white;
@@ -161,6 +215,7 @@ li {
   padding: 5px;
   z-index: 100;
 }
+
 .options button {
   display: block;
   text-decoration: none;
@@ -170,15 +225,18 @@ li {
   border: none;
   cursor: pointer;
 }
+
 .options button:hover {
   background-color: #f0f0f0;
 }
+
 .rounded-circle {
   border-radius: 50%;
   width: 45px;
   height: 45px;
   object-fit: cover;
 }
+<<<<<<< HEAD
 .modal {
   display: block;
   position: fixed;
@@ -322,4 +380,15 @@ li {
     width: 80%;
   }
 }
+=======
+/* ///alert modal/// */
+.alertModal {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+>>>>>>> origin/before_production
 </style>

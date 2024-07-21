@@ -21,7 +21,7 @@
   </template>
   
   <script>
-  import NotificationItem from '../../../Components/notification/notificationItem.vue';
+  import NotificationItem from '../../../Components/Notification/notificationItem.vue';
   export default {
     components:{
         NotificationItem
@@ -29,7 +29,5 @@
   }
   </script>
 
-  
-  
   <style scoped></style>
   

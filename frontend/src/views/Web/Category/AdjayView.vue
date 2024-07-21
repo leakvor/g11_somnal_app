@@ -6,6 +6,21 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
     />
   </head>
+  <!-- Alert Message -->
+  <div class="alertModal flex justify-center" v-if="showSuccessMessage">
+    <div class="alert alert-success mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md">
+      <i class="fa fa-check-circle text-green-500"></i>
+      <span class="text-green-500">{{ successMessage }}</span>
+    </div>
+  </div>
+   <!-- Error Message -->
+   <div class="alertModal flex justify-center" v-if="showErrorMessage">
+    <div class="alert alert-error mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md">
+      <i class="fa fa-times-circle text-red-500"></i>
+      <span class="text-red-500">{{ errorMessage }}</span>
+    </div>
+  </div>
+  <!-- ////////// -->
   <div class="container">
     <div v-if="category">
       <h1 class="mt-20 color-dark text-center mb-4">List items of Category {{ category.name }}</h1>
@@ -106,7 +121,11 @@ export default {
       selectedItemId: null,
       items: [],
       backendUrl: 'http://127.0.0.1:8000',
-      textInput: ''
+      textInput: '',
+      showSuccessMessage: false,
+      successMessage: '',
+      showErrorMessage: false,
+      errorMessage: ''
     }
   },
   computed: {
@@ -120,12 +139,12 @@ export default {
     }
   },
   mounted() {
-    this.fetchCategoryDetails()
+    this.fetchCategoryDetails();
   },
   methods: {
     async fetchCategoryDetails() {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/category/show/${this.id}`)
+        const response = await axios.get(`http://127.0.0.1:8000/api/category/show/${this.id}`);
         if (response.data.data && response.data.data.length > 0) {
           this.category = response.data.data[0]
           this.items = this.category.items
@@ -133,14 +152,14 @@ export default {
         
         }
       } catch (error) {
-        console.error('Error fetching category details:', error)
+        console.error('Error fetching category details:', error);
       }
     },
     async addFavorite(itemId) {
       try {
-        const token = localStorage.getItem('access_token')
+        const token = localStorage.getItem('access_token');
         if (!token) {
-          throw new Error('No token found')
+          throw new Error('No token found');
         }
 
         const response = await axios.post(
@@ -151,31 +170,58 @@ export default {
               Authorization: `Bearer ${token}`
             }
           }
-        )
-
-        console.log(response.data)
-
+        );
+        console.log(response.data);
         if (response.data.success) {
-          alert('Item added to favorites successfully.')
+          this.successMessage = 'Item added to favorites successfully.';
+          this.showSuccessMessage = true;
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+          }, 2000);
+
         } else if (response.data.error) {
-          alert(response.data.error)
+          // alert(response.data.error);
+          this.errorMessage = response.data.error;
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         }
       } catch (error) {
         if (error.response) {
-          console.error('Server Error:', error.response.data)
-          alert(error.response.data.error || 'You have not account yet')
+          // console.error('Server Error:', error.response.data);
+          // alert(error.response.data.error || 'Server error occurred.');
+          console.error('Server Error:', error.response.data);
+          this.errorMessage = error.response.data.error || 'Server error occurred.';
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         } else if (error.request) {
-          console.error('Network Error:', error.request)
-          alert('Network error occurred. Please try again.')
+          // console.error('Network Error:', error.request);
+          // alert('Network error occurred. Please try again.');
+          console.error('Network Error:', error.request);
+          this.errorMessage = 'Network error occurred. Please try again.';
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         } else {
-          console.error('Error:', error.message)
-          alert(error.message)
+          // console.error('Error:', error.message);
+          // alert(error.message);
+          console.error('Error:', error.message);
+          this.errorMessage = error.message;
+          this.showErrorMessage = true;
+          setTimeout(() => {
+            this.showErrorMessage = false;
+          }, 2000);
         }
       }
     }
   }
-}
+};
 </script>
+
 <style scoped>
 .adjay .card {
   width: 22%;
@@ -186,16 +232,150 @@ export default {
   height: 150px;
   object-fit: cover;
 }
-/*action*/
+.alertModal {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+.alert {
+  background-color: white;
+  border-color: white;
+  color: green;
+}
+
+i {
+  border-radius: 50px;
+  background-color: green;
+  color: white;
+  padding: 10px;
+}
+
+i:hover {
+  background: orangered;
+}
+
+button {
+  background-color: white;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.card {
+  width: 22.5%;
+}
+
+.card img {
+  width: 50%;
+  height: 70%;
+  margin: auto;
+  object-fit: cover;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.circle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  text-align: center;
+}
+
+.circle-icon i {
+  color: #000;
+}
+
+.delete-button {
+  background-color: red;
+  border: 1px solid white;
+}
+
+.delete-button i {
+  color: white;
+}
 
 @media (min-width: 320px) and (max-width: 568px) {
   .card img {
     width: 40%;
     height: 10%;
   }
+
   .adjay .card {
     width: 200px;
     margin: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .adjay {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+  }
+
+  .card {
+    width: 98%;
+    margin: auto;
+  }
+
+  .card-title {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 428px) {
+  .adjay .card {
+    width: 90%;
+    margin: auto;
+  }
+
+  .card-title {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .adjay {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .adjay .card {
+    width: 45%;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1214px) {
+  .adjay {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .adjay .card {
+    width: 27.5%;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1290px) {
+  .adjay {
+    display: flex;
+    gap: 3px;
+  }
+
+  .card {
+    width: 21%;
   }
 }
 </style>

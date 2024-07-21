@@ -253,12 +253,15 @@ export default {
 }
 </script>
 
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> origin/before_production
 <style scoped>
 th,
 td {
