@@ -25,7 +25,7 @@
       </svg>
       <!-- Dropdown Menu -->
       <transition name="fade">
-        <div v-if="showDropdown" @click.away="closeDropdown"
+        <div v-if="showDropdown" @click="closeDropdown"
           class="absolute right-0 w-48 bg-green rounded-lg shadow-lg overflow-hidden">
           <ul class="py-1 text-sm text-gray-700 p-5">
             <p>

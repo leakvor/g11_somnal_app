@@ -132,6 +132,12 @@ const router = createRouter({
       component:() => import('../views/Web/userInfo/PaymentPage.vue'),
       props:true
     },
+      {
+      path:"/priceoption",
+      name:"priceoption",
+      component:() => import('../views/Web/userInfo/PricingOption.vue')
+    },
+
     {
       path: '/company/dashboard',
       name: 'CompanyDashboard',

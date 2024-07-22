@@ -7,7 +7,7 @@
           <img
             class="rounded-circle"
             :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
-            width="45"
+            width="45" height="45"
             alt="Profile"
             style="border: 1px solid black"
           />
@@ -16,8 +16,9 @@
             <span class="text-black-50 time">{{ post.created_at }}</span>
           </div>
         </div>
-        <p class="post-title" >{{ post.title }}</p>
-        <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
+        <p class="post-title">{{ post.title }}</p>
+        <p class="text-danger">Type of scrap:</p>
+       
         <ul>
           <li>
             <p class="comment-text">
@@ -28,7 +29,7 @@
           </li>
         </ul>
 
-        <div class="row">
+        <div class="row" v-if="post.images.length > 1">
           <div
             v-for="(image, index) in post.images"
             :key="index"
@@ -38,11 +39,21 @@
               class="img-fluid shadow rounded mb-4 gallery-img"
               :src="`http://127.0.0.1:8000/uploads/${image.image}`"
               :alt="`Image ${index + 1}`"
+              @click="openImageModal(post.images, index)"
             />
           </div>
         </div>
 
-        <button v-if="user_info.role_id == 3"
+        <div v-if="post.images.length == 1">
+          <img
+            class="img-fluid shadow rounded mb-4 single-img"
+            :src="`http://127.0.0.1:8000/uploads/${post.images[0].image}`"
+            alt="Single Image"
+            @click="openImageModal(post.images, 0)"
+          />
+        </div>
+
+        <button
           :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
           @click="updatePostStatus(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
         >
@@ -50,8 +61,17 @@
         </button>
       </div>
     </div>
+
+    <div v-if="showModal" class="modal mt-5" @click="closeImageModal">
+      <span class="close" @click="closeImageModal">&times;</span>
+      <img class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
+      <div class="caption">{{ currentImageIndex + 1 }} / {{ modalImages.length }}</div>
+      <a class="prev" @click.stop="prevImage">&#10094;</a>
+      <a class="next" @click.stop="nextImage">&#10095;</a>
+    </div>
   </div>
 </template>
+
 
 <script>
 import NavBar from '../../../Components/NavBar.vue';
@@ -59,6 +79,7 @@ import axios from 'axios';
 
 export default {
   name: 'PostComponent',
+  
   components: {
     NavBar,
   },
@@ -69,15 +90,18 @@ export default {
       postTitle: '',
       images: [],
       posts: [],
-      user_info: null,
-    };
+      showModal: false,
+      modalImages: [],
+      currentImage: null,
+      currentImageIndex: 0,
+    }
   },
   methods: {
     async fetchPosts() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/post/list');
         this.posts = response.data;
-        console.log(this.posts);
+        console.log('post',this.posts);
       } catch (error) {
         console.error(error);
       }
@@ -122,12 +146,31 @@ export default {
         console.error(error);
       }
     },
-  },
-  mounted() {
-    this.fetchPosts();
-    this.fetchUser();
-  },
-};
+    openImageModal(images, index) {
+      this.modalImages = images
+      this.currentImageIndex = index
+      this.currentImage = images[index]
+      this.showModal = true
+    },
+    closeImageModal() {
+      this.showModal = false
+      this.modalImages = []
+      this.currentImage = null
+      this.currentImageIndex = 0
+    },
+    prevImage() {
+      this.currentImageIndex = (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length
+      this.currentImage = this.modalImages[this.currentImageIndex]
+    },
+    nextImage() {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
+      this.currentImage = this.modalImages[this.currentImageIndex]
+    },
+    },
+    mounted() {
+      this.fetchPosts()
+    }
+}
 </script>
 
 
@@ -164,57 +207,100 @@ export default {
   font-size: 15px;
   color: #333;
 }
+
+li{
+  list-style: none;
+}
 li p {
   font-size: 15px;
   color: black;
-  margin-top: -20px;
+ 
 }
 
-.post-image {
-  height: 300px; /* Set a fixed height */
-
-  width: 100%; /* Ensure images fill their containers */
-  object-fit: cover; /* Maintain aspect ratio */
+.gallery-img {
+  height: 200px; /* Adjust height as needed */
+  width: 100%;
+  object-fit: cover;
   border-radius: 8px;
   margin-top: 10px;
   cursor: pointer;
 }
 
-.more-images-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  border-radius: 10px;
-  font-size: 1.2em;
-  padding: 5px 10px;
+.single-img {
+  height: 300px; /* Adjust height as needed */
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
   margin-top: 10px;
+  cursor: pointer;
 }
 
-.buy-button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 12px 24px;
-  font-size: 1em;
-  border-radius: 5px;
-  transition:
-    background 0.3s,
-    transform 0.3s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  text-align: center;
+.modal {
   display: block;
-  margin-top: 20px;
+  position: fixed;
+  z-index: 1;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-.buy-button:hover {
-  background-color: #388e3c;
-  transform: scale(1.05);
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 100%;
+  max-width: 800px;
 }
 
-.buy-button:active {
-  transform: scale(1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  user-select: none;
+}
+
+.prev {
+  left: 0;
+}
+
+.next {
+  right: 0;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.caption {
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
 }
 </style>

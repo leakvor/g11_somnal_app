@@ -7,10 +7,20 @@
         <input type="text" class="form-control shared-style" id="title" name="title" v-model="title" />
       </div>
       <div class="mb-3 dropdown">
+<<<<<<< HEAD
         <label for="item-dropdown" class="form-label" style="color: black">Item selection</label>
         <div class="mb-3" v-if="selectedItemsNames.length > 0">
           <p style="color: black">{{ selectedItemsNames }}</p>
         </div>
+=======
+        <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
+        <div class="mb-3" v-if="selectedItemsNames.length > 0">
+          <p style="color:black">{{ selectedItemsNames }}</p>
+        </div>
+        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
+        <p style="color:black">{{ selectedItemsNames }}</p>
+      </div>
+>>>>>>> origin/update_map_and_companyview
         <button
           class="form-control shared-style dropdown-toggle"
           type="button"
@@ -52,12 +62,18 @@
           </option>
         </select>
       </div>
+<<<<<<< HEAD
       <div class="submit d-grid gap-2">
+=======
+      <div class="d-flex column justify-content-end gap-2">
+>>>>>>> origin/update_map_and_companyview
         <button class="btn btn-success" type="submit">Submit</button>
+        <button class="btn btn-danger " type="button" @click="closeForm">Cancle</button>
       </div>
     </form>
   </div>
 </template>
+
 
 <script>
 import vueFilePond from 'vue-filepond'
@@ -159,6 +175,11 @@ export default {
         document.getElementById(`Checkme${item.id}`).checked = false
       })
     },
+    closeForm() {
+      this.resetForm()
+      // Optional: Navigate to another page, e.g., homepage or previous page
+      this.$router.push('/profile')
+    },
     async getAllItems() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/item/list')
@@ -179,6 +200,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .container {

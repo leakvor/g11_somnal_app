@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-5">
+  <div>
     <NavBar />
     <div id="carousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
@@ -62,25 +62,23 @@
     <div class="slider-container">
       <div class="slider mt-5">
         <div class="slider-item" v-for="company in filteredCompanies" :key="company.id">
-          <a href="/companies" class="card company-card text-decoration-none text-dark">
-            <div class="card-body">
-              <div class="company-logo text-center">
-                <img :src="company.profile" alt="Company Logo"  width="100" height="100" />
+          <div class="card company-card text-decoration-none text-dark">
+            <div class="card p-3">
+              <div class="company-logo text-center object-fit-cover">
+                <img   :src="`http://127.0.0.1:8000/uploads/${company.profile}`" alt="Company Logo"  onerror="this.src='https://icons.iconarchive.com/icons/praveen/minimal-outline/512/gallery-icon.png  '" width="100%" height="200"  class="rounded"/>
               </div>
               <div class="company-info">
-                <h5 class="text-title" style="margin: 2px"> {{ company.name }}</h5>
-                <!-- <p class="text-card text-danger"><b>Services:</b> {{ company.services }}</p> -->
-                <a :href="'tel:' + company.tel" class="text-card text-decoration-none" ><b>Phone:</b> {{ company.phone }}</a>
-                <p class="text-card"><b>Email:</b> {{ company.email }}</p>
-                <p class="text-card"><b>Address:</b> {{ company.address}}</p>
+                <h5 class="text-title mt-3"><b></b> {{ company.name }}</h5>
+                <p class="text-break text-danger"><b>Services:</b> {{ company.services }}</p>
+                <a :href="'tel:' + company.tel" class="text-card text-decoration-none"><b>Phone:</b> {{ company.phone }}</a>
+                <p class="text-break"><b>Email:</b>{{ company.email }}</p>
+                <p class="text-break"> <b>Address:</b>{{ company.address}}</p>
               </div>
             </div>
-          </a>
+          </div>
         </div>
       </div>
     </div>
-
-  
     <div class="table-responsive bg-white mt-5 pe-3 ps-3">
       <h3 class="text-orange font-bold pb-3 pt-4">Scrap Price List</h3>
       <div class="d-flex justify-content-end">
@@ -266,7 +264,7 @@
     const clone = item.cloneNode(true);
     slider.appendChild(clone);
   });
-
+  
   // Add hover event listeners to pause/resume animation
   sliderItems.forEach(item => {
     item.addEventListener('mouseover', () => {
@@ -296,7 +294,7 @@
 
   .list-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
     #sider-card{
@@ -312,9 +310,9 @@
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition:
-      transform 0.4s ease-in-out,
-      box-shadow 0.4s ease-in-out,
-      border-color 0.4s ease-in-out;
+      transform 0.3s ease-in-out,
+      box-shadow 0.3s ease-in-out,
+      border-color 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
     border: 2px solid thick;
@@ -325,31 +323,26 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-color: #007bff;
   }
-
-  .company-card img {
-    width: 110px;
-    height: 110px;
-    object-fit: fill;
-  }
-
-  .text-card {
-    line-height: 1px;
-    font-size: 12px;
+  .text-break {
+    font-size: 18px;
   }
 
 /* Aoutor slider of company card */
   .slider-container {
   width: 100%;
-  overflow: hidden;
+  overflow:hidden;
+
 }
 
 .slider {
   display: flex;
+  width: 100%;
   gap: 1rem;
-  animation: scroll 15s linear infinite;
+  animation: scroll 5s linear infinite ;
 }
 
 .slider-item {
+  min-width: calc(100% / 4);
   min-width: calc(100% / 4);
   box-sizing: border-box;
   padding: 0 0.5rem;
@@ -364,36 +357,38 @@
 }
 
 @keyframes scroll {
+  100% {
+    transform: translateX(-30%);
+  }
   0% {
     transform: translateX(0);
   }
-  100% {
-    transform: translateX(-100%);
-  }
+  
 }
 
 @media (max-width: 1200px) {
   .slider-item {
-    min-width: calc(100% / 4);
+    min-width: calc(100%/5);
   }
 }
 
 @media (max-width: 992px) {
   .slider-item {
-    min-width: calc(100% / 3);
+    min-width: calc(100% / 4);
   }
 }
 
 @media (max-width: 768px) {
   .slider-item {
-    min-width: calc(100% / 2);
+    min-width: calc(100% / 4);
   }
 }
 
 @media (max-width: 576px) {
   .slider-item {
-    min-width: 100%;
+    min-width: calc(100%/2);
   }
+
 }
 
 .slider:hover {
@@ -456,7 +451,7 @@
       height: 70px;
     }
 
-    .company-card .company-info h5 {
+    .company-card .company-info h5 {  
       margin-top: 5px;
       font-size: 12px;
       font-weight: bold;

@@ -21,28 +21,26 @@
             ref="#"
             v-for="company in filteredCompanies"
             :key="company.id"
-            class="card company-card text-decoration-none text-dark pe-3 ps-3 pb-3"
+            class="company-card text-decoration-none text-dark pe-3 ps-3 pb-3"
           >
             <div class="card-body">
-              <div class="company-logo text-center">
-                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}`" alt="Company Logo" />
+              <div class="company-logo text-center mt-3">
+                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}` " alt="Company Logo" width="100%" height="200" class="rounded"  onerror="this.src='https://icons.iconarchive.com/icons/praveen/minimal-outline/512/gallery-icon.png'"/>
               </div>
-              <div class="company-info">
+              <div class="company-info mt-3">
                 <h5 class="text-title">{{ company.name }}</h5>
-                <!-- <p class="text-card text-danger"><b>Services:</b> {{ company.id }}</p> -->
+                <p class="text-break text-danger"><b>Services:</b> {{ company.id }}</p>
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"
                   ><b>Phone:</b> {{ company.phone }}</a
                 >
                 <div class=" "> 
                   <p class="text-break"><b>Email:</b>{{ company.email }}</p>
                 </div>
-                <p class="text-card"><b>Address:</b> {{ company.address }}</p>
+                <p class="text-break"><b>Address:</b> {{ company.address }}</p>
               </div>
-              <div v-if="user_info.role_id==2" class="company-action d-flex justify-content-end">
-                <button class="btn btn-success" type="submit" @click="openModal(company.id)">
-                  Sales Now
-                </button>
-              </div>
+            </div>
+            <div class="company-action d-flex justify-content-end">
+              <button class="btn btn-success" type="submit" @click="openModal(company.id)">Sales Now</button>
             </div>
           </a>
         </div>
@@ -307,10 +305,10 @@ export default {
   
 }
 
-.company-logo img {
-  max-width: 80px;
-  height: auto;
+.card-body{
+  width: 100%;
 }
+
 
 .text-title {
   font-size: 1.2rem;
@@ -323,7 +321,7 @@ justify-content: space-between;
 
 }
 .text-card {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #666;
 }
 .company-action button {
@@ -339,7 +337,6 @@ justify-content: space-between;
   background: rgb(25, 107, 58);
   color: white;
   border: none;
-  margin-right: 20px;
 }
 .company-action button:hover,
 #back-btn:hover {
