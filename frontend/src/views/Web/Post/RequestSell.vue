@@ -95,13 +95,9 @@
                 </li>
               </ul>
               <div class="row">
-                <div
-                  v-for="(image, index) in post.images"
-                  :key="index"
-                  class="col-sm-12 col-md-6 col-lg-4"
-                >
+                  <div v-for="(image, index) in post.images" :key="index" class="grid-item">
                   <img
-                    class="img-fluid shadow rounded mb-4 gallery-img"
+                    class="img-fluid shadow rounded m-2"
                     :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                     :alt="`Image ${index + 1}`"
                   />

@@ -36,7 +36,7 @@
                 <div class=" "> 
                   <p class="text-break"><b>Email:</b>{{ company.email }}</p>
                 </div>
-                <p class="text-break"><b>Address:</b> {{ company.address }}</p>
+                <a href="/map" class="text-break"><b>Address:</b><i class="bi bi-geo-alt-fill"></i></a>
               </div>
             </div>
             <div class="company-action d-flex justify-content-end">
