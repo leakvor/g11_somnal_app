@@ -103,13 +103,8 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-// import axios from 'axios'
-// import PostCreate from './PostCreate.vue'
-=======
 import axios from 'axios';
 
->>>>>>> origin/update_map_and_companyview
 
 export default {
   props: ['posts'],
@@ -136,13 +131,8 @@ export default {
     // }
 
     confirmDeletePost(postId) {
-<<<<<<< HEAD
       // if (window.confirm('Are you sure you want to delete this post?')) {
         this.$emit('delete-post', postId)
-=======
-      if (window.confirm('Are you sure you want to delete this post?')) {
-        this.$emit('delete-post', postId);
->>>>>>> origin/update_map_and_companyview
       }
     },
     openImageModal(images, index) {
@@ -166,13 +156,8 @@ export default {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length;
       this.currentImage = this.modalImages[this.currentImageIndex];
     },
-<<<<<<< HEAD
   }
 
-=======
-  },
-};
->>>>>>> origin/update_map_and_companyview
 </script>
 
 <style scoped>

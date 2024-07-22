@@ -42,7 +42,10 @@
                 </ul>
               </div>
             </div>
-            <button @click="openModal" class="update-pf bg-success text-white rounded-circle position-absolute">
+            <button
+              @click="openModal"
+              class="update-pf bg-success text-white rounded-circle position-absolute"
+            >
               <i class="bi bi-plus-lg d-flex justify-content-center"></i>
             </button>
           </div>
@@ -59,9 +62,15 @@
         <h2 style="color: black">Edit Profile</h2>
         <form @submit.prevent="updateProfile" method="post" enctype="multipart/form-data">
           <div class="title mt-3 mb-3">
-            <input type="text" class="w-full p-2 border border-gray-300" id="title" name="name" v-model="userData.name" required />
+            <input
+              type="text"
+              class="w-full p-2 border border-gray-300"
+              id="title"
+              name="name"
+              v-model="userData.name"
+              required
+            />
           </div>
-<<<<<<< HEAD
           <div class="modal-body">
             <form
               @submit.prevent="updateProfile"
@@ -79,26 +88,59 @@
                   required
                 />
               </div>
-=======
->>>>>>> origin/update_map_and_companyview
+            </form>
+          </div>
 
           <div class="title mt-3 mb-3">
-            <input type="email" class="w-full p-2 border border-gray-300" name="email" v-model="userData.email" required />
+            <input
+              type="email"
+              class="w-full p-2 border border-gray-300"
+              name="email"
+              v-model="userData.email"
+              required
+            />
           </div>
           <div class="title mt-3 mb-3">
-            <input type="tel" class="w-full p-2 border border-gray-300" name="phone" v-model="userData.phone" required />
+            <input
+              type="tel"
+              class="w-full p-2 border border-gray-300"
+              name="phone"
+              v-model="userData.phone"
+              required
+            />
           </div>
 
           <div class="mt-3">
             <div class="relative">
-              <img v-if="imageUrl" :src="imageUrl" alt="Uploaded Image" class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover" @click="triggerFileInput" />
-              <img v-else :src="`http://127.0.0.1:8000/uploads/${userData.profile}`" alt="Default Image" class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover" @click="triggerFileInput" />
-              <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file_input" name="image" @change="handleFileUpload" />
+              <img
+                v-if="imageUrl"
+                :src="imageUrl"
+                alt="Uploaded Image"
+                class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover"
+                @click="triggerFileInput"
+              />
+              <img
+                v-else
+                :src="`http://127.0.0.1:8000/uploads/${userData.profile}`"
+                alt="Default Image"
+                class="w-full h-300px border border-gray-300 p-2 cursor-pointer object-fit-cover"
+                @click="triggerFileInput"
+              />
+              <input
+                type="file"
+                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                id="file_input"
+                name="image"
+                @change="handleFileUpload"
+              />
             </div>
           </div>
 
           <div class="flex justify-end space-x-10 mt-5">
-            <button type="submit" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
+            <button
+              type="submit"
+              class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+            >
               Save Change
             </button>
           </div>
@@ -161,11 +203,14 @@ export default {
     async deletePost(postId) {
       try {
         const token = localStorage.getItem('access_token')
-        const response = await axios.delete(`http://127.0.0.1:8000/api/post/delete/user/${postId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
+        const response = await axios.delete(
+          `http://127.0.0.1:8000/api/post/delete/user/${postId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
           }
-        })
+        )
 
         if (response.status === 200) {
           this.posts = this.posts.filter((post) => post.id !== postId)
@@ -253,7 +298,6 @@ export default {
   right: 17%;
   bottom: 50%;
   cursor: pointer;
-
 }
 
 @media (max-width: 767px) {

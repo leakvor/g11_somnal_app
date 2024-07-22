@@ -1,4 +1,5 @@
 <template>
+  <NavBar/>
   <div class="container">
     <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
@@ -7,20 +8,10 @@
         <input type="text" class="form-control shared-style" id="title" name="title" v-model="title" />
       </div>
       <div class="mb-3 dropdown">
-<<<<<<< HEAD
         <label for="item-dropdown" class="form-label" style="color: black">Item selection</label>
         <div class="mb-3" v-if="selectedItemsNames.length > 0">
           <p style="color: black">{{ selectedItemsNames }}</p>
         </div>
-=======
-        <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
-        <div class="mb-3" v-if="selectedItemsNames.length > 0">
-          <p style="color:black">{{ selectedItemsNames }}</p>
-        </div>
-        <div class="mb-3" v-if="selectedItemsNames.length>0"> 
-        <p style="color:black">{{ selectedItemsNames }}</p>
-      </div>
->>>>>>> origin/update_map_and_companyview
         <button
           class="form-control shared-style dropdown-toggle"
           type="button"
@@ -62,16 +53,15 @@
           </option>
         </select>
       </div>
-<<<<<<< HEAD
       <div class="submit d-grid gap-2">
-=======
       <div class="d-flex column justify-content-end gap-2">
->>>>>>> origin/update_map_and_companyview
-        <button class="btn btn-success" type="submit">Submit</button>
         <button class="btn btn-danger " type="button" @click="closeForm">Cancle</button>
+        <button class="btn btn-success" type="submit">Submit</button>
+      </div>
       </div>
     </form>
   </div>
+  <Footer/>
 </template>
 
 
@@ -82,6 +72,8 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
+import NavBar from '../../../Components/NavBar.vue'
+import Footer from '../../../Components/Footer.vue'
 
 import axios from 'axios'
 import router from '@/router'
@@ -89,10 +81,11 @@ import router from '@/router'
 // Register the plugins
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 
-
 export default {
   components: {
-    FilePond
+    FilePond,
+    NavBar,
+    Footer
   },
   data() {
     return {
@@ -158,7 +151,6 @@ export default {
         console.log(response.data)
         this.resetForm()
         this.$router.push('/profile')
-
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -285,7 +277,6 @@ form {
     width: 90%;
   }
 }
-
 
 @media screen and (max-width: 884px) {
   form {
@@ -549,7 +540,6 @@ form {
   #company-selection option {
     font-size: 12px;
   }
-
 
   /* Adjust checkbox size */
   input[type='checkbox'] {

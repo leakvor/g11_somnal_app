@@ -1,5 +1,7 @@
 <template>
-    <div class="container">
+  <div>
+    <NavBar/>
+    <div class="container mt-3 mb-5">
       <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
         <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
         <div class="mb-3">
@@ -68,10 +70,13 @@
             </option>
           </select>
         </div>
-       <div class="submit d-grid gap-2">
+       <div class="submit d-flex column justify-content-end gap-2">
+           <button class="btn btn-danger " type="button" @click="closeForm">Cancle</button>
           <button class="btn btn-success" type="submit">Submit</button>
         </div>
       </form>
+    </div>
+    <Footer/>
     </div>
   </template>
   
@@ -81,6 +86,8 @@
   import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
   import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
   import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
+  import NavBar from '../../../Components/NavBar.vue'
+  import Footer from '../../../Components/Footer.vue'
   
   import axios from 'axios'
   import router from '@/router'
@@ -91,6 +98,8 @@
   export default {
     components: {
       FilePond,
+      NavBar,
+      Footer
       
     },
     data() {
@@ -177,7 +186,12 @@
         } catch (error) {
           console.error('Error getting companies:', error)
         }
-      }
+      },
+       closeForm() {
+      this.resetForm()
+      // Optional: Navigate to another page, e.g., homepage or previous page
+      this.$router.push('/')
+    },
     }
   }
   </script>

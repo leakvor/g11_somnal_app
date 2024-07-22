@@ -72,7 +72,7 @@
                 <p class="text-break text-danger"><b>Services:</b> {{ company.services }}</p>
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"><b>Phone:</b> {{ company.phone }}</a>
                 <p class="text-break"><b>Email:</b>{{ company.email }}</p>
-                <p class="text-break"> <b>Address:</b>{{ company.address}}</p>
+                <a href="/map" class="text-break"><b>Address:</b><i class="bi bi-geo-alt-fill"></i></a>
               </div>
             </div>
           </div>
