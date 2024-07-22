@@ -154,7 +154,7 @@ import FooterView from "@/Components/Footer.vue";
 import { useAuthStore } from '../../../stores/auth-store.ts'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-
+import pusher from '../../../pusherService';
 // base url
 // url of api
 const CHAT_API_URL = 'http://127.0.0.1:8000/api/chat/'
@@ -206,8 +206,14 @@ export default {
     	this.scrollToBottom(); 
   	},
 	mounted() {
-		this.fetchAllChatUsers();
+        this.fetchAllChatUsers();
 		this.fetchAllUsers();
+        const channel = pusher.subscribe('chat');
+        channel.bind('MessageSent', (data) => {
+            this.messages.push(data.message);
+            this.fetchAllUsers();
+        });
+
 		
 	},
 	methods: {
@@ -264,7 +270,6 @@ export default {
 				});
 				// console.log(response.data);
 				this.chats = response.data;
-				localStorage.setItem('chats', JSON.stringify(response.data));
 			} catch (error) {
 				console.error(error);
 			}
@@ -288,13 +293,11 @@ export default {
                 this.messages = response.data;
 
                 // Fetch user profile and mark messages as seen
-                await Promise.all([
-                    this.getUserProfile(userId),
+                    this.getUserProfile(userId)
                     this.seenMessage(userId)
-                ]);
 
                 // Scroll to bottom of chat messages
-                this.scrollToBottom();
+                this.scrollToBottom()
 
                 // Optionally return messages or handle further actions
                 return response.data;
@@ -337,6 +340,7 @@ export default {
 				},
 				});
 				this.fetchAllMessages(this.recieverId)
+                this.fetchAllChatUsers();
 				this.message = null;
 				this.image = null;
 				this.messageId = null 
@@ -362,6 +366,7 @@ export default {
 						Authorization: `Bearer ${token}`
 					}
 				});
+                console.log(response.data);
 			} catch (error) {
 				console.error('Error marking message as seen:', error);
 			}
