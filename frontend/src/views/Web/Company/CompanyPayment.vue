@@ -33,16 +33,13 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <tr v-for="userPayment in userPayments" :key="userPayment.id">
+        <tr v-for="userPayment in userPayments" :key="userPayment.id">
           <td>{{ userPayment.id }}</td>
           <td>{{ userPayment.user.name }}</td>
           <td>{{ userPayment.option_paid.option_paid }}</td>
           <td>{{ userPayment.option_paid.amount }}</td>
           <td>{{ userPayment.created_at }}</td>
-          <td v-if="userPayment.option_paid ==1">
-            {{ userPayment.created_at+30 }}
-          </td>
-        </tr> -->
+        </tr>
       </tbody>
     </table>
   </div>
