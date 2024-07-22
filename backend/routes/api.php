@@ -57,14 +57,16 @@ Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
 Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
 
 //get company nearbyme
-Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
+Route::post('/company/near', [AuthController::class, 'getNearbyCompanies']);
 
 
 //update notification status
-Route::get('/notification/status/{id}',[NotificationConControlller::class,'markAsSeen']);
+Route::get('/notification/status/{id}', [NotificationConControlller::class, 'markAsSeen']);
 
 //list all payment
 Route::get('/payment/list', [PaymentController::class, 'index']);
+
+
 
 //list all option
 Route::get('/option/list', [OptionPaidController::class, 'index']);
@@ -78,7 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
 
-  
+
 
 
     // Post routes
@@ -116,22 +118,23 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/list', [FavoriteController::class, 'index']);
         Route::post('/create', [FavoriteController::class, 'store']);
         Route::delete('/delete/{id}', [FavoriteController::class, 'destroy']);
-
     });
 
     //payment
     Route::prefix('payment')->group(function () {
         Route::post('/create', [PaymentController::class, 'store']);
+        // count number of comapy payments
+        Route::get('/company', [PaymentController::class, 'companyPayment']);
     });
+   
 
     //notification
     Route::prefix('notification')->group(function () {
-        Route::get('/company/list',[NotificationConControlller::class,'company_notifications']);
-        Route::get('/user/list',[NotificationConControlller::class,'user_notification']);
-        Route::get('/user/list/alert',[NotificationConControlller::class,'user_notification_alert']);
-        Route::get('/company/list/alert',[NotificationConControlller::class,'company_notification_alert']);
+        Route::get('/company/list', [NotificationConControlller::class, 'company_notifications']);
+        Route::get('/user/list', [NotificationConControlller::class, 'user_notification']);
+        Route::get('/user/list/alert', [NotificationConControlller::class, 'user_notification_alert']);
+        Route::get('/company/list/alert', [NotificationConControlller::class, 'company_notification_alert']);
     });
-
 });
 
 
@@ -168,3 +171,5 @@ Route::post('/images/update/{id}', [ImageController::class, 'update'])->name('im
 
 //add image to post
 Route::post('posts/{id}/add-image', [PostController::class, 'add_image_post']);
+// payment list 
+Route::get('/payment/list',[PaymentController::class,'getpayments']);
