@@ -305,18 +305,46 @@ class AuthController extends Controller
         $isUnique = !User::where('email', $email)->exists();
     }
 //get company nearby me
-    public function getNearbyCompanies(Request $request)
+//     public function getNearbyCompanies(Request $request)
+// {
+//     $latitude = $request->input('latitude');
+//     $longitude = $request->input('longitude');
+
+//     $companies = User::select('id', 'name', 'latitude', 'longitude')
+//         ->where('role_id', 3) 
+//         ->whereRaw("acos(sin(radians($latitude)) * sin(radians(latitude)) + cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude))) * 6371 < 3")
+//         ->get();
+
+//     return response()->json($companies);
+// }
+// In your Laravel controller
+
+public function getNearbyCompanies(Request $request)
 {
     $latitude = $request->input('latitude');
     $longitude = $request->input('longitude');
+    $distance = $request->input('distance'); // Distance in kilometers
 
-    $companies = User::select('id', 'name', 'latitude', 'longitude')
-        ->where('role_id', 3) 
-        ->whereRaw("acos(sin(radians($latitude)) * sin(radians(latitude)) + cos(radians($latitude)) * cos(radians(latitude)) * cos(radians(longitude) - radians($longitude))) * 6371 < 5")
-        ->get();
+    $query = User::select('id', 'name', 'latitude', 'longitude')
+        ->where('role_id', 3); // Filter by role_id
+
+    if ($latitude && $longitude && $distance) {
+        // Perform a raw SQL calculation to get the distance
+        $query->selectRaw("(
+            6371 * acos(
+                cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) +
+                sin(radians(?)) * sin(radians(latitude))
+            )
+        ) AS distance", [$latitude, $longitude, $latitude])
+        ->having('distance', '<=', $distance) // Filter companies by distance
+        ->orderBy('distance'); // Optional: Order by distance
+    }
+
+    $companies = $query->get();
 
     return response()->json($companies);
 }
+
 // get company
 public function getCompany(Request $request)
 {

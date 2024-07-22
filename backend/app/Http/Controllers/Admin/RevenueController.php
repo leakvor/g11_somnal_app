@@ -22,7 +22,7 @@ class RevenueController extends Controller
         // Fetch payments with related user and optionPaid
         $payments = Payment::with(['user', 'optionPaid'])->get();
         $payments = PaymentResource::collection($payments);
-
+        $payments = Payment::paginate(4);
         // Pass the payments to the view
         return view('revenue.index', compact('payments'));
     }

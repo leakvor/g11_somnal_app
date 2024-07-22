@@ -235,7 +235,7 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-        this.$router.push('/profile')
+        this.$router.push('/companies')
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -355,7 +355,28 @@ justify-content: space-between;
   max-height: 200px; 
   overflow-y: auto;
 }
+.dropdown .form-control,
+.dropdown-menu {
+  width: 100%;
+}
+.dropdown .form-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.dropdown-menu.scrollable-menu {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.form-check-input {
+  margin-left: 20px;
+}
+
+.form-label {
+  margin-top: 5px;
+}
 /* Responsive styles */
 @media (max-width: 1200px) {
   .list-container {

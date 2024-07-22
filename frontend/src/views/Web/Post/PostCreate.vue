@@ -1,5 +1,5 @@
 <template>
-  <div class="container ">
+  <div class="container">
     <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
       <div class="mb-3">
@@ -7,12 +7,17 @@
         <input type="text" class="form-control shared-style" id="title" name="title" v-model="title" />
       </div>
       <div class="mb-3 dropdown">
-        <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
+        <label for="item-dropdown" class="form-label" style="color: black">Item selection</label>
         <div class="mb-3" v-if="selectedItemsNames.length > 0">
-          <p style="color:black">{{ selectedItemsNames }}</p>
+          <p style="color: black">{{ selectedItemsNames }}</p>
         </div>
-        <button class="form-control shared-style dropdown-toggle" type="button" id="item-dropdown"
-          data-bs-toggle="dropdown" aria-expanded="false">
+        <button
+          class="form-control shared-style dropdown-toggle"
+          type="button"
+          id="item-dropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
           Select items
         </button>
         <ul class="dropdown-menu" aria-labelledby="item-dropdown" style="max-height: 200px; overflow-y: auto;">
@@ -31,9 +36,16 @@
           label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
           allow-multiple="true" accepted-file-types="image/jpeg, image/png" @updatefiles="handleFileChange" />
       </div>
-      <div class="mb-3">
-        <label for="company-selection" class="form-label">Company Selection</label>
-        <select id="company-selection" name="company" class="form-select shared-style" v-model="company_id">
+      <div class="mb-3" v-if="user_info && user_info.role_id == 2">
+        <label for="company-selection" style="color: black" class="form-label"
+          >Company Selection</label
+        >
+        <select
+          id="company-selection"
+          name="company"
+          class="form-select shared-style"
+          v-model="company_id"
+        >
           <option disabled selected value="">Select a company</option>
           <option v-for="company in companies" :key="company.id" :value="company.id">
             {{ company.name }}
@@ -53,7 +65,7 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import VueMultiselect from 'vue-multiselect'
+
 
 import axios from 'axios'
 import router from '@/router'
@@ -64,8 +76,7 @@ const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImage
 
 export default {
   components: {
-    FilePond,
-    VueMultiselect
+    FilePond
   },
   data() {
     return {
@@ -75,22 +86,39 @@ export default {
       companies: [],
       title: '',
       // status: 'pending',
-      selectedItems: []
+      selectedItems: [],
+      user_info: null
     }
   },
   computed: {
     selectedItemsNames() {
-      return this.selectedItems.map(id => {
-        const item = this.item_all.find(item => item.id === id);
-        return item.name;
-      });
+      return this.selectedItems.map((id) => {
+        const item = this.item_all.find((item) => item.id === id)
+        return item.name
+      })
     }
   },
   mounted() {
     this.getAllItems()
     this.getAllCompanies()
+    this.fetchUser()
   },
   methods: {
+    async fetchUser() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        this.user_info = response.data.data
+        console.log(this.user_info.role_id)
+        console.log('Fetched user:', this.user_info)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
     async createPost() {
       console.log('title', this.title)
       console.log('image', this.images)
@@ -113,11 +141,8 @@ export default {
         })
         console.log(response.data)
         this.resetForm()
-<<<<<<< HEAD
-          this.$router.push('/profile')
-=======
         this.$router.push('/profile')
->>>>>>> origin/before_production
+
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -158,6 +183,10 @@ export default {
 <style scoped>
 .container {
   width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 form {
@@ -231,83 +260,14 @@ form {
 
 @media screen and (max-width: 1280px) {
   form {
-    width: 80vw;
-  }
-
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn,
-  .form-label,
-  .form-check-label {
-    font-size: 26px;
-  }
-
-  #company-selection option {
-    font-size: 14px;
-  }
-
-  .submit {
-    margin-top: 6%;
-  }
-
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    height: 30px;
-  }
-
-  .form-check-label {
-    font-size: 24px;
-  }
-
-  .form-select option {
-    font-size: 16px;
+    width: 90%;
   }
 }
 
 
 @media screen and (max-width: 884px) {
   form {
-    width: 80vw;
-  }
-
-  .mb-3 .btn,
-  .mb-3 input,
-  .mb-3 select,
-  .submit .btn {
-    height: 50px;
-    margin: 5px;
-  }
-
-  .form-label {
-    font-size: 26px;
-  }
-
-  .dropdown .form-control,
-  .mb-3 #formFile,
-  .mb-3 .form-select,
-  .submit .btn {
-    font-size: 22px;
-  }
-
-  /* Adjust checkbox size */
-  input[type='checkbox'] {
-    width: 30px;
-    /* Adjust width */
-    height: 30px;
-    /* Adjust height */
-  }
-
-  .form-check-label {
-    font-size: 24px;
+    width: 90%;
   }
 }
 

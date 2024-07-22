@@ -56,8 +56,7 @@
         id="company-selection"
         name="company"
         class="form-select shared-style"
-        v-model="postData.company_id"
-      >
+        v-model="postData.company_id">
         <option disabled selected value="">Select a company</option>
         <option v-for="company in companies" :key="company.id" :value="company.id">
           {{ company.name }}
@@ -109,15 +108,16 @@ export default {
   },
   data() {
     return {
-      postData: {
-        title: '',
-        images: [], // Will hold the image objects with URL and ID
-        company_id: '',
-      },
+      // postData: {
+      //   title: '',
+      //   images: [], 
+      //   company_id: null,
+      // },
+      postData:{},
       item_all: [],
       companies: [],
       selectedItems: [],
-      currentImageId: null, // For image update
+      currentImageId: null, 
     };
   },
   computed: {
@@ -139,6 +139,7 @@ export default {
           },
         });
         this.postData = response.data.data;
+        
         this.selectedItems = this.postData.items.map((item) => item.item_id);
       } catch (error) {
         console.error('Error fetching post:', error);
@@ -201,7 +202,8 @@ export default {
         formData.append('title', this.postData.title);
         formData.append('company_id', this.postData.company_id);
         formData.append('items', this.selectedItems.join(','));
-
+     
+        console.log(this.postData.company_id);
         const token = localStorage.getItem('access_token');
         await axios.post(
           `http://127.0.0.1:8000/api/post/update/user/${this.id}`,

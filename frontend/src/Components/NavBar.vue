@@ -54,33 +54,27 @@
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
+          <li class="nav-item me-4" >
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
-            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
-              <i class="material-icons">home</i>
-              <span>Home</span>
-            </router-link>
-          </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link to="/company/revenue" class="nav-link" :class="{ active: isActive('/company/revenue') }">
               <i class="material-icons">attach_money</i>
               <span>Revenue</span>
             </router-link>
-          </li>
+          </li> -->
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link to="/company/dashboard" class="nav-link" :class="{ active: isActive('/company/dashboard') }">
               <i class="material-icons">dashboard</i>
               <span>Dashboard</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link to="/post/request/sell" class="nav-link" :class="{ active: isActive('/post/request/sell') }">
@@ -106,20 +100,13 @@
               <span>About Us</span>
             </router-link>
           </li>
-          <li class="nav-item me-4">
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link to="/history" class="nav-link" :class="{ active: isActive('/history') }">
               <i class="material-icons">history</i>
               <span>History</span>
             </router-link>
           </li>
-          <!-- <li
-            class="nav-item me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
-            <router-link to="/post_view" class="nav-link" :class="{ active: isActive('/post_view') }">
-              <i class="material-icons">info</i>
-              <span>Post View</span>
-            </router-link>
-          </li> -->
+         
 
           <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || !authStore.isAuthenticatedUser || !authStore.isAuthenticatedCompany">
             <router-link to="/contact" class="nav-link" :class="{ active: isActive('/contact') }">
@@ -146,12 +133,12 @@
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/payment" class="nav-link" :class="{ active: isActive('/payment') }">
               <i class="material-icons">payment</i>
               <span>Payment</span>
             </router-link>
-          </li>
+          </li> -->
 
           <li class="nav-item me-4" v-if="!authStore.isAuthenticatedCompany">
             <router-link to="/partner" class="nav-link" :class="{ active: isActive('/partner') }">
@@ -160,12 +147,33 @@
             </router-link>
           </li>
 
-          <li class="nav-item d-flex align-items-center me-4"
-            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
-            <router-link to="/login"
-              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3">Login</router-link>
-            <router-link to="/register" class="nav-link btn btn-register pe-3 ps-3">Register</router-link>
-          </li>
+          <li
+              class="nav-item d-flex align-items-center me-4"
+              v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+            >
+              <button
+                class="nav-link text-white btn btn-login custom-hover pe-3 ps-3"
+                data-bs-toggle="modal"
+                data-bs-target="#loginModal"
+              >
+                Login
+              </button>
+              <button
+                to="/register"
+                class="nav-link btn btn-register pe-3 ps-3"
+                data-bs-toggle="modal"
+                data-bs-target="#registerModal"
+              >
+                Register
+              </button>
+            </li>
+
+          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
+              <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
+                <i class="material-icons">map</i>
+                <span>Map</span>
+              </router-link>
+            </li>
 
           <li class="nav-item d-flex align-items-center me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
@@ -924,6 +932,8 @@ export default {
   }
 }
 </script>
+
+
 
 <style scoped>
 .navbar {

@@ -17,6 +17,18 @@
             <router-link to="/post/create" class="btn btn-success pull-right mt-3 ml-2 p-2.8">
               POST
             </router-link>
+            <!-- <div>
+              <button
+                type="button"
+                class="btn btn-success pull-right mt-3 ml-2 p-2.8"
+                data-bs-toggle="modal"
+                data-bs-target="#postModal"
+              >
+                Post
+              </button>
+              <PostCreate />
+            </div> -->
+            
           </li>
         </ul>
         <div class="feed p-2">
@@ -96,10 +108,13 @@
 
 <script>
 // import axios from 'axios'
-
+// import PostCreate from './PostCreate.vue'
 
 export default {
   props: ['posts'],
+  components:{
+    // PostCreate
+  },
   data() {
     return {
       showOptions: null,
