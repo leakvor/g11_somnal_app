@@ -189,7 +189,7 @@ export default {
       } catch (error) {
         if (error.response) {
           console.error('Server Error:', error.response.data);
-          this.errorMessage = error.response.data.error || 'Server error occurred.';
+          this.errorMessage = error.response.data.error || 'I do not have account yet';
           this.showErrorMessage = true;
           setTimeout(() => {
             this.showErrorMessage = false;

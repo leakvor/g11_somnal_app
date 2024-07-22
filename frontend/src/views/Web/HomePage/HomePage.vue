@@ -114,10 +114,10 @@
         <tbody>
           <tr v-for="(item, index) in paginatedItems" :key="index">
             <th scope="row">{{ index + 1 + (currentPage - 1) * itemsPerPage }}</th>
-            <td>{{ item.name }}</td>
-            <td class="date">{{ item.formattedDate }}</td>
+            <td>{{ item.item.name }}</td>
+            <td class="date">{{ item.date}}</td>
             <td>
-              <span class="text-danger font-bold">{{ item.price }}៛</span><span class="text-black">/kg</span>
+              <span class="text-danger font-bold">{{ item.item.price }}៛</span><span class="text-black">/kg</span>
             </td>
           </tr>
         </tbody>
@@ -164,7 +164,7 @@
         filteredCompanies: [],
         items: [],
         currentPage: 1,
-        itemsPerPage: 5,
+        itemsPerPage: 10,
       }
     },
     setup() {
@@ -197,7 +197,7 @@
     methods: {
       async fetchData() {
         try {
-          const response = await axios.get('http://127.0.0.1:8000/api/item/list')
+          const response = await axios.get('http://127.0.0.1:8000/api/history/list')
           this.items = response.data.data
           console.log(response.data.data)
 

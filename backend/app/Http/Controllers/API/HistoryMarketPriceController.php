@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HistoryPriceResource;
 use App\Models\HistoryMarketPrice;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,7 @@ class HistoryMarketPriceController extends Controller
     //list all history
     public function index(){
         $history=HistoryMarketPrice::list();
+        $history=HistoryPriceResource::collection($history);
         return response()->json(['success'=>true,'data'=>$history]);
     }
 

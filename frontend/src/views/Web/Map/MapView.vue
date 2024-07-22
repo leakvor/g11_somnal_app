@@ -7,7 +7,7 @@
           <button class="btn" @click="fetchCompanies">All companies</button>
           <button class="btn" @click="resetMap">Start to destination Again</button>
           <div class="distance-input-wrapper">
-            <label for="distanceInput" class="form-label" style="color: black">Enter distance (km):</label>
+            <label for="distanceInput" class="form-label" style="color: black">Put the distance: (km):</label>
             <input
               id="distanceInput"
               v-model.number="selectedDistance"
