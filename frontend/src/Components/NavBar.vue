@@ -18,11 +18,13 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-            alt="Profile"
-            style="width: 40px; height: 40px; border-radius: 50%"
-          />
+        <img
+          :src="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany ? `${imagePath}${userProfile}` : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
+          alt="Profile"
+          onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
+          class="mb-2 bg-white"
+          style="width: 40px; height: 40px; border-radius: 50%"
+        />
         </router-link>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
           <li>
@@ -280,12 +282,14 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-                  alt="Profile"
-                  class="mb-2"
-                  style="width: 40px; height: 40px; border-radius: 50%"
-                />
+              <img
+                :src="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany ? `${imagePath}${userProfile}` : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
+                alt="Profile"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
+                class="mb-2 bg-white"
+                style="width: 40px; height: 40px; border-radius: 50%"
+              />
+              
               </router-link>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li>
@@ -445,6 +449,8 @@ import NotificationComponent from './notification/NotificationComponents.vue'
 import { ref, onMounted,computed } from 'vue'
 
 
+
+
 export default {
   name: 'NavBar',
   components:{
@@ -456,6 +462,7 @@ export default {
         phone: '',
         email: '',
         password: '',
+        userProfile:'',
         role_id:2,
         nameError: '',
         phoneError: '',
@@ -543,6 +550,7 @@ export default {
 },
   setup() {
     const authStore = useAuthStore()
+    const imagePath = 'http://localhost:8000/uploads/'
     const route = useRoute()
     const router = useRouter()
 
@@ -576,12 +584,14 @@ export default {
 
     return {
       authStore,
+      imagePath,
       isActive,
       logout,
 
     }
   },
   mounted() {
+    this.me();
     const navLinks = document.querySelectorAll('.nav-link')
     navLinks.forEach((navLink) => {
       navLink.addEventListener('click', (event) => {
@@ -686,6 +696,20 @@ export default {
         }, 2000);
         }
       },
+        async me(){
+            try {
+              const token = localStorage.getItem('access_token');
+              const response = await axios.get('http://127.0.0.1:8000/api/me', {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              });
+              this.userProfile = response.data.data.profile
+              console.log(this.userProfile)
+            } catch (error) {
+              console.error('Error retrieving user information:', error);
+            }
+          },
       togglePasswordVisibility(passwordFieldId) {
       const passwordField = document.getElementById(passwordFieldId);
       passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
