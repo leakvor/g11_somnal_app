@@ -366,7 +366,7 @@ export default {
 						Authorization: `Bearer ${token}`
 					}
 				});
-                console.log(response.data);
+                this.fetchAllChatUsers();
 			} catch (error) {
 				console.error('Error marking message as seen:', error);
 			}
