@@ -211,7 +211,7 @@ export default {
         const channel = pusher.subscribe('chat');
         channel.bind('MessageSent', (data) => {
             this.messages.push(data.message);
-            this.fetchAllUsers();
+            this.fetchAllChatUsers();
         });
 
 		
@@ -293,8 +293,8 @@ export default {
                 this.messages = response.data;
 
                 // Fetch user profile and mark messages as seen
-                    this.getUserProfile(userId)
-                    this.seenMessage(userId)
+                this.getUserProfile(userId)
+                this.seenMessage(userId)
 
                 // Scroll to bottom of chat messages
                 this.scrollToBottom()
