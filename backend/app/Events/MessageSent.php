@@ -15,6 +15,8 @@ class MessageSent implements ShouldBroadcast
     use InteractsWithSockets, SerializesModels;
 
     public $chat;
+    public $user;
+    public $receiver;
 
     public function __construct(Chat $chat)
     {
@@ -23,6 +25,7 @@ class MessageSent implements ShouldBroadcast
 
     public function broadcastOn()
     {
+        return new Channel('chat');
         return new Channel('chat');
     }
 
