@@ -8,6 +8,7 @@ use App\Models\Notification;
 use App\Models\Payment;
 use App\Models\User;
 use App\Models\OptionPaid;
+use App\Rules\Luhn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -46,51 +47,51 @@ class PaymentController extends Controller
         return view('revenue.index', compact('payments'));
     }
     // Get expiration and will be paid
-    public function createNotification()
-    {
-        $payments = Payment::all();
+    // public function createNotification()
+    // {
+    //     $payments = Payment::all();
 
-        foreach ($payments as $payment) {
-            $deadlineDays = 0;
-            switch ($payment->status) {
-                case 1:
-                    $deadlineDays = 30;
-                    break;
-                case 2:
-                    $deadlineDays = 30;
-                    break;
-                case 3:
-                    $deadlineDays = 180;
-                    break;
-                case 4:
-                    $deadlineDays = 365;
-                    break;
-                default:
-                    continue;
-            }
+    //     foreach ($payments as $payment) {
+    //         $deadlineDays = 0;
+    //         switch ($payment->status) {
+    //             case 1:
+    //                 $deadlineDays = 30;
+    //                 break;
+    //             case 2:
+    //                 $deadlineDays = 30;
+    //                 break;
+    //             case 3:
+    //                 $deadlineDays = 180;
+    //                 break;
+    //             case 4:
+    //                 $deadlineDays = 365;
+    //                 break;
+    //             default:
+    //                 continue;
+    //         }
 
-            $deadline = Carbon::parse($payment->created_at)->addDays($deadlineDays);
-            $threeDaysBeforeDeadline = $deadline->subDays(3);
+    //         $deadline = Carbon::parse($payment->created_at)->addDays($deadlineDays);
+    //         $threeDaysBeforeDeadline = $deadline->subDays(3);
 
-            if (Carbon::now()->gte($threeDaysBeforeDeadline) && !$payment->notificationSent) {
-                // Create a new notification
-                $notification = new Notification();
-                $notification->type = 'payment_deadline';
-                $notification->post_id = null;
-                $notification->message = "Payment deadline approaching for payment #{$payment->id}";
-                $notification->user_id = $payment->user_id;
-                $notification->status = false;
-                $notification->save();
-                // $payment->notificationSent = true;
-                $payment->save();
-            }
+    //         if (Carbon::now()->gte($threeDaysBeforeDeadline) && !$payment->notificationSent) {
+    //             // Create a new notification
+    //             $notification = new Notification();
+    //             $notification->type = 'payment_deadline';
+    //             $notification->post_id = null;
+    //             $notification->message = "Payment deadline approaching for payment #{$payment->id}";
+    //             $notification->user_id = $payment->user_id;
+    //             $notification->status = false;
+    //             $notification->save();
+    //             // $payment->notificationSent = true;
+    //             $payment->save();
+    //         }
 
-            if (Carbon::now()->gte($deadline) && !$payment->isPaid()) {
-                // Change the user role to user if payment is not made on deadline
-                $user = User::find($payment->user_id);
-                $user->role_id = 2;
-                $user->save();
-            }
-        }
-    }
+    //         if (Carbon::now()->gte($deadline) && !$payment->isPaid()) {
+    //             // Change the user role to user if payment is not made on deadline
+    //             $user = User::find($payment->user_id);
+    //             $user->role_id = 2;
+    //             $user->save();
+    //         }
+    //     }
+    // }
 }

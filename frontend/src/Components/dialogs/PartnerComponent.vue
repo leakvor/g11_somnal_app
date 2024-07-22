@@ -5,7 +5,6 @@
       <div class="text-head lg:ml-10 mb-4 lg:mb-0">
         <h1><b>Increase Your Income with Us</b></h1>
         <p>We are willing to help strengthen your business and increase your income.</p>
-        <router-link to="/payment" class="bg-red-500 text-white px-4 py-2 rounded-full mt-5" style="text-decoration: none; margin-top: 15px">Click Now!!</router-link>
       </div>
       <div class="partner-img lg:ml-20">
         <img src="@/assets/partner/partner.png" alt="Partner Image" class="w-full lg:max-w-lg xl:max-w-xl">

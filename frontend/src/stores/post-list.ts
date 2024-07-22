@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axiosInstance from '@/plugins/axios';
+import axios from 'axios';
 
 export const usePostStore = defineStore('post', {
   state: () => ({
@@ -8,7 +9,7 @@ export const usePostStore = defineStore('post', {
   actions: {
     async fetchPosts() {
       try {
-        const response = await axiosInstance.get('/post/list', {
+        const response = await axios.get('/post/list', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`
           }

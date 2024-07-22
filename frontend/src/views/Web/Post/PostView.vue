@@ -108,7 +108,7 @@ export default {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         };
-        const data = { status: newStatus };
+        const data = { status: newStatus,company_id:this.user_info.id };
         const response = await axios.post(
           `http://127.0.0.1:8000/api/post/update/status/${postId}`,
           data,
