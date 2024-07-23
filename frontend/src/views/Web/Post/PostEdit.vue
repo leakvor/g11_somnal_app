@@ -4,11 +4,13 @@
     <form
     @submit.prevent="editPost"
     method="post"
-    class="flex flex-col p-4 rounded-lg bg-white shadow-md max-w-lg m-auto mt-5"
+    class="flex flex-col p-4 rounded-lg bg-white shadow-md max-w-lg m-auto mt-3"
     enctype="multipart/form-data"
-  >
-    <h2 class="text-center mb-3 text-lg font-semibold" style="color: black">Edit Post</h2>
-
+  > 
+    <div class="d-flex justify-content-between">
+      <h1 class="text-center mb-3 text-lg font-semibold" style="color: green">Edit Post</h1>
+      <button class=" text-dack bg-white fs-2 border-none " type="button" @click="closeForm"><i class="bi bi-x"></i></button>
+    </div> 
     <div class="mb-3">
       <label for="title" class="form-label" style="color: black">Title</label>
       <input
@@ -56,7 +58,8 @@
         id="company-selection"
         name="company"
         class="form-select shared-style"
-        v-model="postData.company_id">
+        v-model="postData.company_id"
+      >
         <option disabled selected value="">Select a company</option>
         <option v-for="company in companies" :key="company.id" :value="company.id">
           {{ company.name }}
@@ -65,7 +68,7 @@
     </div>
 
     <div class="mb-3">
-      <button type="button" style="background-color: orange; border-color: orange;" @click="triggerFileInput">Add New Image</button>
+      <button type="button" style="background-color: orange;  border-color: orange;" @click="triggerFileInput">Add New Image</button>
       <input
         type="file"
         ref="fileInput"
@@ -88,7 +91,7 @@
     <div class="flex justify-end mt-5">
       <button
         type="submit"
-        class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+        class="px-4 py-2 bg-green-600 text-white font-semibold border-none rounded-lg hover:bg-green-700"
       >
         Update Post
       </button>
@@ -102,22 +105,22 @@
 import axios from 'axios';
 import NavBar from '../../../Components/NavBar.vue'
 
+
 export default {
   components:{
     NavBar,
   },
   data() {
     return {
-      // postData: {
-      //   title: '',
-      //   images: [], 
-      //   company_id: null,
-      // },
-      postData:{},
+      postData: {
+        title: '',
+        images: [], // Will hold the image objects with URL and ID
+        company_id: '',
+      },
       item_all: [],
       companies: [],
       selectedItems: [],
-      currentImageId: null, 
+      currentImageId: null, // For image update
     };
   },
   computed: {
@@ -139,7 +142,6 @@ export default {
           },
         });
         this.postData = response.data.data;
-        
         this.selectedItems = this.postData.items.map((item) => item.item_id);
       } catch (error) {
         console.error('Error fetching post:', error);
@@ -202,8 +204,7 @@ export default {
         formData.append('title', this.postData.title);
         formData.append('company_id', this.postData.company_id);
         formData.append('items', this.selectedItems.join(','));
-     
-        console.log(this.postData.company_id);
+
         const token = localStorage.getItem('access_token');
         await axios.post(
           `http://127.0.0.1:8000/api/post/update/user/${this.id}`,
@@ -241,6 +242,9 @@ export default {
       this.currentImageId = null;
       this.$refs.fileInput.click();
     },
+     closeForm() {
+      this.$router.push('/profile')
+    },
   },
   mounted() {
     this.fetchPost();
@@ -249,10 +253,6 @@ export default {
   },
 };
 </script>
-
-
-
-
 
 
 

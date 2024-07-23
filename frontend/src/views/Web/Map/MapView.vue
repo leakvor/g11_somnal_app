@@ -137,6 +137,7 @@ function getNearbyCompanies() {
     })
 }
 
+
 function fetchCompanies() {
   axios
     .get('http://127.0.0.1:8000/api/company')
@@ -250,6 +251,7 @@ function calculateRoute(start: [number, number], end: [number, number], companyN
   })
   customizeRouteInstructionsStyle()
 }
+
 
 function customizeRouteInstructionsStyle() {
   setTimeout(() => {

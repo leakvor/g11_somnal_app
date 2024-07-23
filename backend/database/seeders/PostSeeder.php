@@ -36,6 +36,8 @@ class PostSeeder extends Seeder
             ['title' => 'I have a lot of tools to sell.', 'user_id' => 5, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I have a lot of toys to sell.', 'user_id' => 6, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I have a lot of kitchenware to sell.', 'user_id' => 7, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I have a lot of my old scraps', 'user_id' => 3, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I have a lot of my old bottle', 'user_id' => 8, 'company_id' => null, 'status' => 'pending'],
         ];
 
         foreach ($posts as $post) {

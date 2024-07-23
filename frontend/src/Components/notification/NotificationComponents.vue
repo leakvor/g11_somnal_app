@@ -2,10 +2,10 @@
 
 <script>
 import { useToast } from 'vue-toastification';
-import axios from 'axios';
-import { ref, onMounted } from 'vue';
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
+// import axios from 'axios';
+// import { ref, onMounted } from 'vue';
+// import Echo from 'laravel-echo';
+// import Pusher from 'pusher-js';
 
 export default {
 name: 'NotificationComponent',

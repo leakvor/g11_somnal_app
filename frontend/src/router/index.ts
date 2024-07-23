@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import axiosInstance from '@/plugins/axios'
 import { useAuthStore } from '@/stores/auth-store'
 import { createAcl, defineAclRules } from 'vue-simple-acl'
+import CompanyPayment from '@/views/Web/Company/CompanyPayment.vue'
 
 const simpleAcl = createAcl({})
 const router = createRouter({
@@ -131,6 +132,12 @@ const router = createRouter({
       component:() => import('../views/Web/userInfo/PaymentPage.vue'),
       props:true
     },
+      {
+      path:"/priceoption",
+      name:"priceoption",
+      component:() => import('../views/Web/userInfo/PricingOption.vue')
+    },
+
     {
       path: '/company/dashboard',
       name: 'CompanyDashboard',
@@ -142,6 +149,13 @@ const router = createRouter({
       name: 'companyRevenue',
       component: () => import('../views/Web/Company/CompanyRevenue.vue')
     },
+    // company payment
+  {
+    path: '/company/payment',
+    name: 'companyPayment',
+    component: () => import('../views/Web/Company/CompanyPayment.vue')
+  }
+    ,
     // see all company
     {
       path: '/companies',

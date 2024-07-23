@@ -1,16 +1,17 @@
 <template>
   <div>
+    <Navbar/>
     <div class="container mx-auto">
-    <div class="flex flex-col lg:flex-row items-center justify-between">
-      <div class="text-head lg:ml-10 mb-4 lg:mb-0">
-        <h1><b>Increase Your Income with Us</b></h1>
+    <div class="flex flex-col lg:flex-column items-center justify-between">
+      <div class="text-orange mt-5">
+        <h1 class=""><b>Increase Your Income with Us</b></h1>
         <p>We are willing to help strengthen your business and increase your income.</p>
       </div>
-      <div class="partner-img lg:ml-20">
-        <img src="@/assets/partner/partner.png" alt="Partner Image" class="w-full lg:max-w-lg xl:max-w-xl">
+      <div class="partner-img mt-2">
+        <img src="https://the-media-leader.com/wp-content/uploads/2022/09/partnership-business-shutterstock.jpg" alt="Partner Image">
       </div>
     </div>
-    <div class="flex" style="margin-top: -10px;margin: 10px;">
+    <div class="flex mt-5" style="margin-top: -10px;margin: 10px;">
       <div class="flex-grow">
         <h3 class="text-green-700 mb-4">To become our partner, you must meet the following conditions:</h3>
         <ul class="list-disc list-inside mb-4">
@@ -25,7 +26,9 @@
         <p>If you are interested in partnering with us, please provide us with the necessary information and pay the fee to us.</p>
       </div>
     </div>
+    <PricingOPtion/>
   </div>
+  <Footer/>
   </div>
   
 </template>
@@ -45,7 +48,7 @@ li{
   font-size: 20px;
 }
 h1{
-  color: black;
+  margin-top: 5px;
   text-align: center;
 }
 p{

@@ -46,6 +46,33 @@ class PaymentController extends Controller
         $payments = Payment::with(['user', 'optionPaid'])->get();
         return view('revenue.index', compact('payments'));
     }
+
+// ============================get all payments ============================
+public function getpayments(){
+    $payments = Payment::all();
+    $payments = PaymentResource::collection($payments);
+    return response()->json(['success'=>true,'data'=>$payments]);
+
+}
+// ================getuserpament company payment =============================
+
+    public function companyPayment(Request $request)
+    {
+        $user = $request->user();
+        $companyPayment = Payment::where('user_id', $user->id)
+            ->get();
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'User request has a role_id of 3',
+            'data' => PaymentResource::collection($companyPayment)
+        ]);
+    }
+    
+}
+
+
+
     // Get expiration and will be paid
     // public function createNotification()
     // {
@@ -94,4 +121,3 @@ class PaymentController extends Controller
     //         }
     //     }
     // }
-}

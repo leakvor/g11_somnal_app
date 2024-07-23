@@ -40,12 +40,8 @@
                 </td>
                 <td>{{ post.date_created }}</td>
                 <td class="text-end">
-                  <button class="btn btn-success" @click="updatePostStatus(post.id, 'buy')">
-                    Buy
-                  </button>
-                  <button class="btn btn-danger" @click="updatePostStatus(post.id, 'cancel')">
-                    Cancel
-                  </button>
+                  <button class="btn btn-success" @click="confirmAction(post.id, 'buy')">Buy</button>
+                  <button class="btn btn-danger" @click="confirmAction(post.id, 'cancel')">Cancel</button>
                 </td>
               </tr>
             </tbody>
@@ -76,7 +72,7 @@
             <div class="post-container" v-if="post">
               <div class="post-header d-flex align-items-center">
                 <img
-                  :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+                   :src="post.user.profile ? `http://127.0.0.1:8000/uploads/${post.user.profile}` : 'http://127.0.0.1:8000/uploads/1721404514.png'"
                   alt="Account Image"
                   class="account-image rounded-circle"
                   style="border: 1px solid gray"
@@ -95,13 +91,9 @@
                 </li>
               </ul>
               <div class="row">
-                <div
-                  v-for="(image, index) in post.images"
-                  :key="index"
-                  class="col-sm-12 col-md-6 col-lg-4"
-                >
+                  <div v-for="(image, index) in post.images" :key="index" class="grid-item">
                   <img
-                    class="img-fluid shadow rounded mb-4 gallery-img"
+                    class="img-fluid shadow rounded m-2"
                     :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                     :alt="`Image ${index + 1}`"
                   />
@@ -110,12 +102,30 @@
               <button
                 style="margin: 10px"
                 class="btn btn-success"
-                @click="updatePostStatus(post.id, 'buy')"> Buy</button>
-              <button class="btn btn-danger"  @click="updatePostStatus(post.id, 'cancel')">Cancel</button>
+                @click="confirmAction(post.id, 'buy')"> Buy</button>
+              <button class="btn btn-danger"  @click="confirmAction(post.id, 'cancel')">Cancel</button>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel" style="color:black">Confirm</h5>
+          </div>
+          <div class="modal-body">
+            <p style="color:black">{{ confirmationMessage }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success" @click="executeAction">Confirm</button>
           </div>
         </div>
       </div>
@@ -137,6 +147,9 @@ export default {
       currentPage: 1,
       itemsPerPage: 5,
       post: null,
+      actionPostId: null,
+      actionType: '',
+      confirmationMessage: '',
     }
   },
   computed: {
@@ -155,14 +168,15 @@ export default {
     }
   },
   methods: {
-    handleActionClick(item, action) {
-      if (action === 'Buy') {
-        alert(`Sure you want buy ?: ${item.id}`)
-      } else if (action === 'Cancel') {
-        const index = this.posts.findIndex((i) => i.id === item.id)
-        this.posts.splice(index, 1)
-        alert('Post cancelled successfully')
-      }
+    confirmAction(postId, actionType) {
+      this.actionPostId = postId
+      this.actionType = actionType
+      this.confirmationMessage = `Are you sure you want to ${actionType} this post?`
+      $('#confirmationModal').modal('show')
+    },
+    async executeAction() {
+      await this.updatePostStatus(this.actionPostId, this.actionType)
+      $('#confirmationModal').modal('hide')
     },
     prevPage() {
       if (this.currentPage > 1) {
@@ -188,7 +202,6 @@ export default {
         console.error(error)
       }
     },
-    //update post status
     async updatePostStatus(postId, newStatus) {
       try {
         console.log('New Status:', newStatus)
@@ -196,20 +209,20 @@ export default {
 
         const token = localStorage.getItem('access_token')
         if (!token) {
-        throw new Error('No access token found')
+          throw new Error('No access token found')
         }
 
         const headers = {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
 
         const data = { status: newStatus }
 
         const response = await axios.post(
-        `http://127.0.0.1:8000/api/post/update/status/${postId}`,
-        data,
-        { headers }
+          `http://127.0.0.1:8000/api/post/update/status/${postId}`,
+          data,
+          { headers }
         )
 
         console.log('Response:', response)
@@ -219,29 +232,21 @@ export default {
         if (postIndex !== -1) {
           this.posts[postIndex].status = newStatus
         }
-
-        const message =
-        newStatus === 'cancel'
-          ? 'You have been cancelled this item.'
-          : 'You have been bought this item.'
-        alert(message)
-        this.fecthPostSell()
-        $('#postModal').modal('hide')
+        this.fecthPostSell();
       } catch (error) {
-        const message =
-        newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
-        alert(message)
-        console.error('Error:', error)
+        console.error('Error updating post status:', error)
       }
     },
-   
     async showPostModal(postId) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`)
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
         this.post = response.data.data
-        console.log(this.post)
         $('#postModal').modal('show')
-
       } catch (error) {
         console.error(error)
       }
@@ -253,15 +258,12 @@ export default {
 }
 </script>
 
-<<<<<<< HEAD
 
 
 
 
 
 
-=======
->>>>>>> origin/before_production
 <style scoped>
 th,
 td {

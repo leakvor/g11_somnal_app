@@ -1,4 +1,14 @@
 <template>
+  <NavBar/>
+  <!-- ========message alert of post create -->
+    <!-- Alert created successfully -->
+    <div class="alertModal flex justify-center">
+      <div class="alert alert-success mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md" v-if="showSuccessMessage">
+        <i class="fa fa-check-circle"></i> {{ successMessage }}
+      </div>
+    </div>
+    <!-- ================end===================== -->
+
   <div class="container">
     <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
       <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
@@ -36,7 +46,7 @@
           label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
           allow-multiple="true" accepted-file-types="image/jpeg, image/png" @updatefiles="handleFileChange" />
       </div>
-      <div class="mb-3" v-if="user_info && user_info.role_id == 2">
+      <div class="mb-3" >
         <label for="company-selection" style="color: black" class="form-label"
           >Company Selection</label
         >
@@ -53,11 +63,16 @@
         </select>
       </div>
       <div class="submit d-grid gap-2">
+      <div class="d-flex column justify-content-end gap-2">
+        <button class="btn btn-danger " type="button" @click="closeForm">Cancle</button>
         <button class="btn btn-success" type="submit">Submit</button>
+      </div>
       </div>
     </form>
   </div>
+  <Footer/>
 </template>
+
 
 <script>
 import vueFilePond from 'vue-filepond'
@@ -66,6 +81,8 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
+import NavBar from '../../../Components/NavBar.vue'
+import Footer from '../../../Components/Footer.vue'
 
 import axios from 'axios'
 import router from '@/router'
@@ -73,10 +90,11 @@ import router from '@/router'
 // Register the plugins
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
 
-
 export default {
   components: {
-    FilePond
+    FilePond,
+    NavBar,
+    Footer
   },
   data() {
     return {
@@ -85,9 +103,10 @@ export default {
       company_id: '',
       companies: [],
       title: '',
-      // status: 'pending',
       selectedItems: [],
-      user_info: null
+      showSuccessMessage: false,
+      successMessage: '',
+
     }
   },
   computed: {
@@ -101,24 +120,8 @@ export default {
   mounted() {
     this.getAllItems()
     this.getAllCompanies()
-    this.fetchUser()
   },
   methods: {
-    async fetchUser() {
-      try {
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get('http://127.0.0.1:8000/api/me', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        this.user_info = response.data.data
-        console.log(this.user_info.role_id)
-        console.log('Fetched user:', this.user_info)
-      } catch (error) {
-        console.error('Error fetching user:', error)
-      }
-    },
     async createPost() {
       console.log('title', this.title)
       console.log('image', this.images)
@@ -139,17 +142,22 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         })
-        console.log(response.data)
+        this.successMessage = 'Post created successfully!'
+        this.showSuccessMessage = true
         this.resetForm()
-        this.$router.push('/profile')
-
+        setTimeout(() => {
+          this.showSuccessMessage = false
+          this.$router.push('/profile')
+        }, 2000)
       } catch (error) {
         console.error('Error creating post:', error)
       }
+
     },
     handleFileChange(fileItems) {
       this.images = fileItems.map((fileItem) => fileItem.file)
     },
+    
     resetForm() {
       this.title = ''
       this.company_id = null
@@ -158,6 +166,11 @@ export default {
       this.item_all.forEach((item) => {
         document.getElementById(`Checkme${item.id}`).checked = false
       })
+    },
+    closeForm() {
+      this.resetForm()
+      // Optional: Navigate to another page, e.g., homepage or previous page
+      this.$router.push('/profile')
     },
     async getAllItems() {
       try {
@@ -180,10 +193,10 @@ export default {
 }
 </script>
 
+
 <style scoped>
 .container {
   width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -263,7 +276,6 @@ form {
     width: 90%;
   }
 }
-
 
 @media screen and (max-width: 884px) {
   form {
@@ -527,7 +539,6 @@ form {
   #company-selection option {
     font-size: 12px;
   }
-
 
   /* Adjust checkbox size */
   input[type='checkbox'] {

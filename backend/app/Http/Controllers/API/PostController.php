@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\MessageSent;
 use App\Events\NotificationCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\ShowPostCommentResource;
+use App\Models\Chat;
 use App\Models\Image;
 use App\Models\Item;
 use App\Models\Notification;
@@ -343,6 +345,16 @@ class PostController extends Controller
                 'message' => "Your scrap has been bought.",
                 'status' => 0,
             ]);
+            $chat = Chat::create([
+                'user_id' => $post->company_id ? $post->company_id : $request->user()->id,
+                'reciever_id' => $post->user_id,
+                'message' => "Hello, I want to buy your scrap! That you posted for sale on " . $post->created_at->format('Y-m-d H:i:s')
+            ]);
+            
+        if($chat){
+            broadcast(new MessageSent($chat))->toOthers();
+        }
+                     
         } else if ($status == 'cancel') {
             $notification = Notification::create([
                 'type' => 'reply',
@@ -350,22 +362,16 @@ class PostController extends Controller
                 'message' => "Your scrap has been canceled.",
                 'status' => 0,
             ]);
-        } else if ($status == 'buy' && $post->company_id !== null) {
-            $notification = Notification::create([
-                'type' => 'reply',
-                'post_id' => $post->id,
-                'message' => "Your scrap has been bought.",
-                'user_id' => $request->user()->id,
-                'status' => 0,
-            ]);
-        }
+        } ;
 
         if ($notification) {
             // Broadcast the event
             broadcast(new NotificationCreated($notification))->toOthers();
         }
+       
         if ($post->company_id == null) {
             $post->company_id = $request->user()->id;
+            
         }
 
         $post->status = $status;

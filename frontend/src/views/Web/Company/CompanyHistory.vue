@@ -1,27 +1,25 @@
 <template>
   <NavBar />
   <div class="container mt-5">
-    <h3 class="text-center mb-3">Company Information</h3>
-    <div class="input-group mt-3 mb-5">
-      <ul class="dropdown-menu" aria-labelledby="dropdown-category">
-        <li>
-          <router-link class="link font-bold py-2 px-4 no-underline text-center"
-            >company</router-link
-          >
-        </li>
-      </ul>
-      <input
-        type="search"
-        class="form-control"
-        id="search-btn"
-        name="search"
-        placeholder="Search category"
-        v-model="searchInput"
-      />
-      <button type="button" class="btn btn-success">
-        <i class="fas fa-search"></i>
+    <h3 class="text-center mb-3">History of company</h3>
+    <div class="header d-flex gap-5">
+      <button type="button" class="btn btn-success w-40 h-10 mt-3">
+         <a href="/company/payment" style="text-decoration: none; color: white;">Company Paid</a>
       </button>
-    </div>
+      <div class="input-group mt-3 mb-5">
+        <input
+          type="search"
+          class="form-control"
+          id="search-btn"
+          name="search"
+          placeholder="Search category"
+          v-model="searchInput"
+        />
+        <button type="button" class="btn btn-success">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div> 
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
@@ -35,8 +33,8 @@
       <tbody>
         <tr v-for="history in filteredPosts" :key="history.id">
           <td>{{ history.id }}</td>
-            <td>{{ history.user.id }}</td>
-            <td>{{ new Date(history.created_at).toLocaleDateString() }}</td>
+            <td>{{ history.user.name }}</td>
+            <td>{{ history.created_at }}</td>
             <td>{{ history.status }}</td>
           <td>
             <button class="w-20 bg-green-500 hover:bg-orange-600 text-white p-2 rounded border-0">
@@ -62,7 +60,8 @@ export default {
   data() {
     return {
       searchInput: '',
-      posts: []
+      posts: [],
+      userPayments:[],
     }
   },
   computed: {
@@ -87,6 +86,7 @@ export default {
         console.error(error)
       }
   },
+
   },
   mounted(){
     this.getHistory();

@@ -10,9 +10,16 @@
         <div class="card-title">
           <p class="mb-19 mt-3 p-2 word-break: break-word">{{ option.description }}</p>
         </div>
-        <router-link :to="{ name: 'payment', params: { id: option.id } }" class="btn btn-success">
+        <router-link
+          v-if="authStore.isAuthenticated"
+          :to="{ name: 'payment', params: { id: option.id } }"
+          class="btn btn-success"
+        >
           <b>{{ option.amount === 0 ? 'Get Now' : 'Buy Now' }}</b>
         </router-link>
+        <button v-else @click="redirectToLogin" class="btn btn-success">
+          <b>{{ option.amount === 0 ? 'Get Now' : 'Buy Now' }}</b>
+        </button>
       </div>
     </div>
   </div>
@@ -20,9 +27,16 @@
 
 <script>
 import axios from 'axios'
-
+import { useAuthStore } from '../../../stores/auth-store.ts'
 export default {
   name: 'PricingOptions',
+  setup() {
+    const authStore = useAuthStore()
+    console.log(authStore)
+    return {
+      authStore
+    }
+  },
   data() {
     return {
       options: [],
@@ -33,6 +47,7 @@ export default {
     this.option_payment()
   },
   methods: {
+    
     async option_payment() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/option/list')
@@ -47,14 +62,17 @@ export default {
         const token = localStorage.getItem('access_token')
         const response = await axios.get('http://127.0.0.1:8000/api/me', {
           headers: {
-            Authorization: `Bearer ${token}` 
+            Authorization: `Bearer ${token}`
           }
         })
-        this.user_info = response.data.data 
+        this.user_info = response.data.data
         console.log('User info:', this.user_info)
       } catch (error) {
         console.error('Error fetching user:', error)
       }
+    },
+    redirectToLogin() {
+      this.$router.push({ name: 'login' });
     }
   }
 }

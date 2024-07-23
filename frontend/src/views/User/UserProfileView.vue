@@ -113,6 +113,7 @@
                 />
               </div>
 
+
               <div class="mt-3">
                 <div class="relative">
                   <img
@@ -216,6 +217,7 @@ export default {
             }
           }
         )
+
 
         if (response.status === 200) {
           this.posts = this.posts.filter((post) => post.id !== postId)

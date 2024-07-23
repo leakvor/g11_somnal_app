@@ -97,19 +97,19 @@
       Back
     </router-link>
   </div>
-  <Footer class="mt-5" />
+  <FooterView class="mt-5" />
 </template>
 
 <script>
 
 import axios from 'axios'
 import NavBar from '@/Components/NavBar.vue'
-import Footer from '@/Components/Footer.vue'
+import FooterView from '@/Components/Footer.vue'
 
 export default {
   components: {
     NavBar,
-    Footer
+    FooterView
   },
   props: ['id'],
   name: 'AdjayView',

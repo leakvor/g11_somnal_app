@@ -1,14 +1,4 @@
 <template>
-  <div>
-    <!-- /////Alert deleted successfully///// -->
-   <div class="alertModal flex justify-center ">
-      <div class="alert alert-success mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md"
-        v-if="showSuccessMessage">
-      <i class="fa fa-check-circle"></i> {{ successMessage }}
-        <!-- <span class="text-green-500">{{ successMessage }}</span> -->
-      </div>
-    </div>
-  <!-- /// -->
   <div class="container">
     <div class="d-flex justify-content-center row">
       <div class="col-md-15">
@@ -17,18 +7,6 @@
             <router-link to="/post/create" class="btn btn-success pull-right mt-3 ml-2 p-2.8">
               POST
             </router-link>
-            <!-- <div>
-              <button
-                type="button"
-                class="btn btn-success pull-right mt-3 ml-2 p-2.8"
-                data-bs-toggle="modal"
-                data-bs-target="#postModal"
-              >
-                Post
-              </button>
-              <PostCreate />
-            </div> -->
-            
           </li>
         </ul>
         <div class="feed p-2">
@@ -68,17 +46,14 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <span v-for="(item, index) in post.items" :key="index">
-                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }} </span>
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
+                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+              </span>
             </div>
-            <div class="row">
-              <div
-                v-for="(image, index) in post.images"
-                :key="index"
-                class="col-12 col-sm-6 col-lg-3"
-              >
+            <div class="image-grid m-3">
+              <div v-for="(image, index) in post.images" :key="index" class="grid-item">
                 <img
-                  class="img-fluid shadow rounded mb-4 gallery-img bg-none m-3 w-47 h-48"
+                  class="img-fluid shadow rounded"
                   :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                   :alt="`Image ${index + 1}`"
                   @click="openImageModal(post.images, index)"
@@ -86,7 +61,7 @@
               </div>
             </div>
             <button class="buy-sell"
-              :class="post.status === 'buy' ? 'btn btn-danger mt-5' : 'btn btn-success '">
+              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
               {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
             </button>
           </div>
@@ -94,7 +69,7 @@
       </div>
     </div>
 
-    <div v-if="showModal" class="modal mt-5 " @click="closeImageModal">
+    <div v-if="showModal" class="modal mt-5" @click="closeImageModal">
       <span class="close" @click="closeImageModal">&times;</span>
       <img class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
       <div class="caption">{{ currentImageIndex + 1 }} / {{ modalImages.length }}</div>
@@ -102,19 +77,14 @@
       <a class="next" @click.stop="nextImage">&#10095;</a>
     </div>
   </div>
-  </div>
-  
 </template>
 
 <script>
-// import axios from 'axios'
-// import PostCreate from './PostCreate.vue'
+import axios from 'axios';
+
 
 export default {
   props: ['posts'],
-  components:{
-    // PostCreate
-  },
   data() {
     return {
       showOptions: null,
@@ -122,57 +92,48 @@ export default {
       modalImages: [],
       currentImage: null,
       currentImageIndex: 0,
-    }
+    };
   },
   methods: {
     toggleOptions(postId) {
-      this.showOptions = this.showOptions === postId ? null : postId
+      this.showOptions = this.showOptions === postId ? null : postId;
     },
-    // confirmDeletePost(postId) {
-    //   if (window.confirm('Are you sure you want to delete this post?')) {
-    //     this.$emit('delete-post', postId)
-    //   }
-    // }
-
     confirmDeletePost(postId) {
-      // if (window.confirm('Are you sure you want to delete this post?')) {
-        this.$emit('delete-post', postId)
+      if (window.confirm('Are you sure you want to delete this post?')) {
+        this.$emit('delete-post', postId);
       }
     },
     openImageModal(images, index) {
-      this.modalImages = images
-      this.currentImageIndex = index
-      this.currentImage = images[index]
-      this.showModal = true
+      this.modalImages = images;
+      this.currentImageIndex = index;
+      this.currentImage = images[index];
+      this.showModal = true;
     },
     closeImageModal() {
-      this.showModal = false
-      this.modalImages = []
-      this.currentImage = null
-      this.currentImageIndex = 0
+      this.showModal = false;
+      this.modalImages = [];
+      this.currentImage = null;
+      this.currentImageIndex = 0;
     },
     prevImage() {
-      this.currentImageIndex = (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length
-      this.currentImage = this.modalImages[this.currentImageIndex]
+      this.currentImageIndex =
+        (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length;
+      this.currentImage = this.modalImages[this.currentImageIndex];
     },
     nextImage() {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
-      this.currentImage = this.modalImages[this.currentImageIndex]
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length;
+      this.currentImage = this.modalImages[this.currentImageIndex];
     },
-  }
-
+  },
+};
 </script>
 
 <style scoped>
 body {
   background-color: #eee;
 }
-
 .time {
   font-size: 9px !important;
-}
-.row img {
-  touch-action: auto;
 }
 li {
   list-style-type: none;
@@ -183,12 +144,10 @@ li {
   color: #d2c8c8;
   cursor: pointer;
 }
-
 .feed-image img {
   width: 100%;
   height: auto;
 }
-
 .options {
   position: absolute;
   background-color: white;
@@ -196,7 +155,6 @@ li {
   padding: 5px;
   z-index: 100;
 }
-
 .options button {
   display: block;
   text-decoration: none;
@@ -206,11 +164,9 @@ li {
   border: none;
   cursor: pointer;
 }
-
 .options button:hover {
   background-color: #f0f0f0;
 }
-
 .rounded-circle {
   border-radius: 50%;
   width: 45px;
@@ -227,13 +183,13 @@ li {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .modal-content {
   margin: auto;
   display: block;
   width: 100%;
-  max-width: 700px;
+  max-width: 800px;
 }
 .close {
   position: absolute;
@@ -277,87 +233,38 @@ li {
   color: #ccc;
   padding: 10px 0;
 }
-.buy-sell{
+.buy-sell {
   margin-bottom: 10px;
   margin-left: 10px;
 }
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.grid-item {
+  flex: 1 1 calc(33.333% - 8px);
+  box-sizing: border-box;
+}
+.grid-item img {
+  width: 100%;
+  height: auto;
+}
 @media (max-width: 767px) {
-  .col-12 {
-    flex: 0 0 100%;
-    display: flex;
-    justify-content: center;
-    max-width: 100%;
+  .grid-item {
+    flex: 1 1 calc(50% - 8px);
   }
-  .feed-text h6 {
-    font-size: 14px;
-  }
-  .feed-icon {
-    font-size: 18px;
-  }
-  .feed-text .time {
-    font-size: 8px;
-  }
-  .modal-content {
-    width: 100%;
+}
+
+@media (max-width: 479px) {
+  .grid-item {
+    flex: 1 1 100%;
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .col-sm-6 {
-    flex: 0 10 50%;
-    max-width: 90%;
-  }
-  .feed-text h6 {
-    font-size: 16px;
-  }
-  .feed-icon {
-    font-size: 20px;
-  }
-  .feed-text .time {
-    font-size: 10px;
-  }
-  .modal-content {
-    width: 100%;
-  }
-  .update-pf {
-    right: 25%;
-    bottom: 47%;
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-  }
-  .buy-sell{
-    right: 90%;
-    display: flex;
-    justify-content: start;
-    bottom: 30%;
-    cursor: pointer;
-  }
-  .row{
-    width: 100%;
-  }
-}
-
-@media (min-width: 992px) {
-  .col-md-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  .col-lg-3 {
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-  .feed-text h6 {
-    font-size: 18px;
-  }
-  .feed-icon {
-    font-size: 22px;
-  }
-  .feed-text .time {
-    font-size: 12px;
-  }
-  .modal-content {
-    width: 80%;
+  .grid-item {
+    flex: 1 1 calc(25% - 8px);
   }
 }
 </style>

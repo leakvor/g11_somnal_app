@@ -36,7 +36,7 @@ class PostImageSeeder extends Seeder
             ['image_id'=>16,'post_id'=>10],
             ['image_id'=>1,'post_id'=>10],
             ['image_id'=>17,'post_id'=>11],
-            ['image_id'=>18,'post_id'=>11],
+            ['image_id'=>18,'post_id'=>23],
             ['image_id'=>19,'post_id'=>11],
             ['image_id'=>20,'post_id'=>12],
             ['image_id'=>21,'post_id'=>13],
@@ -50,6 +50,7 @@ class PostImageSeeder extends Seeder
             ['image_id'=>18,'post_id'=>19],
             ['image_id'=>6,'post_id'=>20],
             ['image_id'=>14,'post_id'=>21],
+            ['image_id'=>5,'post_id'=>22],
         ];
         foreach($post_images as $post_image){
             Post_Image::create($post_image);

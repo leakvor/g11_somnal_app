@@ -1,7 +1,13 @@
 <template>
+  <div>
+    <NavBar/>
   <div class="container d-flex justify-content-center">
     <div class="bg-white text-black d-flex row justify-content-center shadow bg-body rounded">
-      <h2 class="d-flex justify-content-center mt-3">Pay here!</h2>
+        <div class="pay d-flex row justify-content-center">
+          <h2 class="col-11 d-flex justify-content-center text-orange mb-3">Pay here!</h2>
+          <button type="button" class="col-1 close-button d-flex justify-content-end" @click="closePayment"><i class="bi bi-x"></i></button>
+        </div>
+      <!-- <button type="button" class="close-button d-flex justify-content-end" @click="closePayment"><i class="bi bi-x"></i></button> -->
       <div class="payment-form mt-3">
         <div class="payment-options d-flex row justify-content-center">
           <img
@@ -74,6 +80,8 @@
       </div>
     </div>
   </div>
+  <Footer/>
+  </div>
 </template>
 
 <script>
@@ -82,8 +90,16 @@ import { useAuthStore } from '../../../stores/auth-store';
 import { useRouter } from 'vue-router';
 import leaflet from 'leaflet';
 
+import NavBar from '../../../Components/NavBar.vue';
+import Footer from '../../../Components/Footer.vue';
+
+
 export default {
-  props: ['id'],
+  name: 'PayNow',
+  components: {
+    NavBar,
+    Footer
+  },
   data() {
     return {
       cardName: '',
@@ -241,9 +257,12 @@ export default {
   } catch (error) {
     console.error('Error updating profile:', error);
   }
-}
-
   },
+   closePayment() {
+      this.router.push('/');
+    }
+  },
+
 }
 </script>
 
@@ -255,6 +274,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.col-1{
+  border: none;
+  background-color: transparent;
+  font-size: 2rem;
+  cursor: pointer;
 }
 .bg-white {
   width: 50%;
@@ -329,7 +354,7 @@ export default {
   }
   .pay-button {
     width: 60% !important;
-    height: 3.5rem !important;
+    height: 3.5rem !important;  
   }
 }
 </style>
