@@ -1,14 +1,4 @@
 <template>
-  <div>
-    <!-- /////Alert deleted successfully///// -->
-   <div class="alertModal flex justify-center ">
-      <div class="alert alert-success mt-3 w-99 flex items-center gap-2 p-4 rounded-lg shadow-md"
-        v-if="showSuccessMessage">
-      <i class="fa fa-check-circle"></i> {{ successMessage }}
-        <!-- <span class="text-green-500">{{ successMessage }}</span> -->
-      </div>
-    </div>
-  <!-- /// -->
   <div class="container">
     <div class="d-flex justify-content-center row">
       <div class="col-md-15">
@@ -17,18 +7,6 @@
             <router-link to="/post/create" class="btn btn-success pull-right mt-3 ml-2 p-2.8">
               POST
             </router-link>
-            <!-- <div>
-              <button
-                type="button"
-                class="btn btn-success pull-right mt-3 ml-2 p-2.8"
-                data-bs-toggle="modal"
-                data-bs-target="#postModal"
-              >
-                Post
-              </button>
-              <PostCreate />
-            </div> -->
-            
           </li>
         </ul>
         <div class="feed p-2">
@@ -68,8 +46,9 @@
             </div>
             <div class="p-2 px-3">
               <h4 style="color: black">{{ post.title }}</h4>
-              <span v-for="(item, index) in post.items" :key="index">
-                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }} </span>
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
+                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+              </span>
             </div>
             <div class="image-grid m-3">
               <div v-for="(image, index) in post.images" :key="index" class="grid-item">
@@ -98,8 +77,6 @@
       <a class="next" @click.stop="nextImage">&#10095;</a>
     </div>
   </div>
-  </div>
-  
 </template>
 
 <script>
@@ -108,9 +85,6 @@ import axios from 'axios';
 
 export default {
   props: ['posts'],
-  components:{
-    // PostCreate
-  },
   data() {
     return {
       showOptions: null,
@@ -124,15 +98,9 @@ export default {
     toggleOptions(postId) {
       this.showOptions = this.showOptions === postId ? null : postId;
     },
-    // confirmDeletePost(postId) {
-    //   if (window.confirm('Are you sure you want to delete this post?')) {
-    //     this.$emit('delete-post', postId)
-    //   }
-    // }
-
     confirmDeletePost(postId) {
-      // if (window.confirm('Are you sure you want to delete this post?')) {
-        this.$emit('delete-post', postId)
+      if (window.confirm('Are you sure you want to delete this post?')) {
+        this.$emit('delete-post', postId);
       }
     },
     openImageModal(images, index) {
@@ -156,15 +124,14 @@ export default {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length;
       this.currentImage = this.modalImages[this.currentImageIndex];
     },
-  }
-
+  },
+};
 </script>
 
 <style scoped>
 body {
   background-color: #eee;
 }
-
 .time {
   font-size: 9px !important;
 }
@@ -177,12 +144,10 @@ li {
   color: #d2c8c8;
   cursor: pointer;
 }
-
 .feed-image img {
   width: 100%;
   height: auto;
 }
-
 .options {
   position: absolute;
   background-color: white;
@@ -190,7 +155,6 @@ li {
   padding: 5px;
   z-index: 100;
 }
-
 .options button {
   display: block;
   text-decoration: none;
@@ -200,11 +164,9 @@ li {
   border: none;
   cursor: pointer;
 }
-
 .options button:hover {
   background-color: #f0f0f0;
 }
-
 .rounded-circle {
   border-radius: 50%;
   width: 45px;

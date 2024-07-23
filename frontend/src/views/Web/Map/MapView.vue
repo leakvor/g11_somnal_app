@@ -7,7 +7,7 @@
           <button class="btn" @click="fetchCompanies">All companies</button>
           <button class="btn" @click="resetMap">Start to destination Again</button>
           <div class="distance-input-wrapper">
-            <label for="distanceInput" class="form-label" style="color: black">Enter distance (km):</label>
+            <label for="distanceInput" class="form-label" style="color: black">Put the distance: (km):</label>
             <input
               id="distanceInput"
               v-model.number="selectedDistance"
@@ -137,25 +137,35 @@ function getNearbyCompanies() {
     })
 }
 
+
 function fetchCompanies() {
   axios
     .get('http://127.0.0.1:8000/api/company')
     .then((response) => {
       companies = response.data.data
+      console.log(companies)
       updateMarkers(companies)
     })
     .catch((error) => {
-      alert('Error fetching companies:', error)
+      console.error('Error fetching companies:', error)
     })
 }
 
 function updateMarkers(companies: any[]) {
   companyMarkers.forEach((marker) => map.removeLayer(marker))
   companyMarkers = []
+
   companies.forEach((company) => {
     const { latitude, longitude, name } = company
     const lat = parseFloat(latitude)
     const lon = parseFloat(longitude)
+
+    // Check if lat and lon are valid numbers
+    if (isNaN(lat) || isNaN(lon)) {
+      console.error(`Invalid LatLng object: (${latitude}, ${longitude})`)
+      return
+    }
+
     const companyMarker = leaflet
       .marker([lat, lon])
       .addTo(map)
@@ -185,6 +195,13 @@ function selectSuggestion(suggestion: any) {
   suggestions.value = []
   const lat = parseFloat(suggestion.lat)
   const lon = parseFloat(suggestion.lon)
+
+  // Check if lat and lon are valid numbers
+  if (isNaN(lat) || isNaN(lon)) {
+    console.error(`Invalid LatLng object: (${lat}, ${lon})`)
+    return
+  }
+
   map.setView([lat, lon], 13)
   const searchMarker = leaflet
     .marker([lat, lon], { icon: simplePointIcon })
@@ -235,6 +252,7 @@ function calculateRoute(start: [number, number], end: [number, number], companyN
   customizeRouteInstructionsStyle()
 }
 
+
 function customizeRouteInstructionsStyle() {
   setTimeout(() => {
     const routeInstructionsContainers = document.querySelectorAll('.leaflet-routing-container')
@@ -245,24 +263,27 @@ function customizeRouteInstructionsStyle() {
       container.style.borderRadius = '5px'
       container.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)'
       container.style.fontSize = '15px'
-      container.style.maxHeight = '70vh' // Limit the height to 50% of the viewport height
-      container.style.overflowY = 'auto' // Add scrollbar if content exceeds the container height
+      container.style.maxHeight = '50vh' // Limit the height to 50% of the viewport height
+      container.style.overflowY = 'auto' 
+      container.style.marginTop= '80px' 
+      const links = container.querySelectorAll('a')
+      links.forEach((link) => {
+        link.style.color = 'white'
+      })
     })
-  }, 100)
+  }, 1000)
 }
 
 function resetMap() {
+  // Clear routing and recenter the map
   if (routingControl) {
     map.removeControl(routingControl)
+    routingControl = null
   }
-  companyMarkers.forEach((marker) => map.removeLayer(marker))
-  companyMarkers = []
-  // If distance is set, get companies within that distance
-  if (selectedDistance.value > 0) {
-    getNearbyCompanies()
-  } else {
-    fetchCompanies()
+  if (userGeoMarker) {
+    map.setView([userMarker.value.latitude, userMarker.value.longitude], 13)
   }
+  fetchCompanies()
 }
 </script>
 

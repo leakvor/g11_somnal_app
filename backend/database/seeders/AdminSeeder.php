@@ -22,22 +22,25 @@ class AdminSeeder extends Seeder
             'email'=>'admin@gmail.com',
             'phone'=>'098 989 8399',
             'password'=>bcrypt('password'),
-            'profile' => 'user.avif'
+            'profile' => 'user.avif',
+            'role_id' => 1
         ]);
-
+        
         $writer = User::create([
             'name'=>'User',
             'email'=>'user@gmail.com',
             'phone'=>'098 989 8391',
-            'password'=>bcrypt('password')
-
+            'password'=>bcrypt('password'),
+            'role_id' => 2
+            
         ]);
-
+        
         $company = User::create([
             'name'=>'Company',
             'email'=>'company@gmail.com',
             'phone'=>'098 989 8392',
-            'password'=>bcrypt('password')
+            'password'=>bcrypt('password'),
+            'role_id' => 3
 
         ]);
         

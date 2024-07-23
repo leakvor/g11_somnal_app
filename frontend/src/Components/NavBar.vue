@@ -148,25 +148,37 @@
           </li>
 
           <li
-              class="nav-item d-flex align-items-center me-4"
-              v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+          class="nav-item d-flex align-items-center me-4"
+          v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
+        >
+          <button
+            
+            class="nav-link text-white btn btn-login custom-hover pe-3 ps-3" data-bs-toggle="modal"
+            data-bs-target="#loginModal"
+            >Login</button>
+          <button to="/register" class="nav-link btn btn-register pe-3 ps-3" data-bs-toggle="modal" data-bs-target="#registerModal"
+            >Register</button
+          >
+        </li>
+
+        <li
+          class="nav-item d-flex align-items-center me-4"
+          v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+        >
+          <router-link
+            to="/chat"
+            class="nav-link position-relative"
+            :class="{ active: isActive('/chat') }"
+          >
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" v-show="totalUnseen > 0"
+              >{{ totalUnseen }}  <span class="visually-hidden">unread messages</span></span
             >
-              <button
-                class="nav-link text-white btn btn-login custom-hover pe-3 ps-3"
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-              >
-                Login
-              </button>
-              <button
-                to="/register"
-                class="nav-link btn btn-register pe-3 ps-3"
-                data-bs-toggle="modal"
-                data-bs-target="#registerModal"
-              >
-                Register
-              </button>
-            </li>
+
+            <i class="material-icons icon-align">chat_bubble</i>
+            <span class="text-below-icon">Chat</span>
+          </router-link>
+        </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
               <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
@@ -174,17 +186,6 @@
                 <span>Map</span>
               </router-link>
             </li>
-
-          <li class="nav-item d-flex align-items-center me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
-            <router-link to="/chat" class="nav-link position-relative" :class="{ active: isActive('/chat') }">
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">+99 <span
-                  class="visually-hidden">unread messages</span></span>
-
-              <i class="material-icons icon-align">chat_bubble</i>
-              <span class="text-below-icon">Chat</span>
-            </router-link>
-          </li>
 
           <li class="nav-item d-flex align-items-center me-4"
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
@@ -595,6 +596,8 @@ import { useAuthStore } from '../stores/auth-store';
 import { useRoute, useRouter } from 'vue-router';
 import EmailNotification from './dialogs/EmailNotification.vue';
 
+
+
 export default {
   name: 'NavBar',
   components:{
@@ -746,6 +749,9 @@ export default {
       isActive,
       logout
     }
+  },
+  beforeUnmount() {
+     clearInterval(this.intervalId);
   },
   mounted() {
     const navLinks = document.querySelectorAll('.nav-link');
@@ -927,9 +933,126 @@ export default {
           }
         }
       })
-    })
+    });
+    // Clear input fields and error messages when modal is closed
+    $('#loginModal').on('hidden.bs.modal', () => {
+      this.clearModal();
+    });
+    $('#registerModal').on('hidden.bs.modal', () => {
+      this.clearModal();
+    });
+
+    this.listChatIsRead();
   },
-  }
+  methods: {
+    async register() {
+        try {
+          const response = await axios.post('http://127.0.0.1:8000/api/register', {
+            name: this.name,
+            phone: this.phone,
+            email: this.email,
+            password: this.password,
+            role_id: this.role_id
+          })
+          console.log(response.data)
+          $('#registerModal').modal('hide')
+          this.name = ''
+          this.phone = ''
+          this.email = ''
+          this.password = ''
+          this.alertMessage = 'Register successfully.';
+          $('#alertModal').modal('show');
+          this.isSuccess = true;
+          this.isError = false;
+
+          setTimeout(() => {
+          $('#alertModal').modal('hide'); 
+        }, 2000);
+
+        } catch (error) {
+          console.error('Error logging in:', error)
+          $('#registerModal').modal('hide')
+          this.name = ''
+          this.phone = ''
+          this.email = ''
+          this.password = ''
+
+          this.alertMessage = 'Please try to register again.'
+          $('#alertModal').modal('show');
+          
+          this.isSuccess = false;
+          this.isError = true;
+          setTimeout(() => {
+          $('#alertModal').modal('hide'); 
+        }, 2000);
+        }
+      },
+      async login() {
+        try {
+          const response = await axios.post('http://127.0.0.1:8000/api/login', {
+            email: this.email,
+            password: this.password
+            
+          })
+          const data = response.data
+          this.authStore.login(data)
+
+          console.log(response.data)
+          $('#loginModal').modal('hide')
+          this.email = ''
+          this.password = ''
+          this.alertMessage = 'Login successfully.';
+          $('#alertModal').modal('show');
+
+          this.isSuccess = true;
+          this.isError = false;
+          setTimeout(() => {
+          $('#alertModal').modal('hide'); 
+        }, 2000);
+        } catch (error) {
+          $('#loginModal').modal('hide')
+          this.email = ''
+          this.password = ''
+
+          this.isSuccess = false;
+          this.isError = true;
+          this.alertMessage = 'Please try to login again.'
+          $('#alertModal').modal('show');
+
+          setTimeout(() => {
+          $('#alertModal').modal('hide'); 
+        }, 2000);
+        }
+      },
+      togglePasswordVisibility(passwordFieldId) {
+      const passwordField = document.getElementById(passwordFieldId);
+      passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+    },
+    clearModal() {
+    this.name = '';
+    this.phone = '';
+    this.email = '';
+    this.password = '';
+    this.nameError = '';
+    this.phoneError = '';
+    this.emailError = '';
+    this.passwordError = '';
+  },
+  async listChatIsRead() {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        this.totalUnseen = response.data.total
+      } catch (error) {
+        console.error('Error listing chat isRead:', error);
+      }
+    },
+  },
+}
 }
 </script>
 

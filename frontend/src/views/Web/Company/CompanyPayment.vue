@@ -38,7 +38,8 @@
           <td>{{ userPayment.user.name }}</td>
           <td>{{ userPayment.option_paid.option_paid }}</td>
           <td>{{ userPayment.option_paid.amount }}</td>
-          <td>{{ userPayment.created_at }}</td>
+          <td>{{ userPayment.option_paid.created_at }}</td>
+          <!-- <td>{{ userPayment.option_paid.date_pay }}</td> -->
         </tr>
       </tbody>
     </table>
