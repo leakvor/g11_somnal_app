@@ -50,6 +50,9 @@
               </tr>
             </tbody>
           </table>
+          <div class="text-center bg-secondary pt-2 pb-1" v-if="paginatedData.length === 0">
+          <p class="text-white">No post request to you.</p>
+        </div>
           <div class="pagination d-flex justify-content-end">
             <button class="btn btn-success me-2" @click="prevPage" :disabled="currentPage === 1">
               <i class="bi bi-chevron-left"></i>

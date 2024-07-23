@@ -9,7 +9,7 @@
         </div>
       </div>
       <div v-else>
-        <p>No notifications</p>
+        <p class="text-dark">No notifications</p>
       </div>
     </div>
   </template>

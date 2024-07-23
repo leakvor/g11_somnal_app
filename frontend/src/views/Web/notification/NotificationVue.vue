@@ -4,13 +4,17 @@
     <div class="container" style="margin-top: 20px;margin-bottom:300px">
       <div class="row">
         <div class="col-lg-15">
+          <div class="text-center" v-if="notifications.length === 0">
+          <i class="material-icons text-dark">notifications_none</i>
+          <h6>No notifications available.</h6>
+        </div>
           <div
             v-for="(notification, index) in notifications"
             :key="index"
             class="box shadow-sm rounded bg-white mb-3"
           >
             <div class="box-title border-bottom p-3">
-              <h6 class="m-0" v-if="index === 0">Recent</h6>
+              <h6 class="m-0 text" v-if="index === 0">Recent</h6>
               <h6 class="m-0" v-else-if="index === notifications.length - 1">Earlier</h6>
             </div>
             <div class="box-body p-0">
@@ -22,8 +26,10 @@
                 <div class="dropdown-list-image mr-3">
                   <img
                     v-if="notification.post.user"
-                    class="rounded-circle"
+                    class="rounded-circle "
+                    style="border: 1px solid gray"
                     :src="`http://127.0.0.1:8000/uploads/${notification.post.user.profile}`"
+                    onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
                   />
                 </div>
                 <div class="font-weight-bold mr-3">
@@ -88,6 +94,7 @@
                 <img
                   :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
                   alt="Account Image"
+                  onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
                   class="account-image rounded-circle"
                   style="border: 1px solid gray"
                 />
@@ -148,11 +155,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
 import NavBar from '../../../Components/NavBar.vue'
 import FooterVue from '../../../Components/Footer.vue'
 import axios from 'axios'
-
+import pusher from '../../../pusherService.js'
 import { useToast } from 'vue-toastification'
 
 export default {
@@ -160,15 +166,27 @@ export default {
     NavBar,
     FooterVue
   },
-  setup() {
-    const toast = useToast()
-    const notifications = ref([])
-    const user_info = ref(null)
-    const lastNotificationMessage = ref('')
-    const post = ref(null)
-
-    //fetch user info====
-    async function fetchUser() {
+  data() {
+    return {
+      notifications: [],
+      user_info: null,
+      post: null,
+      role_id:null
+    }
+  },
+  mounted() {
+    this.fetchUser()
+    this.fetchNotifications()
+    const channel = pusher.subscribe('notifications')
+    channel.bind('NotificationSent', (data) => {
+      this.notifications.push(data)
+      this.fetchNotifications()
+      this.fetchUser()
+      this.toast.success('You have a new notification!')
+    })
+  },
+  methods: {
+    async fetchUser() {
       try {
         const token = localStorage.getItem('access_token')
         const response = await axios.get(`http://127.0.0.1:8000/api/me`, {
@@ -176,25 +194,21 @@ export default {
             Authorization: `Bearer ${token}`
           }
         })
-        user_info.value = response.data.data
-        console.log('User Info:', user_info.value)
+        this.user_info = response.data.data
+        this.role_id = this.user_info.role_id
+        this.fetchNotifications(this.role_id)
+        console.log('User Info:', this.role_id)
       } catch (error) {
         console.error('Error fetching user:', error)
       }
-    }
-
-    //show all notification====
-    async function fetchNotifications() {
+    },
+    async fetchNotifications(role_id) {
       try {
-        if (!user_info.value || !user_info.value.role_id) {
-          throw new Error('User info or role_id is not available')
-        }
-
-        let endpoint = ''
-        if (user_info.value.role_id === 2) {
-          endpoint = 'user'
-        } else if (user_info.value.role_id === 3) {
-          endpoint = 'company'
+       let endpoint = null;
+        if (role_id == 2) {
+          endpoint = 'user';
+        }else if(role_id === 3){
+          endpoint = 'company';
         }
 
         const token = localStorage.getItem('access_token')
@@ -206,29 +220,24 @@ export default {
             }
           }
         )
-
-        notifications.value = response.data.data
-        console.log('Notifications:', notifications.value)
+        this.notifications = response.data.data
+        console.log('Notifications:', this.notifications)
       } catch (error) {
         console.error('Error fetching notifications:', error)
       }
-    }
-
-    //show model
-    async function showPostModal(postId) {
+    },
+    async showPostModal(postId) {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/post/each/user/${postId}`)
-        post.value = response.data.data
-        console.log('Post Details:', post.value)
+        this.post = response.data.data
+        console.log('Post Details:', this.post)
         $('#postModal').modal('show')
       } catch (error) {
         console.error('Error fetching post details:', error)
-        toast.error('Failed to fetch post details')
+        this.toast.error('Failed to fetch post details')
       }
-    }
-
-    //update status
-    async function updatePostStatus(postId, newStatus) {
+    },
+    async updatePostStatus(postId, newStatus) {
       try {
         console.log('New Status:', newStatus)
         console.log('Post ID:', postId)
@@ -254,40 +263,74 @@ export default {
         console.log('Response:', response)
 
         // Update the post status in the local posts array
-        const postIndex = notifications.value.findIndex((post) => post.id === postId)
+        const postIndex = this.notifications.findIndex((post) => post.id === postId)
         if (postIndex !== -1) {
-          notifications.value[postIndex].status = newStatus
+          this.notifications[postIndex].status = newStatus
         }
+        
+        // Hide the modal
+      $('#postModal').modal('hide')
 
         const message =
           newStatus === 'cancel'
             ? 'You have been cancelled this item.'
             : 'You have been bought this item.'
-        alert(message)
-        window.location.reload()
+        this.fetchUser()
+        this.fetchNotifications()
+        this.toast.success(message)
       } catch (error) {
-        const message =
-          newStatus === 'cancel' ? 'Failed to cancel the item.' : 'Failed to buy the item.'
-        alert(message)
-        console.error('Error:', error)
+        console.error('Error updating post status:', error)
+        this.toast.error('Failed to update post status')
       }
-    }
-
-    onMounted(async () => {
-      await fetchUser()
-      await fetchNotifications()
-    })
-
-    return {
-      notifications,
-      user_info,
-      fetchUser,
-      fetchNotifications,
-      lastNotificationMessage,
-      showPostModal,
-      post,
-      updatePostStatus
-    }
+    },
+    async deleteNotification(notificationId) {
+      try {
+        const token = localStorage.getItem('access_token')
+        await axios.delete(
+          `http://127.0.0.1:8000/api/notification/${notificationId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        this.fetchUser()
+        this.fetchNotifications()
+        this.notifications = this.notifications.filter(
+          (notification) => notification.id !== notificationId
+        )
+        this.toast.success('Notification deleted successfully')
+        
+      } catch (error) {
+        console.error('Error deleting notification:', error)
+        this.toast.error('Failed to delete notification')
+      }
+    },
+    async turnOffNotification(notificationId) {
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/notification/turnoff/${notificationId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        this.notifications = this.notifications.filter(
+          (notification) => notification.id !== notificationId
+        )
+        this.toast.success('Notification turned off')
+      } catch (error) {
+        console.error('Error turning off notification:', error)
+        this.toast.error('Failed to turn off notification')
+      }
+    },
+  },
+  setup() {
+    const toast = useToast();
+    return { toast };
   }
 }
 </script>
