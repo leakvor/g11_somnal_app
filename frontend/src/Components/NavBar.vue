@@ -96,9 +96,9 @@
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
             <router-link
-              to="/post_view"
+              to="/post/view"
               class="nav-link position-relative"
-              :class="{ active: isActive('/post_view') }"
+              :class="{ active: isActive('/post/view') }"
             >
               <i class="material-icons">post_add</i>
               <span>Post</span>

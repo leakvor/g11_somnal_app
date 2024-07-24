@@ -40,8 +40,12 @@
                 </td>
                 <td>{{ post.date_created }}</td>
                 <td class="text-end">
-                  <button class="btn btn-success" @click="confirmAction(post.id, 'buy')">Buy</button>
-                  <button class="btn btn-danger" @click="confirmAction(post.id, 'cancel')">Cancel</button>
+                  <button class="btn btn-success" @click="confirmAction(post.id, 'buy')">
+                    Buy
+                  </button>
+                  <button class="btn btn-danger" @click="confirmAction(post.id, 'cancel')">
+                    Cancel
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -62,73 +66,124 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="postModal"
+      tabindex="-1"
+      aria-labelledby="postModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
           <div class="modal-body">
             <div class="post-container" v-if="post">
               <div class="post-header d-flex align-items-center">
                 <img
-                   :src="post.user.profile ? `http://127.0.0.1:8000/uploads/${post.user.profile}` : 'http://127.0.0.1:8000/uploads/1721404514.png'"
+                  :src="
+                    post.user.profile
+                      ? `http://127.0.0.1:8000/uploads/${post.user.profile}`
+                      : 'http://127.0.0.1:8000/uploads/1721404514.png'
+                  "
                   alt="Account Image"
                   class="account-image rounded-circle"
                   style="border: 1px solid gray"
                 />
-                <h6 class="account-name ml-3 mb-0" style="color:black">{{ post.user.name }}</h6>
+                <h6 class="account-name ml-3 mb-0" style="color: black">{{ post.user.name }}</h6>
               </div>
-              <p class="post-title" style="size: 5px;color:black">{{ post.title }}</p>
-              <p class="text-danger" style="margin-top: -20px;color:black">Type of scrap:</p>
+              <p class="post-title" style="size: 5px; color: black">{{ post.title }}</p>
+              <p class="text-danger" style="margin-top: -20px; color: black">Type of scrap:</p>
               <ul>
                 <li>
                   <p class="comment-text">
-                    <span style="color:black" v-for="(item, index) in post.items" :key="index">
+                    <span style="color: black" v-for="(item, index) in post.items" :key="index">
+
                       {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
                     </span>
                   </p>
                 </li>
               </ul>
-              <div class="row">
-                  <div v-for="(image, index) in post.images" :key="index" class="grid-item">
+              <!-- ==========if post only one image========= -->
+              <div class="row" v-if="post.images.length == 1">
+                <div v-for="(image, index) in post.images" :key="index" class="grid-item">
                   <img
-                    class="img-fluid shadow rounded m-2"
+                    class="img-fluid shadow rounded"
                     :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                     :alt="`Image ${index + 1}`"
                   />
                 </div>
               </div>
-              <button
-                style="margin: 10px"
-                class="btn btn-success"
-                @click="confirmAction(post.id, 'buy')"> Buy</button>
-              <button class="btn btn-danger"  @click="confirmAction(post.id, 'cancel')">Cancel</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <!-- ==========if post have two images========= -->
+              <div class="row" v-if="post.images.length === 2">
+                <div v-for="(image, index) in post.images" :key="index" class="grid-item col-6">
+                  <img
+                    class="img-fluid shadow rounded"
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Image ${index + 1}`"
+                    style="width:100%; height:80%;"
+                  />
+                </div>
+              </div>
+              <!-- ===================if post have images>3========= -->
+              <div class="row" v-if="post.images.length > 2">
+                <div v-for="(image, index) in post.images" :key="index" class="grid-item col-4">
+                  <img
+                    class="img-fluid shadow rounded"
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Image ${index + 1}`"
+                    style="width:100%; height:80%;"
+                  />
+                </div>
+              </div>
 
-    <!-- Confirmation Modal -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel" style="color:black">Confirm</h5>
-          </div>
-          <div class="modal-body">
-            <p style="color:black">{{ confirmationMessage }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" @click="executeAction">Confirm</button>
+            </div>
+
+            <button
+              style="margin: 10px"
+              class="btn btn-success"
+              @click="confirmAction(post.id, 'buy')"
+            >
+              Buy
+            </button>
+            <button class="btn btn-danger" @click="confirmAction(post.id, 'cancel')">Cancel</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Confirmation Modal -->
+  <div
+    class="modal fade"
+    id="confirmationModal"
+    tabindex="-1"
+    aria-labelledby="confirmationModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmationModalLabel" style="color: black">Confirm</h5>
+        </div>
+        <div class="modal-body">
+          <p style="color: black">{{ confirmationMessage }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" @click="executeAction">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 
 <script>
 import NavBar from '../../../Components/NavBar.vue'
@@ -146,7 +201,7 @@ export default {
       post: null,
       actionPostId: null,
       actionType: '',
-      confirmationMessage: '',
+      confirmationMessage: ''
     }
   },
   computed: {
@@ -229,7 +284,7 @@ export default {
         if (postIndex !== -1) {
           this.posts[postIndex].status = newStatus
         }
-        this.fecthPostSell();
+        this.fecthPostSell()
       } catch (error) {
         console.error('Error updating post status:', error)
       }
@@ -258,6 +313,7 @@ export default {
 
 
 <style scoped>
+
 th,
 td {
   text-align: left;
@@ -303,6 +359,7 @@ button.btn-secondary {
   height: 50px;
   border-radius: 50%;
 }
+
 
 .account-name {
   margin-left: 10px;
@@ -350,9 +407,7 @@ li p {
   padding: 12px 24px;
   font-size: 1em;
   border-radius: 5px;
-  transition:
-    background 0.3s,
-    transform 0.3s;
+  transition: background 0.3s, transform 0.3s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   text-align: center;
   display: block;

@@ -19,7 +19,7 @@ class HistoryPriceSeeder extends Seeder
         $historyPrices = [];
 
         foreach ($items as $item) {
-            for ($i = 1; $i <= 2; $i++) {
+            for ($i = 1; $i <= 1; $i++) {
                 $historyPrices[] = [
                     'old_price' => rand(1000, 10000),
                     'adjay_id' => $item->id,

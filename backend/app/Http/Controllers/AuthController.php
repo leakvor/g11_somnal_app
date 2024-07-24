@@ -352,4 +352,11 @@ public function getCompany(Request $request)
     return response()->json(['success' => true, 'message' => 'Company details', 'data' => $companies]);
 }
 
+
+//get specific company
+public function getSpecificCompany($id){
+    $company = User::find($id);
+    return response()->json($company);
+}
+
 }

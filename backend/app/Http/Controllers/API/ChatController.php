@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ChatSeen;
 use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ChatResource;
@@ -51,33 +52,47 @@ class ChatController extends Controller
         return response()->json($userIds);
     }
         //list unseen messages
-    public function listConversationIsRead()
-    {
-        $user = User::find(Auth::id());
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-
-        // Assuming the `receiver_id` is actually `user_id` or some other correct column
-        $unseenMessages = Chat::where('reciever_id', $user->id)
-            ->where('is_read', 0)
-            ->get();
-
-        if ($unseenMessages->isEmpty()) {
+        public function listConversationIsRead()
+        {
+            $user = User::find(Auth::id());
+            if (!$user) {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
+        
+            // Fetch unseen messages where receiver_id matches the current user's ID and is_read is 0
+            $unseenMessages = Chat::where('reciever_id', $user->id)
+                ->where('is_read', 0)
+                ->get();
+        
+            // Group messages by user_id and get unique user_ids
+            $uniqueSenders = $unseenMessages->groupBy('user_id')->keys();
+        
+            if ($uniqueSenders->isEmpty()) {
+                return response()->json([
+                    'Currently User' => $user->name,
+                    'total' => 0,
+                    'message' => 'You have no unseen messages.',
+                    'unseen_messages' => []
+                ], 200);
+            }
+        
+            // Fetch the first unseen message for each unique sender to show in the response
+            $uniqueUnseenMessages = Chat::whereIn('user_id', $uniqueSenders)
+                ->where('reciever_id', $user->id)
+                ->where('is_read', 0)
+                ->get()
+                ->groupBy('user_id')
+                ->map(function ($group) {
+                    return $group->first();
+                });
+        
             return response()->json([
                 'Currently User' => $user->name,
-                'total' => 0,
-                'message' => 'You have no unseen messages.',
-                'unseen_messages' => []
+                'total' => $uniqueSenders->count(),
+                'unseen_messages' => ChatResource::collection($uniqueUnseenMessages)
             ], 200);
         }
-
-        return response()->json([
-            'Currently User' => $user->name,
-            'total' => $unseenMessages->count(),
-            'unseen_messages' => ChatResource::collection($unseenMessages)
-        ], 200);
-    }
+        
     // seen the chat
     public function seenChat(Request $request, $userId)
     {
@@ -86,9 +101,23 @@ class ChatController extends Controller
             return response()->json(['error' => 'User not found.'], 404);
         }
 
-        $chats = Chat::where('reciever_id', $user->id)->where('user_id', $userId)->update(['is_read' => 1]);
-        return response()->json(['success' => 'Chat seen successfully.'], 200);
-        
+        // Update the messages as seen
+        Chat::where('reciever_id', $user->id)
+            ->where('user_id', $userId)
+            ->update(['is_read' => 1]);
+
+
+        // Call listConversationIsRead to get updated unseen messages
+        $response = $this->listConversationIsRead();
+
+        // Dispatch the event to Pusher
+        event(new ChatSeen($user->id, $userId,$response));
+
+
+        return response()->json([
+            'success' => 'Chat seen successfully.',
+            'unseen_messages' => $response // Extract unseen messages from response
+        ], 200);
     }
     //send chat message
     public function store(Request $request){

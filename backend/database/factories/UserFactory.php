@@ -84,7 +84,7 @@ class UserFactory extends Factory
             'password' => bcrypt('password'), // or use the hash directly if preferred
             'remember_token' => Str::random(10),
             'phone' => $this->faker->numerify('09#########'), 
-            'role_id' => $this->faker->randomElement([2, 3]),
+            'role_id' => $this->faker->randomElement([2]),
             'address' => $addressData['address'],
             'latitude' => $addressData['latitude'],
             'longitude' => $addressData['longitude'],

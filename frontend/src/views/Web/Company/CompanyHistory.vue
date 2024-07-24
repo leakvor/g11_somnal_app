@@ -58,12 +58,36 @@
                   </p>
                 </li>
               </ul>
-              <div class="row">
-                  <div v-for="(image, index) in post.images" :key="index" class="grid-item">
+               <!-- ==========if post only one image========= -->
+               <div class="row" v-if="post.images.length == 1">
+                <div v-for="(image, index) in post.images" :key="index" class="grid-item">
                   <img
-                    class="img-fluid shadow rounded m-2"
+                    class="img-fluid shadow rounded"
                     :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                     :alt="`Image ${index + 1}`"
+                  />
+                </div>
+              </div>
+              <!-- ==========if post have two images========= -->
+              <div class="row" v-if="post.images.length === 2">
+                <div v-for="(image, index) in post.images" :key="index" class="grid-item col-6">
+                  <img
+                    class="img-fluid shadow rounded"
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Image ${index + 1}`"
+                    style="width:100%; height:80%;"
+                  />
+                </div>
+              </div>
+              <!-- ===================if post have images>3========= -->
+              <div class="row" v-if="post.images.length > 2">
+                <div v-for="(image, index) in post.images" :key="index" class="grid-item col-4">
+                  <img
+                    class="img-fluid shadow rounded"
+
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Image ${index + 1}`"
+                    style="width:100%; height:80%;"
                   />
                 </div>
               </div>
@@ -264,6 +288,7 @@ li p {
   background-color: #388e3c;
   transform: scale(1.05);
 }
+
 
 .buy-button:active {
   transform: scale(1);

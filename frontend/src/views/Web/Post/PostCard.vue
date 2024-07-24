@@ -45,19 +45,23 @@
               </div>
             </div>
             <div class="p-2 px-3">
-              <h4 style="color: black">{{ post.title }}</h4>
+              <h4 class="mb-3" style="color: black">{{ post.title }}</h4>
+              <!-- <p class="text-danger">Type of scrap:</p> -->
               <span style="color: black" v-for="(item, index) in post.items" :key="index">
-                {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+                <span class=" item bg-success text-white ms-2 ">{{ item.item }}{{ index < post.items.length - 1 ? '' : '' }}</span>
               </span>
             </div>
-            <div class="image-grid m-3">
-              <div v-for="(image, index) in post.images" :key="index" class="grid-item">
+            <div class="images-grid m-3">
+              <div v-for="(image, index) in post.images.slice(0, 3)" :key="index" class="grid-item">
                 <img
                   class="img-fluid shadow rounded"
-                  :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                  :src="`http://127.0.0.1:8000/uploads/${image.image}`" 
                   :alt="`Image ${index + 1}`"
                   @click="openImageModal(post.images, index)"
                 />
+                <div v-if="index === 2 && post.images.length > 3" class="more-overlay " @click="openImageModal(post.images, 3)">
+                  +{{ post.images.length - 3 }} more
+                </div>
               </div>
             </div>
             <button class="buy-sell"
@@ -148,6 +152,11 @@ li {
   width: 100%;
   height: auto;
 }
+.item{
+padding: 5px 10px 5px;
+font-size: 12px;
+border-radius: 20px;
+}
 .options {
   position: absolute;
   background-color: white;
@@ -237,18 +246,35 @@ li {
   margin-bottom: 10px;
   margin-left: 10px;
 }
-.image-grid {
+.images-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  position: relative;
+  gap: 10px;
 }
 .grid-item {
-  flex: 1 1 calc(33.333% - 8px);
+  flex: 1 1 calc(25% - 8px);
   box-sizing: border-box;
+  position: relative;
 }
 .grid-item img {
   width: 100%;
-  height: auto;
+  height: 85%;
+}
+.more-overlay {
+  height: 85%;
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 @media (max-width: 767px) {
   .grid-item {

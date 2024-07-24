@@ -17,7 +17,12 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'user' => $this->user , 
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'profile' => $this->user->profile ? $this->user->profile : 'user_info.png', // Default to 'user_info.png' if profile is null
+            ],
             'company_id' => $this->company_id,
             'images' => $this->images->map(function ($image) {
                 return [
@@ -37,6 +42,7 @@ class PostResource extends JsonResource
             'created_at' => $this->created_at->diffForHumans(),
         ];
     }
+    
     
 }
 

@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css' // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.min.js' // Import Bootstrap JS
 import './assets/main.css'
+// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -29,6 +30,9 @@ app.use(router.router)
 app.use(router)
 app.use(ElementPlus)
 app.use(Toast);
+
+// app.use(BootstrapVue);
+// app.use(IconsPlugin);
 // app.use(router.simpleAcl)
 
 app.config.globalProperties.$customAxios = customAxios

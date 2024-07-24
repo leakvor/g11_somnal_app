@@ -75,6 +75,10 @@ Route::get('/option/list', [OptionPaidController::class, 'index']);
 Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
 Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
+
+//get specific
+Route::get('/company/show/{id}', [AuthController::class, 'getSpecificCompany']);
+
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
     // User profile routes

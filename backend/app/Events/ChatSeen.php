@@ -1,43 +1,42 @@
 <?php
-
 namespace App\Events;
 
-use App\Models\Chat;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\BroadcastEvent;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class ChatSeen implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets;
 
     public $userId;
-    public $chatId;
+    public $receiverId;
+    public $unseenMessages;
 
-    /**
-     * Create a new event instance.
-     *
-     * @return void
-     */
-    public function __construct($userId, $chatId)
+    public function __construct($userId, $receiverId, $unseenMessages)
     {
         $this->userId = $userId;
-        $this->chatId = $chatId;
+        $this->receiverId = $receiverId;
+        $this->unseenMessages = $unseenMessages;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
+    public function broadcastOn()
+    {
+        return new Channel('totalUnseen' . $this->userId);
+    }
+
+    public function broadcastWith()
     {
         return [
-            new PrivateChannel('channel-name'),
+            'user_id' => $this->userId,
+            'receiver_id' => $this->receiverId,
+            'unseen_messages' => $this->unseenMessages
         ];
+    }
+    public function broadcastAs(){
+        return 'totalUnseen';
     }
 }

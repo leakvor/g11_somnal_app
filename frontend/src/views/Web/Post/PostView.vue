@@ -7,7 +7,7 @@
         <div class="d-flex flex-row align-items-center feed-text px-2">
           <img
             class="rounded-circle"
-            :src="post.user.profile ? `http://127.0.0.1:8000/uploads/${post.user.profile}` : 'http://127.0.0.1:8000/uploads/1721404514.png'"
+            :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
             width="45" height="45"
             alt="Profile"
             style="border: 1px solid black"
@@ -83,6 +83,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import NavBar from '../../../Components/NavBar.vue';
 import axios from 'axios';
@@ -90,16 +91,16 @@ import { useAuthStore } from '../../../stores/auth-store';
 
 export default {
   name: 'PostComponent',
-  
+
   components: {
     NavBar,
   },
-  setup(){
+  setup() {
     const authStore = useAuthStore();
 
-  return {
-    authStore,
-  }
+    return {
+      authStore,
+    };
   },
   data() {
     return {
@@ -116,7 +117,7 @@ export default {
       confirmationMessage: '',
       actionPostId: null,
       actionType: '',
-    }
+    };
   },
   methods: {
     confirmAction(postId, actionType) {
@@ -135,9 +136,11 @@ export default {
     closeConfirmModal() {
       this.showModalConfirm = false;
     },
-    closeModal() {
-      this.showModalConfirm = false;
+    closeImageModal() {
       this.showModal = false;
+      this.modalImages = [];
+      this.currentImage = null;
+      this.currentImageIndex = 0;
     },
     async fetchPosts() {
       try {
@@ -150,6 +153,7 @@ export default {
     },
 
     async updatePostStatus(postId, newStatus) {
+      console.log('post', postId);
       try {
         const token = localStorage.getItem('access_token');
         if (!token) {
@@ -159,7 +163,7 @@ export default {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         };
-        const data = { status: newStatus, company_id: this.user_info.id };
+        const data = { status: newStatus, company_id: this.authStore.user.id };
         const response = await axios.post(
           `http://127.0.0.1:8000/api/post/update/status/${postId}`,
           data,
@@ -168,7 +172,6 @@ export default {
         console.log('Response:', response);
         this.fetchPosts();
       } catch (error) {
-        alert('You are a user so you do not have permission to buy');
         console.error(error);
       }
     },
@@ -177,12 +180,6 @@ export default {
       this.currentImageIndex = index;
       this.currentImage = images[index];
       this.showModal = true;
-    },
-    closeImageModal() {
-      this.showModal = false;
-      this.modalImages = [];
-      this.currentImage = null;
-      this.currentImageIndex = 0;
     },
     prevImage() {
       this.currentImageIndex = (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length;
@@ -195,9 +192,10 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-  }
-}
+  },
+};
 </script>
+
 
 
 

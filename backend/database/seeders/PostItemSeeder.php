@@ -47,6 +47,8 @@ class PostItemSeeder extends Seeder
             ['item_id'=>18,'post_id'=>19],
             ['item_id'=>6,'post_id'=>20],
             ['item_id'=>14,'post_id'=>21],
+            ['item_id'=>14,'post_id'=>21],
+            ['item_id'=>18,'post_id'=>22],
         ];
         foreach($post_items as $post_item){
             Post_Item::create($post_item);
