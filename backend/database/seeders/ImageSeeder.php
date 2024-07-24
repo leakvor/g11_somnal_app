@@ -36,6 +36,19 @@ class ImageSeeder extends Seeder
             ['image'=>'screen_u.jpg'],
             ['image'=>'simple_bottle.jpg'],
             ['image'=>'tv_u.jpg'],
+            
+              // ==================== image admore=================//
+              ['image'=>'bagPlastic.jpg'],
+              ['image'=>'bottle.jpg'],
+              ['image'=>'bottleCap.jpg'],
+              ['image'=>'bottlestone.jpg'],
+              ['image'=>'box.jpg'],
+              ['image'=>'cans.jpg'],
+              ['image'=>'computer.jpg'],
+              ['image'=>'electronicMaterail.jpg'],
+              ['image'=>'magazine.jpg'],
+              ['image'=>'smallPlastic.jpg'],
+              ['image'=>'tire.jpg'],
         ];
         foreach ($images as $image) {
             Image::create($image);
