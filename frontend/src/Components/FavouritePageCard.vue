@@ -42,9 +42,6 @@
             <h5 class="card-text -mt-3">{{ fav.item.price }}៛</h5>
           </div>
           <div class="icon d-flex justify-content-between mt-4">
-            <!-- <button class="w-20 btn btn-outline-success rounded hover:bg-orange-600">
-              <i class="bi bi-chat-dots"></i>
-            </button> -->
             <button
               class="w-20 btn btn-outline-success rounded hover:bg-red-600"
               @click="showConfirmationModal(fav.id)"
@@ -162,6 +159,10 @@ export default {
 .card img {
   height: 150px;
   object-fit: cover;
+}
+.input-group {
+  width: 80%;
+  margin: auto;
 }
 
 @media (min-width: 320px) and (max-width: 568px) {

@@ -27,11 +27,11 @@
       <h1 class="mt-20 color-dark text-center mb-4">List items of Category {{ category.name }}</h1>
     </div>
     <div class="input-group p-2">
-      <ul class="dropdown-menu" aria-labelledby="dropdown-category">
+      <!-- <ul class="dropdown-menu" aria-labelledby="dropdown-category">
         <li v-for="item in filteredItems" :key="item.id">
           <a class="dropdown-item" href="#">{{ item.name }}</a>
         </li>
-      </ul>
+      </ul> -->
       <input
         type="search"
         class="form-control"
@@ -228,6 +228,10 @@ export default {
 .adjay .card .card-body img {
   height: 150px;
   object-fit: cover;
+}
+.input-group {
+  width: 80%;
+  margin: auto;
 }
 @media (min-width: 320px) and (max-width: 568px) {
   .card img {

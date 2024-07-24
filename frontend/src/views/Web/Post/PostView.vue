@@ -23,7 +23,7 @@
                 {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
               </span>
             </div>
-
+            <!-- ======image 2 -->
         <div class="row" v-if="post.images.length > 1">
           <div
             v-for="(image, index) in post.images"
