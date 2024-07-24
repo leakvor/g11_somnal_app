@@ -12,9 +12,8 @@
                 :key="company.id"
                 style="display: flex; flex-direction: row"
               >
-                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}`" alt="Image" />
+                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}`" @click="showCompanyModal(company.id)" alt="Image" />
                 <p class="title" style="size: 5px">{{ company.name }}</p>
-                <button type="submit" @click="showCompanyModal(company.id)" >view</button>
                 <div>
 
                 </div>
@@ -195,13 +194,13 @@
                 />
               </div>
               <div class="company-info mt-3">
-                <h5 class="text-title">{{ company.name }}</h5>
+                <h5 class="text-title" style="color: black">{{ company.name }}</h5>
                 <p class="text-break text-danger"><b>Services:</b> {{ company.id }}</p>
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"
                   ><b>Phone:</b> {{ company.phone }}</a
                 >
                 <div class=" ">
-                  <p class="text-break"><b>Email:</b>{{ company.email }}</p>
+                  <p class="text-break" style="color: black"><b>Email:</b>{{ company.email }}</p>
                 </div>
                 <a
                   :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(company.latitude + ',' + company.longitude)}`"
@@ -394,6 +393,8 @@ export default {
 }
 </script>
 
+
+
 <style scoped>
 .container {
   display: flex;
@@ -550,25 +551,6 @@ export default {
   font-size: 1.5em;
 }
 
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  padding-top: 60px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 100%;
-  max-width: 800px;
-}
 
 .close {
   position: absolute;

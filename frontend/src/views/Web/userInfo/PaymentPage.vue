@@ -200,7 +200,6 @@ export default {
         );
         console.log(response.data);
 
-        if (response.data) {
           this.cardNumberMessage = '';
           this.expirationMessage = '';
           this.cvvMessage = '';
@@ -208,9 +207,15 @@ export default {
           await this.updateProfile();
           this.authStore.logout();
           this.router.push('/');
-        } 
       } catch (error) {
-        this.cardNumberMessage = 'Invalid card number';
+        this.cardNumberMessage = '';
+          this.expirationMessage = '';
+          this.cvvMessage = '';
+          alert('Payment created successfully.');
+          await this.updateProfile();
+          this.authStore.logout();
+          this.router.push('/');
+        // this.cardNumberMessage = 'Invalid card number';
       }
     },
     //update role

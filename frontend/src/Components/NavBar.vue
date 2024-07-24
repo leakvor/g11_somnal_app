@@ -163,8 +163,6 @@
             v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
             <router-link to="/notifications" class="nav-link position-relative"
               :class="{ active: isActive('/notifications') }">
-              <span class="position-absolute top-0 start-50 ms-3 translate-middle badge rounded-pill bg-danger"
-                id="notification_number">+99 <span class="visually-hidden">unread messages</span></span>
               <i class="material-icons icon-align">notifications</i>
               <span class="text-below-icon">Notifications </span>
             </router-link>
