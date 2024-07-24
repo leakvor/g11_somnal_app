@@ -4,7 +4,6 @@
     <div class="container">
       <div class="list-company mt-3 p-3 bg-white">
         <h3 class="text-success font-bold d-flex justify-content-center">All Companies</h3>
-
         <div class="d-flex justify-content-end pt-2 pb-4">
           <input
             type="text"
