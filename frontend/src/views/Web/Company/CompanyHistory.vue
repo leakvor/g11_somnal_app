@@ -27,7 +27,7 @@
           <th>User ID</th>
           <th>Date</th>                   
           <th>Status</th>
-          <th>Action</th>
+          <!-- <th>Action</th> -->
         </tr>
       </thead>
       <tbody>
@@ -36,11 +36,11 @@
             <td>{{ history.user.id }}</td>
             <td>{{ new Date(history.created_at).toLocaleDateString() }}</td>
             <td>{{ history.status }}</td>
-          <td>
+          <!-- <td>
             <button class="w-20 bg-green-500 hover:bg-orange-600 text-white p-2 rounded border-0">
                 <i class="fas fa-eye"></i>
               </button>  
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

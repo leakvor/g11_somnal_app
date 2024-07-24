@@ -26,17 +26,7 @@
     <div v-if="category">
       <h1 class="mt-20 color-dark text-center mb-4">List items of Category {{ category.name }}</h1>
     </div>
-    <!-- items dropdown -->
     <div class="input-group p-2">
-      <button
-        class="dropdown-toggle btn btn-success"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-        id="dropdown-category"
-        style="border: none"
-      >
-        <span>All</span>
-      </button>
       <ul class="dropdown-menu" aria-labelledby="dropdown-category">
         <li v-for="item in filteredItems" :key="item.id">
           <a class="dropdown-item" href="#">{{ item.name }}</a>
