@@ -141,6 +141,7 @@
                   />
                 </div>
               </div>
+
             </div>
 
             <button
@@ -310,6 +311,7 @@ export default {
 
 
 <style scoped>
+
 th,
 td {
   text-align: left;
