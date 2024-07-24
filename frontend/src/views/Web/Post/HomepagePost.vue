@@ -76,7 +76,7 @@
         </div>
       </form>
     </div>
-    <Footer/>
+    <!-- <Footer/> -->
     </div>
   </template>
   

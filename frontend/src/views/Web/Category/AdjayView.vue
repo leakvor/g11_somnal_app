@@ -87,19 +87,19 @@
       Back
     </router-link>
   </div>
-  <Footer class="mt-5" />
+  <FooterView class="mt-5" />
 </template>
 
 <script>
 
 import axios from 'axios'
 import NavBar from '@/Components/NavBar.vue'
-import Footer from '@/Components/Footer.vue'
+import FooterView from '@/Components/Footer.vue'
 
 export default {
   components: {
     NavBar,
-    Footer
+    FooterView
   },
   props: ['id'],
   name: 'AdjayView',
@@ -179,7 +179,7 @@ export default {
       } catch (error) {
         if (error.response) {
           console.error('Server Error:', error.response.data);
-          this.errorMessage = error.response.data.error || 'Server error occurred.';
+          this.errorMessage = error.response.data.error || 'I do not have account yet';
           this.showErrorMessage = true;
           setTimeout(() => {
             this.showErrorMessage = false;

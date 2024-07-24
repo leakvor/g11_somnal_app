@@ -1,5 +1,6 @@
 <template>
-    <NavBar/>
+    <div>
+        <NavBar/>
     <main class="content">
         <div class="container p-0">
             <h1 class="h3 mb-3">Messages</h1>
@@ -144,6 +145,8 @@
             </div>
         </div>
     </main>
+    </div>
+   
 </template>
 
 
@@ -162,11 +165,11 @@ const CHAT_API_URL = 'http://127.0.0.1:8000/api/chat/'
 export default {
 	components: {
 		NavBar,
-		FooterView
+		// FooterView
 	},
 		data() {
 		return {
-			BASE_URL:'http://127.0.0.1:8000/images/',
+			BASE_URL:'http://127.0.0.1:8000/uploads/',
 			users: [],
 			chats: JSON.parse(localStorage.getItem('chats')) || [],
 			messages: [],

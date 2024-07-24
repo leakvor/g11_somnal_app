@@ -1,12 +1,13 @@
 <template>
   <div>
     <NavBar />
+
     <div class="container">
       <div class="post-container" v-for="post in posts" :key="post.id">
         <div class="d-flex flex-row align-items-center feed-text px-2">
           <img
             class="rounded-circle"
-            :src="`http://127.0.0.1:8000/uploads/${post.user.profile}`"
+            :src="post.user.profile ? `http://127.0.0.1:8000/uploads/${post.user.profile}` : 'http://127.0.0.1:8000/uploads/1721404514.png'"
             width="45" height="45"
             alt="Profile"
             style="border: 1px solid black"
@@ -16,18 +17,12 @@
             <span class="text-black-50 time">{{ post.created_at }}</span>
           </div>
         </div>
-        <p class="post-title">{{ post.title }}</p>
-        <p class="text-danger">Type of scrap:</p>
-       
-        <ul>
-          <li>
-            <p class="comment-text">
-              <span v-for="(item, index) in post.items" :key="index">
+        <div class="p-2 px-3">
+              <h4 style="color: black">{{ post.title }}</h4>
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
                 {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
               </span>
-            </p>
-          </li>
-        </ul>
+            </div>
 
         <div class="row" v-if="post.images.length > 1">
           <div
@@ -53,12 +48,29 @@
           />
         </div>
 
-        <button
+        <button v-if="authStore.isAuthenticatedCompany"
           :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
-          @click="updatePostStatus(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
+          @click="confirmAction(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
         >
           {{ post.status === 'buy' ? 'Already Buy' : 'Buy' }}
         </button>
+      </div>
+    </div>
+
+    <div v-if="showModalConfirm" class="modal fade show d-block modal-top" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="color: black">Confirm</h5>
+          </div>
+          <div class="modal-body">
+            <p style="color: black">{{ confirmationMessage }}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" @click="closeConfirmModal">Cancel</button>
+            <button type="button" class="btn btn-success" @click="executeAction">Confirm</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -71,17 +83,23 @@
     </div>
   </div>
 </template>
-
-
 <script>
 import NavBar from '../../../Components/NavBar.vue';
 import axios from 'axios';
+import { useAuthStore } from '../../../stores/auth-store';
 
 export default {
   name: 'PostComponent',
   
   components: {
     NavBar,
+  },
+  setup(){
+    const authStore = useAuthStore();
+
+  return {
+    authStore,
+  }
   },
   data() {
     return {
@@ -91,39 +109,48 @@ export default {
       images: [],
       posts: [],
       showModal: false,
+      showModalConfirm: false,
       modalImages: [],
       currentImage: null,
       currentImageIndex: 0,
+      confirmationMessage: '',
+      actionPostId: null,
+      actionType: '',
     }
   },
   methods: {
+    confirmAction(postId, actionType) {
+      this.actionPostId = postId;
+      this.actionType = actionType;
+      this.confirmationMessage = `Are you sure you want to ${actionType === 'buy' ? 'buy' : 'not buy'} this post?`;
+      this.showModalConfirm = true;
+    },
+    async executeAction() {
+      try {
+        await this.updatePostStatus(this.actionPostId, this.actionType);
+      } finally {
+        this.showModalConfirm = false;
+      }
+    },
+    closeConfirmModal() {
+      this.showModalConfirm = false;
+    },
+    closeModal() {
+      this.showModalConfirm = false;
+      this.showModal = false;
+    },
     async fetchPosts() {
       try {
         const response = await axios.get('http://127.0.0.1:8000/api/post/list');
         this.posts = response.data;
-        console.log('post',this.posts);
+        console.log('post', this.posts);
       } catch (error) {
         console.error(error);
       }
     },
-    async fetchUser() {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get('http://127.0.0.1:8000/api/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        this.user_info = response.data.data;
-        console.log('Fetched user:', this.user_info);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    },
+
     async updatePostStatus(postId, newStatus) {
       try {
-        console.log(newStatus);
-        console.log(postId);
         const token = localStorage.getItem('access_token');
         if (!token) {
           throw new Error('No access token found');
@@ -132,14 +159,13 @@ export default {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         };
-        const data = { status: newStatus,company_id:this.user_info.id };
+        const data = { status: newStatus, company_id: this.user_info.id };
         const response = await axios.post(
           `http://127.0.0.1:8000/api/post/update/status/${postId}`,
           data,
           { headers }
         );
         console.log('Response:', response);
-        alert('You already buy this item.');
         this.fetchPosts();
       } catch (error) {
         alert('You are a user so you do not have permission to buy');
@@ -147,34 +173,38 @@ export default {
       }
     },
     openImageModal(images, index) {
-      this.modalImages = images
-      this.currentImageIndex = index
-      this.currentImage = images[index]
-      this.showModal = true
+      this.modalImages = images;
+      this.currentImageIndex = index;
+      this.currentImage = images[index];
+      this.showModal = true;
     },
     closeImageModal() {
-      this.showModal = false
-      this.modalImages = []
-      this.currentImage = null
-      this.currentImageIndex = 0
+      this.showModal = false;
+      this.modalImages = [];
+      this.currentImage = null;
+      this.currentImageIndex = 0;
     },
     prevImage() {
-      this.currentImageIndex = (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length
-      this.currentImage = this.modalImages[this.currentImageIndex]
+      this.currentImageIndex = (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length;
+      this.currentImage = this.modalImages[this.currentImageIndex];
     },
     nextImage() {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
-      this.currentImage = this.modalImages[this.currentImageIndex]
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length;
+      this.currentImage = this.modalImages[this.currentImageIndex];
     },
-    },
-    mounted() {
-      this.fetchPosts()
-    }
+  },
+  mounted() {
+    this.fetchPosts();
+  }
 }
 </script>
 
 
+
+
+
 <style scoped>
+
 .post-container {
   padding: 20px;
   border: 1px solid #ccc;
