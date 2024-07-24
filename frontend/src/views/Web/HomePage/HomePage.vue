@@ -81,7 +81,7 @@
         type="button"
         class="sale btn btn-success d-flex align-items-center me-3 p-3"
         data-bs-toggle="modal"
-        data-bs-target="#loginModal"
+        data-bs-target="#loginModal" 
       >
         <i class="material-icons icon-align">add_shopping_cart</i>
         <span>Sale Now</span>

@@ -73,26 +73,19 @@
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
+          <!-- <li class="nav-item me-4" v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany">
             <router-link to="/about" class="nav-link" :class="{ active: isActive('/about') }">
               <i class="material-icons">info</i>
               <span>About Us</span>
             </router-link>
-          </li>
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
+          </li> -->
+          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link to="/history" class="nav-link" :class="{ active: isActive('/history') }">
               <i class="material-icons">history</i>
               <span>History</span>
             </router-link>
-          </li>
-         
-
-          <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || !authStore.isAuthenticatedUser || !authStore.isAuthenticatedCompany">
-            <router-link to="/contact" class="nav-link" :class="{ active: isActive('/contact') }">
-              <i class="material-icons">call</i>
-              <span>Contact Us</span>
-            </router-link>
           </li> -->
+
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
             <router-link to="/favorite-page" class="nav-link position-relative"
               :class="{ active: isActive('/favorite-page') }">
@@ -192,28 +185,6 @@
                     View Profile
                   </router-link>
                 </li>
-
-                <!-- <li>
-                  <router-link to="/editProfile" class="dropdown-item d-flex align-items-center">
-                    <i class="material-icons icon-align">edit_square</i>
-                    Edit Profile
-                  </router-link>
-                </li> -->
-
-                <!-- <li>
-                  <router-link to="/favorite-page" class="dropdown-item d-flex align-items-center">
-                    <i class="material-icons icon-align">favorite</i>
-                    Favorite
-                  </router-link>
-                </li> -->
-
-                <!-- <li>
-                  <router-link to="/addPost" class="dropdown-item d-flex align-items-center">
-                    <i class="material-icons icon-align">post_add</i>
-                    Add Post
-                  </router-link>
-                </li> -->
-
                 <li>
                   <button @click="logout" class="dropdown-item d-flex align-items-center">
                     <i class="material-icons icon-align">logout</i>Logout
@@ -603,17 +574,10 @@ export default {
       showPassword: false,
       isSuccess: false,
       isError: false,
-      // resetCode: '',
-      // newPassword: '',
       confirmPassword: '',
       passwordReset: false,
       apiError: '',
-      // resetCodeError: '',
-      // newPasswordError: '',
       confirmPasswordError: '',
-      // resetLinkSent: false,
-      // passwordReset: false,
-      // apiError: '',
       showEmailNotification:false
 
     };

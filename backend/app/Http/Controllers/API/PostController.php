@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Events\MessageSent;
 use App\Events\NotificationCreated;
+use App\Events\NotificationSent;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\ShowPostCommentResource;
@@ -154,8 +155,7 @@ class PostController extends Controller
                 'message' => "You have a new post from a user who wants to sell their scrap to your company",
                 'status' => 0,
             ]);
-            broadcast(new NotificationCreated($notification))->toOthers();
-        }
+            broadcast(new NotificationSent($notification))->toOthers();        }
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $img) {

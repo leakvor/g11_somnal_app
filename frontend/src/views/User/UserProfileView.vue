@@ -50,9 +50,13 @@
             </button>
           </div>
         </div>
-        <div class="col-12 col-md-8 col-lg-9">
+        <div v-if="authStore.isAuthenticatedUser" class="col-12 col-md-8 col-lg-9">
           <PostCard :posts="posts" @delete-post="deletePost" />
         </div>
+        <div v-else class="col-12 col-md-8 col-lg-9">
+          <CompanyHistory />
+          <CompanyPayment />
+
       </div>
     </div>
 
@@ -154,17 +158,30 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 import NavBar from '@/Components/NavBar.vue'
 import PostCard from '../Web/Post/PostCard.vue'
 import axios from 'axios'
+import CompanyPayment from '../Web/Company/CompanyPayment.vue';
+import CompanyHistory from '../Web/Company/CompanyHistory.vue';
+import { useAuthStore } from '../../stores/auth-store';
 
 export default {
   components: {
     NavBar,
-    PostCard
+    PostCard,
+    CompanyPayment,
+    CompanyHistory
+  },
+  setup(){
+    const authStore = useAuthStore();
+
+  return {
+    authStore,
+  }
   },
   data() {
     return {

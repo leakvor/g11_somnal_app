@@ -17,18 +17,12 @@
             <span class="text-black-50 time">{{ post.created_at }}</span>
           </div>
         </div>
-        <p class="post-title">{{ post.title }}</p>
-        <p class="text-danger">Type of scrap:</p>
-
-        <ul>
-          <li>
-            <p class="comment-text">
-              <span v-for="(item, index) in post.items" :key="index">
+        <div class="p-2 px-3">
+              <h4 style="color: black">{{ post.title }}</h4>
+              <span style="color: black" v-for="(item, index) in post.items" :key="index">
                 {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
               </span>
-            </p>
-          </li>
-        </ul>
+            </div>
 
         <div class="row" v-if="post.images.length > 1">
           <div
@@ -54,7 +48,7 @@
           />
         </div>
 
-        <button v-if="user_info.role_id==3"
+        <button v-if="authStore.isAuthenticatedCompany"
           :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'"
           @click="confirmAction(post.id, post.status === 'buy' ? 'not_buy' : 'buy')"
         >
@@ -92,12 +86,20 @@
 <script>
 import NavBar from '../../../Components/NavBar.vue';
 import axios from 'axios';
+import { useAuthStore } from '../../../stores/auth-store';
 
 export default {
   name: 'PostComponent',
   
   components: {
     NavBar,
+  },
+  setup(){
+    const authStore = useAuthStore();
+
+  return {
+    authStore,
+  }
   },
   data() {
     return {
@@ -111,7 +113,6 @@ export default {
       modalImages: [],
       currentImage: null,
       currentImageIndex: 0,
-      user_info: null,
       confirmationMessage: '',
       actionPostId: null,
       actionType: '',
@@ -147,20 +148,7 @@ export default {
         console.error(error);
       }
     },
-    async fetchUser() {
-      try {
-        const token = localStorage.getItem('access_token');
-        const response = await axios.get('http://127.0.0.1:8000/api/me', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        this.user_info = response.data.data;
-        console.log('Fetched user:', this.user_info);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    },
+
     async updatePostStatus(postId, newStatus) {
       try {
         const token = localStorage.getItem('access_token');
@@ -207,7 +195,6 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-    this.fetchUser();
   }
 }
 </script>

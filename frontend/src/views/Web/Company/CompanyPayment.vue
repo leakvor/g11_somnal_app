@@ -1,31 +1,10 @@
 <template>
-  <NavBar />
-  <div class="container mt-5">
-    <h3 class="text-center mb-3">Company have paid</h3>
-    <div class="header d-flex gap-5">
-      <button type="button" class="btn btn-success w-40 h-10 mt-3">
-        <a href="/history" style="text-decoration: none; color: white">History</a>
-      </button>
-      <div class="input-group mt-3 mb-5">
-        <input
-          type="search"
-          class="form-control"
-          id="search-btn"
-          name="search"
-          placeholder="Search category"
-          v-model="searchInput"
-        />
-        <button type="button" class="btn btn-success">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-    </div>
+  <div class="container mt-5" >
+    <h3 class="text-center mb-3" style="color: black">Company have paid.</h3>
 
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
-          <th>ID</th>
-          <th>Name</th>
           <th>Option Paid</th>
           <th>Amount</th>
           <th>Date Paid</th>
@@ -33,31 +12,47 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="userPayment in userPayments" :key="userPayment.id">
-          <td>{{ userPayment.id }}</td>
-          <td>{{ userPayment.user.name }}</td>
+        <tr v-for="userPayment in paginatedUserPayments" :key="userPayment.id">
           <td>{{ userPayment.option_paid.option_paid }}</td>
-          <td>{{ userPayment.option_paid.amount }}</td>
-          <td>{{ userPayment.option_paid.created_at }}</td>
-          <!-- <td>{{ userPayment.option_paid.date_pay }}</td> -->
+          <td>{{ userPayment.option_paid.amount }} $</td>
+          <td>{{ userPayment.created_at }}</td>
+          <td>{{ userPayment.deadline }}</td>
         </tr>
       </tbody>
     </table>
+    <div class="pagination d-flex justify-content-end">
+            <button class="btn btn-success me-2" @click="prevPage" :disabled="currentPage === 1">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <span class="mx-2">{{ currentPage }} / {{ totalPages }}</span>
+            <button
+              class="btn btn-success ms-2"
+              @click="nextPage"
+              :disabled="currentPage === totalPages"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
   </div>
-  <Footer class="mt-5" />
 </template>
-  <script>
-import NavBar from '@/Components/NavBar.vue'
-import Footer from '@/Components/Footer.vue'
+
+<script>
 import axios from 'axios'
 export default {
-  components: {
-    NavBar,
-    Footer
-  },
   data() {
     return {
-      userPayments: []
+      userPayments: [],
+      currentPage: 1,
+      pageSize: 5
+    }
+  },
+  computed: {
+    paginatedUserPayments() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      return this.userPayments.slice(start, start + this.pageSize);
+    },
+    totalPages() {
+      return Math.ceil(this.userPayments.length / this.pageSize);
     }
   },
   methods: {
@@ -70,9 +65,18 @@ export default {
           }
         })
         this.userPayments = response.data.data
-        console.log(this.userPayments)
       } catch (error) {
         console.error(error)
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
       }
     }
   },
@@ -81,6 +85,15 @@ export default {
   }
 }
 </script>
-    
-    <style>
+
+<style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.pagination button {
+  margin: 0 10px;
+}
 </style>
