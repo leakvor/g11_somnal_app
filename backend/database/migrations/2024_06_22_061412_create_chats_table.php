@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('reciever_id');
             $table->string('message')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('is_read')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

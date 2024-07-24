@@ -11,5 +11,4 @@ class OptionPaid extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = ['option_paid','amount','description','type'];
 
-    
 }

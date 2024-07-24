@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PaymentResource;
+use App\Models\Payment;
 use App\Models\Revenue;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -15,9 +17,14 @@ class RevenueController extends Controller
         $this->middleware('role_or_permission:Revenue access', ['only' => ['index', 'show']]);
     }
 
-    public function index(){
-        $revenue = Revenue::latest()->get();
-        return view('revenue.index', ['revenues' => $revenue]);
+    public function index()
+    {
+        // Fetch payments with related user and optionPaid
+        $payments = Payment::with(['user', 'optionPaid'])->get();
+        $payments = PaymentResource::collection($payments);
+        $payments = Payment::paginate(4);
+        // Pass the payments to the view
+        return view('revenue.index', compact('payments'));
     }
 }
 

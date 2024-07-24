@@ -5,13 +5,13 @@
       <h2 class="text-center m-5">Checking good before buy or selling</h2>
       <div class="group-detail">
         <div class="row">
-          <div class="col-12 col-md-2 category-list bg-orange-200 rounded">
-            <h4 class="text-center">Categories</h4>
+          <div class="col-12 col-md-2 category-list bg-green-200 rounded">
+            <h4 class="text-center m-3">Categories</h4>
             <ul class="list-unstyled">
               <li v-for="category in categories" :key="category.id" class="mb-2">
                 <router-link
                   class="link no-underline color-dark"
-                  :to="{ name: 'adjay', params: { id: category.id } }"
+                  :to="{ name: 'adjay', params: { id: category.id } }" style="font-size:20px;"
                 >
                   {{ category.name }}
                 </router-link>

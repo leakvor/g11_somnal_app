@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\PaymentController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
@@ -7,9 +11,11 @@ use App\Http\Controllers\Admin\{
     CompanyController,
     CategoryController,
     ItemController,
+    
     HistoryMarketprices,
     RevenueController,
-    OptionPayController
+    OptionPayController,
+    DashboardController,
 };
 
 
@@ -29,19 +35,22 @@ Route::get('/', function () {
 });
 
 
-Route::get('/test-mail',function(){
+Route::get('/test-email/{email}', function ($email) {
+    $user = User::where('email', $email)->first();
 
-    $message = "Testing mail";
-
-    \Mail::raw('Hi, welcome!', function ($message) {
-      $message->to('ajayydavex@gmail.com')
-        ->subject('Testing mail');
-    });
-
-    dd('sent');
-
+    if ($user) {
+        try {
+            Mail::to($email)->send(new WelcomeMail($user));
+            return 'Test email sent to ' . $email;
+        } catch (\Exception $e) {
+            return 'Failed to send email: ' . $e->getMessage();
+        }
+    } else {
+        return 'User not found';
+    }
 });
 
+// Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/dashboard', function () {
     return view('front.dashboard');
@@ -57,6 +66,11 @@ Route::get('/admin/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('admin.dashboard');
+
+require __DIR__.'/auth.php';
 
 
 
@@ -73,17 +87,18 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::resource('items',ItemController::class);
         Route::resource('history',HistoryMarketprices::class);
         Route::resource('optionPaid',OptionPayController::class);
-
  
 
         Route::get('/profile',[ProfileController::class,'index'])->name('profile');
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
         Route::get('/mail',[MailSettingController::class,'index'])->name('mail.index');
-        Route::put('/mail-update/{mailsetting}',[MailSettingController::class,'update'])->name('mail.update');
-
-
+        Route::put('/mail-update/{mailsetting}',[MailSettingController::class,'update'])->name('mail.update');   
         
+        Route::get('/revenue', [RevenueController::class, 'index'])->name('revenue.index');
+
         
 });
+
+
 
 

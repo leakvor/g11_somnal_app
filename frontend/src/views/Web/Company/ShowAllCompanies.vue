@@ -10,7 +10,7 @@
             class="form-control"
             id="search_company"
             placeholder="Search.."
-            v-model="searchText"    
+            v-model="searchText"
             @input="filterCompanies"
           />
         </div>
@@ -24,7 +24,14 @@
           >
             <div class="card-body">
               <div class="company-logo text-center mt-3">
-                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}` " alt="Company Logo" width="100%" height="200" class="rounded"  onerror="this.src='https://icons.iconarchive.com/icons/praveen/minimal-outline/512/gallery-icon.png'"/>
+                <img
+                  :src="`http://127.0.0.1:8000/uploads/${company.profile}`"
+                  alt="Company Logo"
+                  width="100%"
+                  height="200"
+                  class="rounded"
+                  onerror="this.src='https://icons.iconarchive.com/icons/praveen/minimal-outline/512/gallery-icon.png'"
+                />
               </div>
               <div class="company-info mt-3">
                 <h5 class="text-title">{{ company.name }}</h5>
@@ -32,14 +39,21 @@
                 <a :href="'tel:' + company.tel" class="text-card text-decoration-none"
                   ><b>Phone:</b> {{ company.phone }}</a
                 >
-                <div class=" "> 
+                <div class=" ">
                   <p class="text-break"><b>Email:</b>{{ company.email }}</p>
                 </div>
-                <a href="/map" class="text-break"><b>Address:</b><i class="bi bi-geo-alt-fill"></i></a>
+                <a
+                  :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(company.latitude + ',' + company.longitude)}`"
+                >
+                  <b>Address:</b>
+                  <i class="bi bi-geo-alt-fill"></i>
+                </a>
               </div>
             </div>
-            <div class="company-action d-flex justify-content-end">
-              <button class="btn btn-success" type="submit" @click="openModal(company.id)">Sales Now</button>
+            <div v-if="authStore.isAuthenticated " class="company-action d-flex justify-content-end">
+              <button v-if="authStore.isAuthenticatedUser" class="btn btn-success" type="submit" @click="openModal(company.id)">
+                Sales Now
+              </button>
             </div>
           </a>
         </div>
@@ -76,7 +90,7 @@
                 enctype="multipart/form-data"
               >
                 <div class="mb-3">
-                  <label for="title" class="form-label" style="color:black">Title</label>
+                  <label for="title" class="form-label" style="color: black">Title</label>
                   <input
                     type="text"
                     class="form-control shared-style"
@@ -86,11 +100,19 @@
                   />
                 </div>
                 <div class="mb-3 dropdown">
-                  <label for="item-dropdown" class="form-label" style="color:black">Item selection</label>
+                  <label for="item-dropdown" class="form-label" style="color: black"
+                    >Item selection</label
+                  >
                   <div class="mb-3" v-if="selectedItemsNames.length > 0">
-                    <p style="color:black">{{ selectedItemsNames }}</p>
+                    <p style="color: black">{{ selectedItemsNames }}</p>
                   </div>
-                  <button class="form-control shared-style dropdown-toggle" type="button" id="item-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <button
+                    class="form-control shared-style dropdown-toggle"
+                    type="button"
+                    id="item-dropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
                     <p>Select items</p>
                   </button>
                   <ul class="dropdown-menu dropdown-scroll" aria-labelledby="item-dropdown">
@@ -104,13 +126,17 @@
                           name="item_ids[]"
                           v-model="selectedItems"
                         />
-                        <label class="form-check-label" :for="`Checkme${item.id}`">{{ item.name }}</label>
+                        <label class="form-check-label" :for="`Checkme${item.id}`">{{
+                          item.name
+                        }}</label>
                       </div>
                     </li>
                   </ul>
                 </div>
                 <div class="mb-3">
-                  <label for="formFile" class="form-label" style="color:black">File image post</label>
+                  <label for="formFile" class="form-label" style="color: black"
+                    >File image post</label
+                  >
                   <FilePond
                     name="images[]"
                     v-model="images"
@@ -130,10 +156,9 @@
         </div>
       </div>
     </div>
-    <Footer />
+    <FooterView />
   </div>
 </template>
-
 
 <script>
 import vueFilePond from 'vue-filepond'
@@ -141,9 +166,9 @@ import 'filepond/dist/filepond.min.css'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-
+import { useAuthStore } from '../../../stores/auth-store.ts'
 import NavBar from '../../../Components/NavBar.vue'
-import Footer from '../../../Components/Footer.vue'
+import FooterView from '../../../Components/Footer.vue'
 
 import axios from 'axios'
 import router from '@/router'
@@ -155,8 +180,15 @@ export default {
   name: 'CompanyList',
   components: {
     NavBar,
-    Footer,
+    FooterView,
     FilePond
+  },
+  setup() {
+    const authStore = useAuthStore()
+    console.log(authStore)
+    return {
+      authStore
+    }
   },
   data() {
     return {
@@ -170,7 +202,7 @@ export default {
       visible: false,
       selectedCompany: null,
       searchText: '',
-      user_info: null,
+      user_info: null
     }
   },
   mounted() {
@@ -180,18 +212,18 @@ export default {
   },
   computed: {
     selectedItemsNames() {
-      return this.selectedItems.map(id => {
-        const item = this.item_all.find(item => item.id === id);
-        return item.name;
-      });
+      return this.selectedItems.map((id) => {
+        const item = this.item_all.find((item) => item.id === id)
+        return item.name
+      })
     }
   },
   methods: {
     openModal(company) {
-        $('#postModal').modal('show')
+      $('#postModal').modal('show')
       this.selectedCompany = company
-      console.log("id",this.selectedCompany)
-      this.visible = true  
+      console.log('id', this.selectedCompany)
+      this.visible = true
     },
     closeModal() {
       this.visible = false
@@ -231,8 +263,11 @@ export default {
           }
         })
         console.log(response.data)
+        $('#postModal').modal('hide')
         this.resetForm()
-        this.$router.push('/profile')
+        this.visible = false
+        // this.$router.push('/companies')
+     
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -274,14 +309,14 @@ export default {
       this.filteredCompanies = this.companies.filter((company) =>
         company.name.toLowerCase().includes(this.searchText.toLowerCase())
       )
-    },
+    }
   }
 }
 </script>
 
 <style scoped>
-#search_company{
-  background:white;
+#search_company {
+  background: white;
   width: 20%;
 }
 .list-container {
@@ -292,7 +327,10 @@ export default {
 .company-card {
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out, border-color 0.4s ease-in-out;
+  transition:
+    transform 0.4s ease-in-out,
+    box-shadow 0.4s ease-in-out,
+    border-color 0.4s ease-in-out;
   position: relative;
   overflow: hidden;
   border: 3px solid thick;
@@ -301,23 +339,20 @@ export default {
   transform: translateY(-10px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-color: #007bff;
-  
 }
 
-.card-body{
+.card-body {
   width: 100%;
 }
-
 
 .text-title {
   font-size: 1.2rem;
   font-weight: bold;
 }
 
-#item-dropdown{
-display: flex;
-justify-content: space-between;
-
+#item-dropdown {
+  display: flex;
+  justify-content: space-between;
 }
 .text-card {
   font-size: 1rem;
@@ -348,10 +383,31 @@ justify-content: space-between;
 }
 
 .dropdown-scroll {
-  max-height: 200px; 
+  max-height: 200px;
+  overflow-y: auto;
+}
+.dropdown .form-control,
+.dropdown-menu {
+  width: 100%;
+}
+.dropdown .form-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-menu.scrollable-menu {
+  max-height: 200px;
   overflow-y: auto;
 }
 
+.form-check-input {
+  margin-left: 20px;
+}
+
+.form-label {
+  margin-top: 5px;
+}
 /* Responsive styles */
 @media (max-width: 1200px) {
   .list-container {
@@ -374,6 +430,4 @@ justify-content: space-between;
     justify-content: center !important;
   }
 }
-
-
 </style>

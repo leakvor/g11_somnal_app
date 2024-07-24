@@ -24,6 +24,10 @@
 
             <span class="mx-3">Dashboard</span>
         </a>
+        <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 {{ Route::currentRouteNamed('admin.revenues.index') ? 'active' : '' }}" href="{{ route('admin.revenues.index') }}">
+            <span class="text-2xl font-bold text-gray-500">$</span>
+            <span class="mx-3">Revenu</span>
+        </a>
         
         @canany('Role access','Role add','Role edit','Role delete')
         <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 {{ Route::currentRouteNamed('admin.roles.index') ? 'active' : '' }}"
@@ -125,7 +129,7 @@
         </a>
         @endcanany
        
-        @canany(['OptionPaid access', 'OptionPaid edit', 'OptionPaid delete', 'OptionPaid update'])
+        @canany('OptionPaid access', 'OptionPaid edit', 'OptionPaid delete', 'OptionPaid update')
          <a class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 "
             href="{{ route('admin.optionPaid.index')}}">
             <svg class="h-6 w-6 text-gray-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="3" y="15" width="6" height="6" rx="2" />  <rect x="15" y="15" width="6" height="6" rx="2" />  <rect x="9" y="3" width="6" height="6" rx="2" />  <path d="M6 15v-1a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1" />  <line x1="12" y1="9" x2="12" y2="12" /></svg>

@@ -16,7 +16,6 @@ class Payment extends Model
         'cvv',
         'expiration_date',
         'user_id',
-        'price',
         'option_paid_id',
         'status',
     ];
@@ -27,7 +26,8 @@ class Payment extends Model
     }
 
     //Relationship with option paid
-    public function optionPaid(): BelongsTo{
-        return $this->belongsTo(OptionPaid::class);
+    public function optionPaid(): BelongsTo
+    {
+        return $this->belongsTo(OptionPaid::class, 'option_paid_id');
     }
 }

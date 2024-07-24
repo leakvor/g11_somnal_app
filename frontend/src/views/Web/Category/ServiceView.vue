@@ -1,17 +1,5 @@
-
 <template>
   <NavBar />
-  <!-- <div class="card bg-dark text-white">
-    <img class="card-img" src="../../../assets/image/colored.png" alt="Card image" />
-    <div class="card-img-overlay">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">
-        This is a wider card with supporting text below as a natural lead-in to additional
-        content. This content is a little bit longer.
-      </p>
-      <p class="card-text">Last updated 3 mins ago</p>
-    </div>
-  </div> -->
 
   <!-- Services Section -->
   <div class="container bg-white-100 mb-10">
@@ -22,7 +10,7 @@
     <!--  -->
     <div class="input-group">
       <button
-        class="dropdown-toggle btn btn-primary"
+        class="dropdown-toggle btn btn-success"
         data-bs-toggle="dropdown"
         aria-expanded="false"
         id="dropdown-category"
@@ -43,7 +31,7 @@
       placeholder="Search category"
       v-model="searchInput"
     />
-    <button @click="searchCategories" type="button" class="btn btn-primary">
+    <button @click="searchCategories" type="button" class="btn btn-success">
       <i class="fas fa-search"></i>
     </button>
     </div>
@@ -91,18 +79,6 @@ data() {
     }
   },
   methods: {
-    // getCategory() {
-    //   this.$axios
-    //     .get("/category/list")
-    //     .then(response => {
-    //       this.categories = response.data.data;
-    //       console.log(this.categories);
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    // },
-
     async getCategory(){
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/category/list");
@@ -126,10 +102,7 @@ data() {
   width: 80%;
   margin: auto;
 }
-.input-group:hover {
-  background:orangered;
-  padding: 5px;
-}
+
 .category .card {
   width: 22%;
   padding: 2%;
@@ -253,6 +226,5 @@ data() {
   }
   
 }
-
 
 </style>

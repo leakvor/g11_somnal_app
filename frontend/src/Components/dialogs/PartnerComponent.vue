@@ -6,10 +6,8 @@
       <div class="text-orange mt-5">
         <h1 class=""><b>Increase Your Income with Us</b></h1>
         <p>We are willing to help strengthen your business and increase your income.</p>
-        <!-- <router-link to="/payment" class="bg-red-500 text-white px-4 py-2 rounded-full mt-5" style="text-decoration: none; margin-top: 15px">Click Now!!</router-link> -->
       </div>
       <div class="partner-img mt-2">
-        <!-- <img src="@/assets/partner/partner.png" alt="Partner Image" class="w-full lg:max-w-lg xl:max-w-xl"> -->
         <img src="https://the-media-leader.com/wp-content/uploads/2022/09/partnership-business-shutterstock.jpg" alt="Partner Image">
       </div>
     </div>

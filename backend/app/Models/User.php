@@ -43,6 +43,13 @@ class User extends Authenticatable
     public function role():BelongsTo{
         return $this->belongsTo(Role::class,'role_id');
     }
+
+    public function messages(){
+        return $this->belongsToMany(User::class, 'chats','user_id','reciever_id');
+    }
+    public function messagesOf(){
+        return $this->belongsToMany(User::class, 'chats','reciever_id','user_id');
+    }
     /**
      * The attributes that should be cast.
      *

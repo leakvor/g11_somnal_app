@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class Chat extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable = ['user_id','reciever_id','message','image'];
+    protected $fillable = ['user_id','reciever_id','message','image','is_read','created_at','updated_at'];
 
     //user
     public function user():BelongsTo{
@@ -40,7 +40,7 @@ class Chat extends Model
     if ($request->hasFile('image')) {
         $image = $request->file('image');
         $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('public/uploads', $imageName);
+        $image->move('images/chat', $imageName);
         $data['image'] = $imageName;
     }
 
@@ -105,4 +105,44 @@ class Chat extends Model
         }
         return null;
     }
+
+      // Method to get chats for the authenticated user
+      public static function getChatsForUser()
+      {
+          $user = Auth::user();
+          if (!$user) {
+              return response()->json(['error' => 'User not found.'], 404);
+          }
+      
+          $chats = self::where(function ($query) use ($user) {
+                  $query->where('user_id', $user->id)
+                      ->orWhere('reciever_id', $user->id);
+              })
+              ->with(['user:id,name,profile', 'reciever:id,name,profile'])
+              ->orderBy('id', 'desc')
+              ->get();
+      
+          $defaultProfileUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7U_ef87Q7CQ1Fx_khkPq-y9IfPmBWrMZ6ig&s";
+      
+          return $chats->mapToGroups(function ($chat) use ($user, $defaultProfileUrl) {
+              $partner = $chat->user_id === $user->id ? $chat->reciever : $chat->user;
+              $profile = $partner->profile ?? $defaultProfileUrl;
+              $unreadCount = self::where('reciever_id', $user->id)
+                  ->where('is_read', 0)
+                  ->where(function ($query) use ($partner) {
+                      $query->where('user_id', $partner->id)
+                          ->orWhere('reciever_id', $partner->id);
+                  })
+                  ->count();
+              return [$partner->id => [
+                  'user_id' => $partner->id,
+                  'user_name' => $partner->name,
+                  'user_profile' => $profile,
+                  'last_message' => $chat->message,
+                  'unread_count' => $unreadCount
+              ]];
+          })->map(function ($group) {
+              return $group->first();
+          })->values();
+      }
 }

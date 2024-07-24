@@ -17,7 +17,10 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CompaniesListController;
 use App\Http\Controllers\Api\ItemController;
 use App\Http\Controllers\Api\HistoryMarketPriceController;
+// use App\Http\Controllers\Admin\DashboardController;
 
+
+use App\Events\MessageSent;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,9 +32,13 @@ use App\Http\Controllers\Api\HistoryMarketPriceController;
 |
 */
 
+// Route::get('/admin/dashboard', [DashboardController::class, 'getData']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -52,17 +59,21 @@ Route::get('/post/each/user/{id}', [PostController::class, 'show_one_post']);
 Route::post('/post/update/status/{id}', [PostController::class, 'update_status']);
 
 //get company nearbyme
-Route::post('/company/near', [AuthController::class,'getNearbyCompanies']);
+Route::post('/company/near', [AuthController::class, 'getNearbyCompanies']);
 
 
 //update notification status
-Route::get('/notification/status/{id}',[NotificationConControlller::class,'markAsSeen']);
+Route::get('/notification/status/{id}', [NotificationConControlller::class, 'markAsSeen']);
 
 //list all payment
 Route::get('/payment/list', [PaymentController::class, 'index']);
 
+
+
 //list all option
 Route::get('/option/list', [OptionPaidController::class, 'index']);
+Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 
 // Routes that require authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -70,8 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/updateProfile', [AuthController::class, 'uploadProfile']);
-    Route::post('/forgotPassword', [AuthController::class, 'forgotPassword']);
-    Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
+
+
 
 
     // Post routes
@@ -84,6 +95,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/company/buy', [PostController::class, 'post_buy']);
         //update statusof post
         Route::post('/update/status/{id}', [PostController::class, 'update_status']);
+
+        // get all posts
+        Route::get('/company/history', [PostController::class, 'historyPost']);
     });
 
     // Comment routes
@@ -96,9 +110,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Chat routes
     Route::prefix('chat')->group(function () {
+        Route::get('/list/users/makeChat', [ChatController::class, 'getAllUsers']);
+        Route::get('/user/profile/{userId}', [ChatController::class, 'getProfile']);
         Route::post('/send/message', [ChatController::class, 'store']);
         Route::delete('/delete/message/{id}', [ChatController::class, 'destroy']);
+        Route::get('/list/users', [ChatController::class, 'listChats']);
         Route::get('/get/message/{receiverId}', [ChatController::class, 'getConversation']);
+        Route::get('/list/message/isRead', [ChatController::class, 'listConversationIsRead']);
+        Route::post('/seen/message/user/{userId}', [ChatController::class, 'seenChat']);
         Route::post('/update/message/{id}', [ChatController::class, 'updateMessage']);
     });
 
@@ -106,22 +125,23 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/list', [FavoriteController::class, 'index']);
         Route::post('/create', [FavoriteController::class, 'store']);
         Route::delete('/delete/{id}', [FavoriteController::class, 'destroy']);
-
     });
 
     //payment
     Route::prefix('payment')->group(function () {
         Route::post('/create', [PaymentController::class, 'store']);
+        // count number of comapy payments
+        Route::get('/company', [PaymentController::class, 'companyPayment']);
     });
+   
 
     //notification
     Route::prefix('notification')->group(function () {
-        Route::get('/company/list',[NotificationConControlller::class,'company_notifications']);
-        Route::get('/user/list',[NotificationConControlller::class,'user_notification']);
-        Route::get('/user/list/alert',[NotificationConControlller::class,'user_notification_alert']);
-        Route::get('/company/list/alert',[NotificationConControlller::class,'company_notification_alert']);
+        Route::get('/company/list', [NotificationConControlller::class, 'company_notifications']);
+        Route::get('/user/list', [NotificationConControlller::class, 'user_notification']);
+        Route::get('/user/list/alert', [NotificationConControlller::class, 'user_notification_alert']);
+        Route::get('/company/list/alert', [NotificationConControlller::class, 'company_notification_alert']);
     });
-
 });
 
 
@@ -158,3 +178,5 @@ Route::post('/images/update/{id}', [ImageController::class, 'update'])->name('im
 
 //add image to post
 Route::post('posts/{id}/add-image', [PostController::class, 'add_image_post']);
+// payment list 
+Route::get('/payment/list',[PaymentController::class,'getpayments']);

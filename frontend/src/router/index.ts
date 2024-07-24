@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import axiosInstance from '@/plugins/axios'
 import { useAuthStore } from '@/stores/auth-store'
 import { createAcl, defineAclRules } from 'vue-simple-acl'
+import CompanyPayment from '@/views/Web/Company/CompanyPayment.vue'
 
 const simpleAcl = createAcl({})
 const router = createRouter({
@@ -20,6 +21,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/Admin/Auth/LoginView.vue')
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: () => import('../views/Admin/Auth/ForgotPassword.vue')
     },
     {
       path: '/',
@@ -63,11 +69,6 @@ const router = createRouter({
       component:() => import('../views/Admin/Auth/RegisterView.vue')
     },
     {
-      path: '/contact',
-      name: 'contactus',
-      component: () => import('../views/Web/Post/ContactusView.vue')
-    },
-    {
     path:"/profile",
     name:"profile user",
     component:() => import('../views/User/UserProfileView.vue')
@@ -76,11 +77,6 @@ const router = createRouter({
     path:"/chat",
     name:"chat",
     component:() => import('../views/Web/Chat/ChatView.vue')
-  },
-    {
-    path:"/comment-post",
-    name:"comment-post",
-    component:() => import('../views/Web/commentPost/CommentView.vue')
   },
     {
     path:"/homeview",
@@ -153,11 +149,24 @@ const router = createRouter({
       name: 'companyRevenue',
       component: () => import('../views/Web/Company/CompanyRevenue.vue')
     },
+    // company payment
+  {
+    path: '/company/payment',
+    name: 'companyPayment',
+    component: () => import('../views/Web/Company/CompanyPayment.vue')
+  }
+    ,
     // see all company
     {
       path: '/companies',
       name: 'companies',
       component: () => import('../views/Web/Company/ShowAllCompanies.vue')
+    },
+    // history
+    {
+      path:'/history',
+      name:'history',
+      component:()=>import('../views/Web/Company/CompanyHistory.vue')
     },
 
     // customer post to sell in specific company

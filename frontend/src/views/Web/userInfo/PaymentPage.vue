@@ -200,7 +200,7 @@ export default {
         );
         console.log(response.data);
 
-        if (response.data.success) {
+        if (response.data) {
           this.cardNumberMessage = '';
           this.expirationMessage = '';
           this.cvvMessage = '';

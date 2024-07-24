@@ -105,6 +105,7 @@
 import axios from 'axios';
 import NavBar from '../../../Components/NavBar.vue'
 
+
 export default {
   components:{
     NavBar,
@@ -252,10 +253,6 @@ export default {
   },
 };
 </script>
-
-
-
-
 
 
 
