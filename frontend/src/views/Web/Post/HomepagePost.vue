@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar/>
-    <div class="container mt-3 mb-5">
+    <div class="container ">
       <form @submit.prevent="createPost" class="form p-4" method="POST" enctype="multipart/form-data">
         <h3 class="text-center m-3" style="color: black">Post Here!!</h3>
         <div class="mb-3">
@@ -199,10 +199,11 @@
   <style scoped>
   .container {
     width: 100%;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
     
   
   }

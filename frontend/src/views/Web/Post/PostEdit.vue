@@ -4,11 +4,13 @@
     <form
     @submit.prevent="editPost"
     method="post"
-    class="flex flex-col p-4 rounded-lg bg-white shadow-md max-w-lg m-auto mt-5"
+    class="flex flex-col p-4 rounded-lg bg-white shadow-md max-w-lg m-auto mt-3"
     enctype="multipart/form-data"
-  >
-    <h2 class="text-center mb-3 text-lg font-semibold" style="color: black">Edit Post</h2>
-
+  > 
+    <div class="d-flex justify-content-between">
+      <h1 class="text-center mb-3 text-lg font-semibold" style="color: green">Edit Post</h1>
+      <button class=" text-dack bg-white fs-2 border-none " type="button" @click="closeForm"><i class="bi bi-x"></i></button>
+    </div> 
     <div class="mb-3">
       <label for="title" class="form-label" style="color: black">Title</label>
       <input
@@ -66,7 +68,7 @@
     </div>
 
     <div class="mb-3">
-      <button type="button" style="background-color: orange; border-color: orange;" @click="triggerFileInput">Add New Image</button>
+      <button type="button" style="background-color: orange;  border-color: orange;" @click="triggerFileInput">Add New Image</button>
       <input
         type="file"
         ref="fileInput"
@@ -89,7 +91,7 @@
     <div class="flex justify-end mt-5">
       <button
         type="submit"
-        class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700"
+        class="px-4 py-2 bg-green-600 text-white font-semibold border-none rounded-lg hover:bg-green-700"
       >
         Update Post
       </button>
@@ -238,6 +240,9 @@ export default {
     triggerFileInput() {
       this.currentImageId = null;
       this.$refs.fileInput.click();
+    },
+     closeForm() {
+      this.$router.push('/profile')
     },
   },
   mounted() {

@@ -7,7 +7,7 @@
           <h2 class="col-11 d-flex justify-content-center text-orange mb-3">Pay here!</h2>
           <button type="button" class="col-1 close-button d-flex justify-content-end" @click="closePayment"><i class="bi bi-x"></i></button>
         </div>
-      <!-- <button type="button" class="close-button d-flex justify-content-end" @click="closePayment"><i class="bi bi-x"></i></button> -->
+      
       <div class="payment-form mt-3">
         <div class="payment-options d-flex row justify-content-center">
           <img
@@ -270,10 +270,11 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .col-1{
   border: none;

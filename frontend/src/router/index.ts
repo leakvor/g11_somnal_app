@@ -129,7 +129,7 @@ const router = createRouter({
       name:"messenger",
       component:() => import('../views/Web/Chat/UserChat.vue')
     },
-    //pyment
+    // pyment
       {
       path:"/payment/:id",
       name:"payment",
