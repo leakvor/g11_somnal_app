@@ -35,7 +35,7 @@
             </ul>
           </div>
           <div class="mb-3">
-            <label for="formFile" class="form-label" style="color: white">File image post</label>
+            <label for="formFile" class="form-label" style="color: white">Upload file here</label>
             <div class="filepond-container">
               <FilePond name="images[]" v-model="images" ref="pond"
                 label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="company-selection" style="color: white" class="form-label">Choose company</label>
+            <label for="company-selection" style="color: white" class="form-label">No need to choose company if you want to post in public.</label>
             <select id="company-selection" name="company" class="form-select shared-style" v-model="company_id">
               <option disabled selected value="">Choose a company</option>
               <option v-for="company in companies" :key="company.id" :value="company.id">

@@ -51,8 +51,13 @@
                 </a>
               </div>
             </div>
-            <div v-if="authStore.isAuthenticated " class="company-action d-flex justify-content-end">
-              <button v-if="authStore.isAuthenticatedUser" class="btn btn-success" type="submit" @click="openModal(company.id)">
+            <div v-if="authStore.isAuthenticated" class="company-action d-flex justify-content-end">
+              <button
+                v-if="authStore.isAuthenticatedUser"
+                class="btn btn-success"
+                type="submit"
+                @click="openModal(company.id)"
+              >
                 Sales Now
               </button>
             </div>
@@ -135,18 +140,20 @@
                   </ul>
                 </div>
                 <div class="mb-3">
-                  <label for="formFile" class="form-label" style="color: black"
+                  <label for="formFile" class="form-label" style="color: white"
                     >File image post</label
                   >
-                  <FilePond
-                    name="images[]"
-                    v-model="images"
-                    ref="pond"
-                    label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
-                    allow-multiple="true"
-                    accepted-file-types="image/jpeg, image/png"
-                    @updatefiles="handleFileChange"
-                  />
+                  <div class="filepond-container">
+                    <FilePond
+                      name="images[]"
+                      v-model="images"
+                      ref="pond"
+                      label-idle="Drag & Drop your images or <span class='filepond--label-action'>Browse</span>"
+                      allow-multiple="true"
+                      accepted-file-types="image/jpeg, image/png"
+                      @updatefiles="handleFileChange"
+                    />
+                  </div>
                 </div>
                 <div class="submit d-grid gap-2">
                   <button class="btn btn-success" type="submit">Submit</button>
@@ -268,7 +275,6 @@ export default {
         this.resetForm()
         this.visible = false
         // this.$router.push('/companies')
-     
       } catch (error) {
         console.error('Error creating post:', error)
       }
@@ -408,6 +414,14 @@ export default {
 
 .form-label {
   margin-top: 5px;
+}
+.filepond-container {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
 }
 /* Responsive styles */
 @media (max-width: 1200px) {

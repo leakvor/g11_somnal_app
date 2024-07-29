@@ -48,7 +48,10 @@ class ImageSeeder extends Seeder
             ['image'=>'18.jpg'],
             ['image'=>'19.jpg'],
             ['image'=>'20.jpg'],
-            ['image'=>'1.jpg'],
+            ['image'=>'21.jpg'],
+            ['image'=>'22.jpg'],
+            ['image'=>'23.jpg'],
+            ['image'=>'24.jpg'],
             ['image'=>'25.jpg'],
             ['image'=>'26.jpg'],
             ['image'=>'27.jpg'],
@@ -57,7 +60,6 @@ class ImageSeeder extends Seeder
             ['image'=>'30.jpg'],
             ['image'=>'31.jpg'],
             ['image'=>'32.jpg'],
-            ['image'=>'33.jpg'],
         ];
         foreach ($images as $image) {
             Image::create($image);

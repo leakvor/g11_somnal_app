@@ -10,7 +10,9 @@
           </li>
         </ul>
         <div class="feed p-2">
-          <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border">
+          <div
+            class="d-flex flex-row justify-content-between align-items-center p-2 bg-white border"
+          >
             <div class="feed-text px-2">
               <h6 class="text-black-50 mt-2">What's on your mind</h6>
             </div>
@@ -18,8 +20,14 @@
               <i class="fa fa-long-arrow-up text-black-50"></i>
             </div>
           </div>
-          <div class="bg-white border shadow rounded mt-2 mb-4" v-for="post in posts" :key="post.id">
-            <div class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom">
+          <div
+            class="bg-white border shadow rounded mt-2 mb-4"
+            v-for="post in posts"
+            :key="post.id"
+          >
+            <div
+              class="d-flex flex-row justify-content-between align-items-center p-2 border-bottom"
+            >
               <div class="d-flex flex-row align-items-center feed-text px-2">
                 <img
                   class="rounded-circle"
@@ -45,28 +53,48 @@
               </div>
             </div>
             <div class="p-2 px-3">
-              <h4 class="mb-3" style="color: black">{{ post.title }}</h4>
+              <p class="mb-3" style="color: black">{{ post.title }}</p>
               <!-- <p class="text-danger">Type of scrap:</p> -->
               <span style="color: black" v-for="(item, index) in post.items" :key="index">
-                <span class=" item bg-success text-white ms-2 ">{{ item.item }}{{ index < post.items.length - 1 ? '' : '' }}</span>
+                <span class="item bg-success text-white me-2"
+                  >{{ item.item }}{{ index < post.items.length - 1 ? '' : '' }}</span
+                >
               </span>
             </div>
             <div class="images-grid m-3">
               <div v-for="(image, index) in post.images.slice(0, 3)" :key="index" class="grid-item">
                 <img
                   class="img-fluid shadow rounded"
-                  :src="`http://127.0.0.1:8000/uploads/${image.image}`" 
+                  :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                   :alt="`Image ${index + 1}`"
                   @click="openImageModal(post.images, index)"
                 />
-                <div v-if="index === 2 && post.images.length > 3" class="more-overlay " @click="openImageModal(post.images, 3)">
+                <div
+                  v-if="index === 2 && post.images.length > 3"
+                  class="more-overlay"
+                  @click="openImageModal(post.images, 3)"
+                >
                   +{{ post.images.length - 3 }} more
                 </div>
               </div>
             </div>
-            <button class="buy-sell"
-              :class="post.status === 'buy' ? 'btn btn-danger mt-3' : 'btn btn-success mt-3'">
-              {{ post.status === 'buy' ? 'Already Buy' : 'Sell' }}
+            <button
+              class="buy-sell mt-3"
+              :class="
+                post.status === 'buy'
+                  ? 'btn btn-danger'
+                  : post.status === 'pending'
+                    ? 'btn btn-success'
+                    : 'btn btn-warning'
+              "
+            >
+              {{
+                post.status === 'buy'
+                  ? 'Already Buy'
+                  : post.status === 'pending'
+                    ? 'Sell Now'
+                    : 'Cancel'
+              }}
             </button>
           </div>
         </div>
@@ -84,7 +112,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 
 export default {
@@ -95,41 +122,41 @@ export default {
       showModal: false,
       modalImages: [],
       currentImage: null,
-      currentImageIndex: 0,
-    };
+      currentImageIndex: 0
+    }
   },
   methods: {
     toggleOptions(postId) {
-      this.showOptions = this.showOptions === postId ? null : postId;
+      this.showOptions = this.showOptions === postId ? null : postId
     },
     confirmDeletePost(postId) {
       if (window.confirm('Are you sure you want to delete this post?')) {
-        this.$emit('delete-post', postId);
+        this.$emit('delete-post', postId)
       }
     },
     openImageModal(images, index) {
-      this.modalImages = images;
-      this.currentImageIndex = index;
-      this.currentImage = images[index];
-      this.showModal = true;
+      this.modalImages = images
+      this.currentImageIndex = index
+      this.currentImage = images[index]
+      this.showModal = true
     },
     closeImageModal() {
-      this.showModal = false;
-      this.modalImages = [];
-      this.currentImage = null;
-      this.currentImageIndex = 0;
+      this.showModal = false
+      this.modalImages = []
+      this.currentImage = null
+      this.currentImageIndex = 0
     },
     prevImage() {
       this.currentImageIndex =
-        (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length;
-      this.currentImage = this.modalImages[this.currentImageIndex];
+        (this.currentImageIndex + this.modalImages.length - 1) % this.modalImages.length
+      this.currentImage = this.modalImages[this.currentImageIndex]
     },
     nextImage() {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length;
-      this.currentImage = this.modalImages[this.currentImageIndex];
-    },
-  },
-};
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
+      this.currentImage = this.modalImages[this.currentImageIndex]
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -152,10 +179,10 @@ li {
   width: 100%;
   height: auto;
 }
-.item{
-padding: 5px 10px 5px;
-font-size: 12px;
-border-radius: 20px;
+.item {
+  padding: 5px 10px 5px;
+  font-size: 12px;
+  border-radius: 20px;
 }
 .options {
   position: absolute;
@@ -262,7 +289,7 @@ border-radius: 20px;
 }
 .more-overlay {
   height: 85%;
-  position:absolute;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;

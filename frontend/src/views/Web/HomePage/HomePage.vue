@@ -67,9 +67,9 @@
       </router-link>
       <router-link
         v-if="authStore.isAuthenticatedCompany"
-        to="/post_view"
+        to="/post/view"
         type="button"
-        class="buy btn text-white d-flex align-items-center"
+        class="buy btn text-white d-flex align-items-center p-3"
       >
         <i class="material-icons icon-align">shopping_bag</i>
         <span>Buy Now</span>
@@ -88,7 +88,7 @@
       </button>
       <button
         type="button"
-        class="buy btn text-white d-flex align-items-center"
+        class="buy btn text-white d-flex align-items-center "
         data-bs-toggle="modal"
         data-bs-target="#loginModal"
       >
@@ -295,7 +295,7 @@ export default {
         const formattedRowMonth = rowMonth < 10 ? `0${rowMonth}` : `${rowMonth}`
 
         if (selectedMonth === 'all' || selectedMonth === formattedRowMonth) {
-          row.style.display = 'table-row'
+          row.style.display = 'table-row' 
           dataFound = true
         } else {
           row.style.display = 'none'
@@ -351,8 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <style scoped>
 .carousel-item img {
-  height: 600px;
-  object-fit: cover;
+  /* height: 600px; */
+  object-fit: contain;
   object-position: center;
   filter: brightness(70%);
 }
@@ -439,9 +439,16 @@ document.addEventListener('DOMContentLoaded', () => {
   .slider-item {
     min-width: calc(100% / 5);
   }
+  
 }
 
 @media (max-width: 992px) {
+  .button-group{
+    position: absolute;
+    top: 63%;
+    left: 3.4%;
+    margin: 5px;
+  }
   .slider-item {
     min-width: calc(100% / 4);
   }
@@ -459,6 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 }
 
+
 .slider:hover {
   animation-play-state: paused;
 }
@@ -468,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
 @media (min-width: 1200px) {
   .button-group {
     position: absolute;
-    top: 76%;
+    top: 63%;
     left: 15%;
     margin: 5px;
   }
@@ -477,11 +485,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
+@media (max-width: 1199px) {
   .button-group {
     position: absolute;
-    top: 30%;
-    left: 15%;
+    top: 26%;
+    left: 3.2%;
     margin: 5px;
   }
   .carousel-item img {
@@ -499,6 +507,13 @@ document.addEventListener('DOMContentLoaded', () => {
     top: 20%;
     margin: 5px;
     font-size: 5px;
+  }
+  .button-group button {
+    font-size: 10px;
+    height: 30px;
+  }
+  .button-group button i {
+    font-size: 10px;
   }
   .carousel-item img {
     height: 200px;
@@ -521,6 +536,11 @@ document.addEventListener('DOMContentLoaded', () => {
     margin-top: 5px;
     font-size: 12px;
     font-weight: bold;
+  }
+}
+@media (max-width: 391px) {
+  .button-group {
+    top: 22%;
   }
 }
 </style>

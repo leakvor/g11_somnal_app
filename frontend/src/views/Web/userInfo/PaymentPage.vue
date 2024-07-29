@@ -215,7 +215,6 @@ export default {
           await this.updateProfile();
           this.authStore.logout();
           this.router.push('/');
-        // this.cardNumberMessage = 'Invalid card number';
       }
     },
     //update role
