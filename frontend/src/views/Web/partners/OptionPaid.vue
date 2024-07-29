@@ -10,7 +10,7 @@
         <div class="card-title">
           <p class="mb-19 mt-3 p-2 word-break: break-word">{{ option.description }}</p>
         </div>
-        <router-link
+        <router-link 
           v-if="authStore.isAuthenticated"
           :to="{ name: 'payment', params: { id: option.id } }"
           class="btn btn-success"
@@ -215,8 +215,8 @@ export default {
   background-color: #f1f1f1;
 }
 
-.card.premium button {
-  background-color: rgb(250, 52, 52);
+.btn {
+  background-color: #14a85efc;
   border-radius: 40px 0px 40px 0px;
   width: 90%;
   margin-left: 12px;

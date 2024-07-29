@@ -47,10 +47,16 @@ class PostSeeder extends Seeder
             ['title' => 'I want to sell.', 'user_id' => 12, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I want to sell my cans.', 'user_id' => 13, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I want to sell all my bike.', 'user_id' => 9, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I want to sell my scrap', 'user_id' => 19, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I want to sell all my bootle.', 'user_id' => 11, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I want to sell all pin.', 'user_id' => 17, 'company_id' => null, 'status' => 'pending'],
             ['title' => 'I want to sell my all scrap.', 'user_id' => 17, 'company_id' => null, 'status' => 'pending'],
-            ['title' => 'I want to sell my all old pc.', 'user_id' => 17, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I want to sell my all mouses.', 'user_id' => 19, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I want to sell my scrap', 'user_id' => 18, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I want to sell my all old adapter.', 'user_id' => 15, 'company_id' => null, 'status' => 'pending'],
+            ['title' => 'I want to sell my all old adapter.', 'user_id' => 13, 'company_id' => null, 'status' => 'pending'],
+          
+         
         ];
 
         foreach ($posts as $post) {
@@ -58,3 +64,4 @@ class PostSeeder extends Seeder
         }
     }
 }
+

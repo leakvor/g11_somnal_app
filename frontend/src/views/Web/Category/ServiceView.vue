@@ -4,8 +4,8 @@
   <!-- Services Section -->
   <div class="container bg-white-100 mb-10">
     <div class="p-10 text-center mt-5 color-dark">
-      <h1 class="text-center">Our Services</h1>
-      <p>Use our services to make it easier for customers to sell products.</p>
+      <h1 class="text-center">Our Sraps</h1>
+      <p>List all scraps that you can see and buy.</p>
     </div>
     <!--  -->
     <div class="input-group">

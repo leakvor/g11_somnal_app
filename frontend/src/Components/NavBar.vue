@@ -5,12 +5,30 @@
         <img src="../assets/image/logo.png" alt="logo" class="w-10 h-10" />
         <span class="text-xl font-bold ms-1">SOMNAL</span>
       </router-link>
-      <div class="profile-dropdown dropdown-one mb-2"
-        v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
-        <router-link to="/" href="#" class="d-flex align-items-center" role="button" id="profileDropdown"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-            alt="Profile" style="width: 40px; height: 40px; border-radius: 50%" />
+      <div
+        class="profile-dropdown dropdown-one mb-2"
+        v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+      >
+        <router-link
+          to="/"
+          href="#"
+          class="d-flex align-items-center"
+          role="button"
+          id="profileDropdown"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+        <img
+                  :src="
+                    authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany
+                      ? `http://127.0.0.1:8000/uploads/${authStore.user.profile}`
+                      : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+                  "
+                  alt="Profile"
+                  onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
+                  class="mb-2 bg-white"
+                  style="width: 40px; height: 40px; border-radius: 50%"
+                />
         </router-link>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
           <li>
@@ -22,24 +40,30 @@
 
           <li>
             <button @click="logout" class="dropdown-item d-flex align-items-center">
-                    <i class="material-icons icon-align">logout</i>Logout
-                  </button>
+              <i class="material-icons icon-align">logout</i>Logout
+            </button>
           </li>
         </ul>
       </div>
-      <button class="navbar-toggler position" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler position"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item me-4" >
+          <li class="nav-item me-4">
             <router-link to="/" class="nav-link" :class="{ active: isActive('/') }">
               <i class="material-icons">home</i>
               <span>Home</span>
             </router-link>
           </li>
-
 
           <!-- <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
             <router-link to="/company/revenue" class="nav-link" :class="{ active: isActive('/company/revenue') }">
@@ -56,20 +80,27 @@
           </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedCompany">
-            <router-link to="/post/request/sell" class="nav-link" :class="{ active: isActive('/post/request/sell') }">
+            <router-link
+              to="/post/request/sell"
+              class="nav-link"
+              :class="{ active: isActive('/post/request/sell') }"
+            >
               <i class="material-icons">local_mall</i>
               <span>Request to sell</span>
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="
-            authStore.isAuthenticatedUser ||
-            !authStore.isAuthenticatedUser ||
-            !authStore.isAuthenticatedCompany
-          ">
+          <li
+            class="nav-item me-4"
+            v-if="
+              authStore.isAuthenticatedUser ||
+              !authStore.isAuthenticatedUser ||
+              !authStore.isAuthenticatedCompany
+            "
+          >
             <router-link to="/service" class="nav-link" :class="{ active: isActive('/service') }">
               <i class="material-icons">engineering</i>
-              <span>Services</span>
+              <span>Scraps</span>
             </router-link>
           </li>
 
@@ -87,14 +118,20 @@
           </li> -->
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-            <router-link to="/favorite-page" class="nav-link position-relative"
-              :class="{ active: isActive('/favorite-page') }">
+            <router-link
+              to="/favorite-page"
+              class="nav-link position-relative"
+              :class="{ active: isActive('/favorite-page') }"
+            >
               <i class="material-icons">favorite</i>
-              <span>Favorite Item</span>
+              <span>Favorite Scrap</span>
             </router-link>
           </li>
 
-          <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+          <li
+            class="nav-item me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+          >
             <router-link
               to="/post/view"
               class="nav-link position-relative"
@@ -120,63 +157,93 @@
           </li>
 
           <li
-          class="nav-item d-flex align-items-center me-4"
-          v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
-        >
-          <button
-            
-            class="nav-link text-white btn btn-login custom-hover pe-3 ps-3" data-bs-toggle="modal"
-            data-bs-target="#loginModal"
-            >Login</button>
-          <button to="/register" class="nav-link btn btn-register pe-3 ps-3" data-bs-toggle="modal" data-bs-target="#registerModal"
-            >Register</button
+            class="nav-item d-flex align-items-center me-4"
+            v-if="!authStore.isAuthenticatedUser && !authStore.isAuthenticatedCompany"
           >
-        </li>
-
-        <li
-          class="nav-item d-flex align-items-center me-4"
-          v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
-        >
-          <router-link
-            to="/chat"
-            class="nav-link position-relative"
-            :class="{ active: isActive('/chat') }"
-          >
-            <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" v-show="totalUnseen > 0"
-              >{{ totalUnseen }}  <span class="visually-hidden">unread messages</span></span
+            <button
+              class="nav-link text-white btn btn-login custom-hover pe-3 ps-3"
+              data-bs-toggle="modal"
+              data-bs-target="#loginModal"
             >
+              Login
+            </button>
+            <button
+              to="/register"
+              class="nav-link btn btn-register pe-3 ps-3"
+              data-bs-toggle="modal"
+              data-bs-target="#registerModal"
+            >
+              Register
+            </button>
+          </li>
 
-            <i class="material-icons icon-align">chat_bubble</i>
-            <span class="text-below-icon">Chat</span>
-          </router-link>
-        </li>
+          <li
+            class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+          >
+            <router-link
+              to="/chat"
+              class="nav-link position-relative"
+              :class="{ active: isActive('/chat') }"
+            >
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                v-show="totalUnseen > 0"
+                >{{ totalUnseen }} <span class="visually-hidden">unread messages</span></span
+              >
+
+              <i class="material-icons icon-align">chat_bubble</i>
+              <span class="text-below-icon">Chat</span>
+            </router-link>
+          </li>
 
           <li class="nav-item me-4" v-if="authStore.isAuthenticatedUser">
-              <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
-                <i class="material-icons">map</i>
-                <span>Map</span>
-              </router-link>
-            </li>
+            <router-link to="/map" class="nav-link" :class="{ active: isActive('/map') }">
+              <i class="material-icons">map</i>
+              <span>Map</span>
+            </router-link>
+          </li>
 
-          <li class="nav-item d-flex align-items-center me-4"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
-            <router-link to="/notifications" class="nav-link position-relative"
-              :class="{ active: isActive('/notifications') }">
-              <span class="position-absolute top-0 start-50 ms-3 translate-middle badge rounded-pill bg-danger"
-                id="notification_number">+99 <span class="visually-hidden">unread messages</span></span>
+          <li
+            class="nav-item d-flex align-items-center me-4"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+          >
+            <router-link
+              to="/notifications"
+              class="nav-link position-relative"
+              :class="{ active: isActive('/notifications') }"
+            >
               <i class="material-icons icon-align">notifications</i>
               <span class="text-below-icon">Notifications </span>
             </router-link>
           </li>
 
-          <li class="nav-item d-flex align-items-center"
-            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany">
+          <li
+            class="nav-item d-flex align-items-center"
+            v-if="authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany"
+          >
             <div class="profile-dropdown dropdown-two">
-              <router-link to="/" href="#" class="d-flex align-items-center" role="button" id="profileDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8AJM9wkP__z2M-hovSAWcTb_9XJ6smy3NKw&s"
-                  alt="Profile" class="mb-2" style="width: 40px; height: 40px; border-radius: 50%" />
+              <router-link
+                to="/"
+                href="#"
+                class="d-flex align-items-center"
+                role="button"
+                id="profileDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+
+                <img
+                  :src="
+                    authStore.isAuthenticatedUser || authStore.isAuthenticatedCompany
+                      ? `http://127.0.0.1:8000/uploads/${authStore.user.profile}`
+                      : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'
+                  "
+                  alt="Profile"
+                  onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
+                  class="mb-2 bg-white"
+                  style="width: 40px; height: 40px; border-radius: 50%"
+                />
               </router-link>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li>
@@ -326,96 +393,96 @@
   </div>
 
   <!-- Reset Code Modal -->
-<div
-  class="modal fade text-black"
-  id="resetCodeModal"
-  tabindex="-1"
-  aria-labelledby="resetCodeModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content p-3">
-      <div class="modal-header border-0">
-        <h4 class="modal-title" id="resetCodeModalLabel">Reset Password</h4>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form @submit.prevent="resetPassword">
-          <div class="mb-3">
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            v-model="resetEmail"
-            placeholder="Email"
-            readonly
-          />
-          </div>
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="resetCode"
-              v-model="resetCode"
-              placeholder="Reset Code"
-              required
-            />
-            <small class="text-danger" v-if="resetCodeError">{{ resetCodeError }}</small>
-          </div>
-          <div class="mb-3">
-  <input
-    class="form-control"
-    id="newPassword"
-    v-model="newPassword"
-    placeholder="New Password"
-    required
-    :type="showPassword ? 'text' : 'password'"
-  />
-  <small class="text-danger" v-if="newPasswordError">{{ newPasswordError }}</small>
-</div>
-<div class="mb-3">
-  <input
-    class="form-control"
-    :class="{ 'is-invalid': confirmPassword === '' && newPassword!== '' }"
-    id="confirmPassword"
-    v-model="confirmPassword"
-    placeholder="Confirm New Password"
-    :required="newPassword!== ''"
-    :type="showPassword ? 'text' : 'password'"
-  />
-  <small class="text-danger" v-if="confirmPassword === '' && newPassword!== ''">
-    Confirm password is required
-  </small>
-  <small class="text-danger" v-else-if="confirmPassword!== newPassword">
-    Passwords do not match
-  </small>
-</div>
-<div class="form-check">
-  <input
-    class="form-check-input"
-    type="checkbox"
-    id="showPasswordCheckbox"
-    v-model="showPassword"
-  />
-  <label class="form-check-label" for="showPasswordCheckbox">Show Password</label>
-</div>
-          <button type="submit" class="btn btn-success w-100">Reset Password</button>
-        </form>
-        <div v-if="passwordReset" class="mt-3 text-center text-success">
-          {{ passwordResetMessage }}
+  <div
+    class="modal fade text-black"
+    id="resetCodeModal"
+    tabindex="-1"
+    aria-labelledby="resetCodeModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        <div class="modal-header border-0">
+          <h4 class="modal-title" id="resetCodeModalLabel">Reset Password</h4>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
-        <div v-if="apiError" class="mt-3 text-center text-danger">
-          {{ apiError }}
+        <div class="modal-body">
+          <form @submit.prevent="resetPassword">
+            <div class="mb-3">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                v-model="resetEmail"
+                placeholder="Email"
+                readonly
+              />
+            </div>
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="resetCode"
+                v-model="resetCode"
+                placeholder="Reset Code"
+                required
+              />
+              <small class="text-danger" v-if="resetCodeError">{{ resetCodeError }}</small>
+            </div>
+            <div class="mb-3">
+              <input
+                class="form-control"
+                id="newPassword"
+                v-model="newPassword"
+                placeholder="New Password"
+                required
+                :type="showPassword ? 'text' : 'password'"
+              />
+              <small class="text-danger" v-if="newPasswordError">{{ newPasswordError }}</small>
+            </div>
+            <div class="mb-3">
+              <input
+                class="form-control"
+                :class="{ 'is-invalid': confirmPassword === '' && newPassword !== '' }"
+                id="confirmPassword"
+                v-model="confirmPassword"
+                placeholder="Confirm New Password"
+                :required="newPassword !== ''"
+                :type="showPassword ? 'text' : 'password'"
+              />
+              <small class="text-danger" v-if="confirmPassword === '' && newPassword !== ''">
+                Confirm password is required
+              </small>
+              <small class="text-danger" v-else-if="confirmPassword !== newPassword">
+                Passwords do not match
+              </small>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="showPasswordCheckbox"
+                v-model="showPassword"
+              />
+              <label class="form-check-label" for="showPasswordCheckbox">Show Password</label>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Reset Password</button>
+          </form>
+          <div v-if="passwordReset" class="mt-3 text-center text-success">
+            {{ passwordResetMessage }}
+          </div>
+          <div v-if="apiError" class="mt-3 text-center text-danger">
+            {{ apiError }}
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Register Modal -->
   <div
@@ -537,20 +604,18 @@
       </div>
     </div>
   </div>
-<EmailNotification v-if="showEmailNotification"></EmailNotification>
+  <EmailNotification v-if="showEmailNotification"></EmailNotification>
 </template>
 
 <script>
-import axios from 'axios';
-import { useAuthStore } from '../stores/auth-store';
-import { useRoute, useRouter } from 'vue-router';
-import EmailNotification from './dialogs/EmailNotification.vue';
-
-
+import axios from 'axios'
+import { useAuthStore } from '../stores/auth-store'
+import { useRoute, useRouter } from 'vue-router'
+import EmailNotification from './dialogs/EmailNotification.vue'
 
 export default {
   name: 'NavBar',
-  components:{
+  components: {
     EmailNotification
   },
   data() {
@@ -570,7 +635,7 @@ export default {
       resetCodeError: '',
       newPasswordError: '',
       alertMessage: '',
-      comfirmPassword:'',
+      comfirmPassword: '',
       showPassword: false,
       isSuccess: false,
       isError: false,
@@ -578,114 +643,115 @@ export default {
       passwordReset: false,
       apiError: '',
       confirmPasswordError: '',
-      showEmailNotification:false
-
-    };
+      showEmailNotification: false,
+      user_info: null
+    }
   },
   computed: {
     passwordFieldType() {
-      return this.showPassword ? 'text' : 'password';
-    },
+      return this.showPassword ? 'text' : 'password'
+    }
   },
   watch: {
     //validate name
     name(newName) {
       if (newName.trim() === '') {
-        this.nameError = '';
+        this.nameError = ''
       } else if (!newName) {
-        this.nameError = 'Name cannot be empty.';
+        this.nameError = 'Name cannot be empty.'
       } else if (!/^([A-Z][a-zA-Z]*)( [A-Z][a-zA-Z]*)*$/.test(newName)) {
-        this.nameError = 'Please enter a valid full name, example: John Doe';
+        this.nameError = 'Please enter a valid full name, example: John Doe'
       } else {
-        this.nameError = '';
+        this.nameError = ''
       }
     },
     //validate email
     email(newEmail) {
       if (newEmail === '') {
-        this.emailError = '';
-        this.emailLoginError = '';
+        this.emailError = ''
+        this.emailLoginError = ''
       } else if (!newEmail) {
-        this.emailError = 'Email cannot be empty.';
-        this.emailLoginError = 'Email cannot be empty.';
+        this.emailError = 'Email cannot be empty.'
+        this.emailLoginError = 'Email cannot be empty.'
       } else if (!/\S+@\S+\.\S+/.test(newEmail)) {
-        this.emailError = 'Please enter a valid email address (e.g., example@example.com).';
-        this.emailLoginError = 'Please enter a valid email address (e.g., example@example.com).';
+        this.emailError = 'Please enter a valid email address (e.g., example@example.com).'
+        this.emailLoginError = 'Please enter a valid email address (e.g., example@example.com).'
       } else {
-        axios.post('http://127.0.0.1:8000/api/check-email', { email: newEmail })
-          .then(response => {
+        axios
+          .post('http://127.0.0.1:8000/api/check-email', { email: newEmail })
+          .then((response) => {
             if (response.data.available) {
-              this.emailError = response.data.message;
+              this.emailError = response.data.message
             } else if (!response.data.unique) {
-              this.emailError = response.data.message;
+              this.emailError = response.data.message
             } else {
-              this.emailError = '';
+              this.emailError = ''
             }
           })
-          .catch(error => {
-            console.error(error);
-            this.emailError = 'Error checking email availability.';
-          });
+          .catch((error) => {
+            console.error(error)
+            this.emailError = 'Error checking email availability.'
+          })
       }
     },
     //validate phone
     phone(newPhone) {
       if (newPhone === '') {
-        this.phoneError = '';
+        this.phoneError = ''
       } else if (!newPhone) {
-        this.phoneError = 'Phone number cannot be empty.';
+        this.phoneError = 'Phone number cannot be empty.'
       } else if (!/^0\d{9}$/.test(newPhone)) {
-        this.phoneError = 'Phone number must start with 0 and be 10 digits long.';
+        this.phoneError = 'Phone number must start with 0 and be 10 digits long.'
       } else {
-        this.phoneError = '';
+        this.phoneError = ''
       }
     },
     //validate password
     password(newPassword) {
       if (newPassword === '') {
-        this.passwordError = '';
+        this.passwordError = ''
       } else if (!newPassword) {
-        this.passwordError = 'Password cannot be empty.';
+        this.passwordError = 'Password cannot be empty.'
       } else if (newPassword.length < 8) {
-        this.passwordError = 'Password must be at least 8 characters long.';
+        this.passwordError = 'Password must be at least 8 characters long.'
       } else {
-        this.passwordError = '';
+        this.passwordError = ''
       }
     },
     //validate resetcode
     resetCode(newResetCode) {
       if (newResetCode === '') {
-        this.resetCodeError = '';
+        this.resetCodeError = ''
       } else if (!newResetCode) {
-        this.resetCodeError = 'Reset code cannot be empty.';
+        this.resetCodeError = 'Reset code cannot be empty.'
       } else {
-        this.resetCodeError = '';
+        this.resetCodeError = ''
       }
     },
     //validate new password
     newPassword(newPassword) {
       if (newPassword === '') {
-        this.newPasswordError = '';
+        this.newPasswordError = ''
       } else if (!newPassword) {
-        this.newPasswordError = 'New password cannot be empty.';
+        this.newPasswordError = 'New password cannot be empty.'
       } else if (newPassword.length < 8) {
-        this.newPasswordError = 'New password must be at least 8 characters long.';
+        this.newPasswordError = 'New password must be at least 8 characters long.'
       } else {
-        this.newPasswordError = '';
+        this.newPasswordError = ''
       }
-    },
+    }
   },
   setup() {
-    const authStore = useAuthStore();
-    const route = useRoute();
-    const router = useRouter();
+    const authStore = useAuthStore()
+    const route = useRoute()
+    const router = useRouter()
 
-    const isActive = (path) => route.path === path;
+    const isActive = (path) => route.path === path
 
     const logout = () => {
-      authStore.logout();
-      router.push('/');
-    };
+      authStore.logout()
+      router.push('/')
+    }
 
     return {
       authStore,
@@ -694,172 +760,7 @@ export default {
     }
   },
   beforeUnmount() {
-     clearInterval(this.intervalId);
-  },
-  mounted() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach((navLink) => {
-      navLink.addEventListener('click', (event) => {
-        navLinks.forEach((link) => link.classList.remove('active'));
-        event.currentTarget.classList.add('active');
-
-        if (window.innerWidth <= 995) {
-          const navbarToggle = document.querySelector('.navbar-toggler');
-          const navbarNav = document.getElementById('navbarNav');
-          if (navbarNav.classList.contains('show')) {
-            navbarToggle.click();
-          }
-        }
-      });
-    });
-
-    // Clear input fields and error messages when modal is closed
-    $('#loginModal').on('hidden.bs.modal', this.clearModal);
-    $('#registerModal').on('hidden.bs.modal', this.clearModal);
-    $('#forgotPasswordModal').on('hidden.bs.modal', this.clearModal);
-    $('#resetCodeModal').on('hidden.bs.modal', this.clearModal);
-  },
-  methods: {
-    async showNotification() {
-      // Emit the 'show-notification' event on event bus
-      Vue.prototype.$bus.$emit('show-notification');
-    },
-    async register() {
-      this.showEmailNotification = true;
-      $('#registerModal').modal('hide');
-      try {
-        const response = await axios.post('http://127.0.0.1:8000/api/register', {
-          name: this.name,
-          phone: this.phone,
-          email: this.email,
-          password: this.password,
-          role_id: this.role_id,
-        });
-        this.showEmailNotification = false;
-        this.clearModal();
-        this.alertMessage = 'Register successfully.';
-        $('#alertModal').modal('show');
-        this.isSuccess = true;
-        this.isError = false;
-        
-        setTimeout(() => {
-          $('#alertModal').modal('hide');
-        }, 2000);
-      } catch (error) {
-        this.showEmailNotification = false;
-        console.error('Error registering:', error);
-        $('#registerModal').modal('hide');
-        this.clearModal();
-        this.alertMessage = 'Please try to register again.';
-        $('#alertModal').modal('show');
-        this.isSuccess = false;
-        this.isError = true;
-
-        setTimeout(() => {
-          $('#alertModal').modal('hide');
-        }, 2000);
-      }
-    },
-      async login() {
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', {
-        email: this.email,
-        password: this.password,
-      });
-      const data = response.data;
-      this.authStore.login(data);
-
-      console.log(response.data);
-      $('#loginModal').modal('hide');
-      this.clearModal();
-      this.alertMessage = 'Login successfully.';
-      $('#alertModal').modal('show');
-      this.isSuccess = true;
-      this.isError = false;
-
-      setTimeout(() => {
-        $('#alertModal').modal('hide');
-      }, 2000);
-    } catch (error) {
-      console.error('Error logging in:', error);
-      $('#loginModal').modal('hide');
-      this.clearModal();
-      this.alertMessage = 'Please try to login again.';
-      $('#alertModal').modal('show');
-      this.isSuccess = false;
-      this.isError = true;
-
-      setTimeout(() => {
-        $('#alertModal').modal('hide');
-      }, 2000);
-    }
-  },
-    async sendResetLink() {
-      this.showEmailNotification = true;
-      $('#forgotPasswordModal').modal('hide');
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/api/forgotPassword', {
-        email: this.email,
-      });
-      this.showEmailNotification= false;
-      this.resetEmail = this.email; // store the email address
-      $('#forgotPasswordModal').modal('hide');
-      $('#resetCodeModal').modal('show');
-    } catch (error) {
-      console.error('Error sending reset link:', error);
-    }
-  },
-
-  async resetPassword() {
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/api/resetPassword', {
-        email: this.resetEmail, // use the stored email address
-        token: this.resetCode,
-        password: this.newPassword,
-        password_confirmation: this.confirmPassword,
-      });
-      console.log(response.data);
-      this.passwordReset = true;
-      this.resetCode = '';
-      this.newPassword = '';
-      this.confirmPassword = '';
-      this.apiError = '';
-      $('#resetCodeModal').modal('hide');
-        this.clearModal();
-        this.alertMessage = 'Reset password successfully.';
-        $('#alertModal').modal('show');
-        this.isSuccess = true;
-        this.isError = false;
-
-        setTimeout(() => {
-          $('#alertModal').modal('hide');
-        }, 2000);
-    } catch (error) {
-      console.error('Error resetting password:', error);
-      this.apiError = 'Failed to reset password. Please try again later.';
-      this.passwordReset = false;
-    }
-  },
-  togglePasswordVisibility(passwordFieldId) {
-    const passwordField = document.getElementById(passwordFieldId);
-    passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-  },
-  clearModal() {
-    this.name = '';
-    this.phone = '';
-    this.email = '';
-    this.password = '';
-    this.nameError = '';
-    this.phoneError = '';
-    this.emailError = '';
-    this.passwordError = '';
-    this.resetCode = '';
-    this.newPassword = '';
-    this.resetCodeError = '';
-    this.newPasswordError = '';
-    this.resetLinkSent = false;
-    this.passwordReset = false;
-    this.apiError = '';
+    clearInterval(this.intervalId)
   },
   mounted() {
     const navLinks = document.querySelectorAll('.nav-link')
@@ -876,19 +777,200 @@ export default {
           }
         }
       })
-    });
-    // Clear input fields and error messages when modal is closed
-    $('#loginModal').on('hidden.bs.modal', () => {
-      this.clearModal();
-    });
-    $('#registerModal').on('hidden.bs.modal', () => {
-      this.clearModal();
-    });
+    })
 
-    this.listChatIsRead();
+    // Clear input fields and error messages when modal is closed
+    $('#loginModal').on('hidden.bs.modal', this.clearModal)
+    $('#registerModal').on('hidden.bs.modal', this.clearModal)
+    $('#forgotPasswordModal').on('hidden.bs.modal', this.clearModal)
+    $('#resetCodeModal').on('hidden.bs.modal', this.clearModal)
   },
   methods: {
+    async fetchUser() {
+      console.log(1)
+      try {
+        const token = localStorage.getItem('access_token')
+        const response = await axios.get('http://127.0.0.1:8000/api/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        this.user_info = response.data.data
+        console.log('User info:', this.user_info)
+      } catch (error) {
+        console.error('Error fetching user:', error)
+      }
+    },
+    async showNotification() {
+      // Emit the 'show-notification' event on event bus
+      Vue.prototype.$bus.$emit('show-notification')
+    },
     async register() {
+      this.showEmailNotification = true
+      $('#registerModal').modal('hide')
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/register', {
+          name: this.name,
+          phone: this.phone,
+          email: this.email,
+          password: this.password,
+          role_id: this.role_id
+        })
+        this.showEmailNotification = false
+        this.clearModal()
+        this.alertMessage = 'Register successfully.'
+        $('#alertModal').modal('show')
+        this.isSuccess = true
+        this.isError = false
+
+        setTimeout(() => {
+          $('#alertModal').modal('hide')
+        }, 2000)
+      } catch (error) {
+        this.showEmailNotification = false
+        console.error('Error registering:', error)
+        $('#registerModal').modal('hide')
+        this.clearModal()
+        this.alertMessage = 'Please try to register again.'
+        $('#alertModal').modal('show')
+        this.isSuccess = false
+        this.isError = true
+
+        setTimeout(() => {
+          $('#alertModal').modal('hide')
+        }, 2000)
+      }
+    },
+    async login() {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/login', {
+          email: this.email,
+          password: this.password
+        })
+        const data = response.data
+        this.authStore.login(data)
+
+        console.log(response.data)
+        $('#loginModal').modal('hide')
+        this.clearModal()
+        this.alertMessage = 'Login successfully.'
+        $('#alertModal').modal('show')
+        this.isSuccess = true
+        this.isError = false
+
+        setTimeout(() => {
+          $('#alertModal').modal('hide')
+        }, 2000)
+      } catch (error) {
+        console.error('Error logging in:', error)
+        $('#loginModal').modal('hide')
+        this.clearModal()
+        this.alertMessage = 'Please try to login again.'
+        $('#alertModal').modal('show')
+        this.isSuccess = false
+        this.isError = true
+
+        setTimeout(() => {
+          $('#alertModal').modal('hide')
+        }, 2000)
+      }
+    },
+    async sendResetLink() {
+      this.showEmailNotification = true
+      $('#forgotPasswordModal').modal('hide')
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/forgotPassword', {
+          email: this.email
+        })
+        this.showEmailNotification = false
+        this.resetEmail = this.email // store the email address
+        $('#forgotPasswordModal').modal('hide')
+        $('#resetCodeModal').modal('show')
+      } catch (error) {
+        console.error('Error sending reset link:', error)
+      }
+    },
+
+    async resetPassword() {
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/api/resetPassword', {
+          email: this.resetEmail, // use the stored email address
+          token: this.resetCode,
+          password: this.newPassword,
+          password_confirmation: this.confirmPassword
+        })
+        console.log(response.data)
+        this.passwordReset = true
+        this.resetCode = ''
+        this.newPassword = ''
+        this.confirmPassword = ''
+        this.apiError = ''
+        $('#resetCodeModal').modal('hide')
+        this.clearModal()
+        this.alertMessage = 'Reset password successfully.'
+        $('#alertModal').modal('show')
+        this.isSuccess = true
+        this.isError = false
+
+        setTimeout(() => {
+          $('#alertModal').modal('hide')
+        }, 2000)
+      } catch (error) {
+        console.error('Error resetting password:', error)
+        this.apiError = 'Failed to reset password. Please try again later.'
+        this.passwordReset = false
+      }
+    },
+    togglePasswordVisibility(passwordFieldId) {
+      const passwordField = document.getElementById(passwordFieldId)
+      passwordField.type = passwordField.type === 'password' ? 'text' : 'password'
+    },
+    clearModal() {
+      this.name = ''
+      this.phone = ''
+      this.email = ''
+      this.password = ''
+      this.nameError = ''
+      this.phoneError = ''
+      this.emailError = ''
+      this.passwordError = ''
+      this.resetCode = ''
+      this.newPassword = ''
+      this.resetCodeError = ''
+      this.newPasswordError = ''
+      this.resetLinkSent = false
+      this.passwordReset = false
+      this.apiError = ''
+    },
+    mounted() {
+      const navLinks = document.querySelectorAll('.nav-link')
+      navLinks.forEach((navLink) => {
+        navLink.addEventListener('click', (event) => {
+          navLinks.forEach((link) => link.classList.remove('active'))
+          event.currentTarget.classList.add('active')
+
+          if (window.innerWidth <= 995) {
+            const navbarToggle = document.querySelector('.navbar-toggler')
+            const navbarNav = document.getElementById('navbarNav')
+            if (navbarNav.classList.contains('show')) {
+              navbarToggle.click()
+            }
+          }
+        })
+      })
+      // Clear input fields and error messages when modal is closed
+      $('#loginModal').on('hidden.bs.modal', () => {
+        this.clearModal()
+      })
+      $('#registerModal').on('hidden.bs.modal', () => {
+        this.clearModal()
+      })
+
+      this.listChatIsRead()
+      this.fetchUser()
+    },
+    methods: {
+      async register() {
         try {
           const response = await axios.post('http://127.0.0.1:8000/api/register', {
             name: this.name,
@@ -903,15 +985,14 @@ export default {
           this.phone = ''
           this.email = ''
           this.password = ''
-          this.alertMessage = 'Register successfully.';
-          $('#alertModal').modal('show');
-          this.isSuccess = true;
-          this.isError = false;
+          this.alertMessage = 'Register successfully.'
+          $('#alertModal').modal('show')
+          this.isSuccess = true
+          this.isError = false
 
           setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
-
+            $('#alertModal').modal('hide')
+          }, 2000)
         } catch (error) {
           console.error('Error logging in:', error)
           $('#registerModal').modal('hide')
@@ -921,13 +1002,13 @@ export default {
           this.password = ''
 
           this.alertMessage = 'Please try to register again.'
-          $('#alertModal').modal('show');
-          
-          this.isSuccess = false;
-          this.isError = true;
+          $('#alertModal').modal('show')
+
+          this.isSuccess = false
+          this.isError = true
           setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
+            $('#alertModal').modal('hide')
+          }, 2000)
         }
       },
       async login() {
@@ -935,7 +1016,6 @@ export default {
           const response = await axios.post('http://127.0.0.1:8000/api/login', {
             email: this.email,
             password: this.password
-            
           })
           const data = response.data
           this.authStore.login(data)
@@ -944,62 +1024,60 @@ export default {
           $('#loginModal').modal('hide')
           this.email = ''
           this.password = ''
-          this.alertMessage = 'Login successfully.';
-          $('#alertModal').modal('show');
+          this.alertMessage = 'Login successfully.'
+          $('#alertModal').modal('show')
 
-          this.isSuccess = true;
-          this.isError = false;
+          this.isSuccess = true
+          this.isError = false
           setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
+            $('#alertModal').modal('hide')
+          }, 2000)
         } catch (error) {
           $('#loginModal').modal('hide')
           this.email = ''
           this.password = ''
 
-          this.isSuccess = false;
-          this.isError = true;
+          this.isSuccess = false
+          this.isError = true
           this.alertMessage = 'Please try to login again.'
-          $('#alertModal').modal('show');
+          $('#alertModal').modal('show')
 
           setTimeout(() => {
-          $('#alertModal').modal('hide'); 
-        }, 2000);
+            $('#alertModal').modal('hide')
+          }, 2000)
         }
       },
       togglePasswordVisibility(passwordFieldId) {
-      const passwordField = document.getElementById(passwordFieldId);
-      passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-    },
-    clearModal() {
-    this.name = '';
-    this.phone = '';
-    this.email = '';
-    this.password = '';
-    this.nameError = '';
-    this.phoneError = '';
-    this.emailError = '';
-    this.passwordError = '';
-  },
-  async listChatIsRead() {
-      try {
-        const token = localStorage.getItem('access_token')
-        const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        this.totalUnseen = response.data.total
-      } catch (error) {
-        console.error('Error listing chat isRead:', error);
+        const passwordField = document.getElementById(passwordFieldId)
+        passwordField.type = passwordField.type === 'password' ? 'text' : 'password'
+      },
+      clearModal() {
+        this.name = ''
+        this.phone = ''
+        this.email = ''
+        this.password = ''
+        this.nameError = ''
+        this.phoneError = ''
+        this.emailError = ''
+        this.passwordError = ''
+      },
+      async listChatIsRead() {
+        try {
+          const token = localStorage.getItem('access_token')
+          const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          this.totalUnseen = response.data.total
+        } catch (error) {
+          console.error('Error listing chat isRead:', error)
+        }
       }
-    },
-  },
-}
+    }
+  }
 }
 </script>
-
-
 
 <style scoped>
 .navbar {
@@ -1106,7 +1184,6 @@ export default {
   background: #ced4da;
 }
 
-
 @media (max-width: 991.98px) {
   .navbar-nav {
     flex-direction: column;
@@ -1150,7 +1227,6 @@ export default {
     top: 0;
   }
 }
-
 
 @media (max-width: 885px) {
   .dropdown-one {

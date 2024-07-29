@@ -25,7 +25,7 @@
                 @click="showPostModal(notification.post.id)"
                 style="cursor: pointer"
               >
-                <div class="dropdown-list-image mr-3">
+                <!-- <div class="dropdown-list-image mr-3">
                   <img
                     v-if="notification.post.user"
                     class="rounded-circle "
@@ -33,7 +33,7 @@
                     :src="`http://127.0.0.1:8000/uploads/${notification.post.user.profile}`"
                     onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png'"
                   />
-                </div>
+                </div> -->
                 <div class="font-weight-bold mr-3">
                   <div class="text-truncate" style="color: black">{{ notification.message }}</div>
                 </div>
@@ -103,16 +103,17 @@
                 <h6 class="account-name ml-3 mb-0">{{ post.user.name }}</h6>
               </div>
               <p class="post-title" style="size: 5px">{{ post.title }}</p>
-              <p class="text-danger" style="margin-top: -20px">Type of scrap:</p>
-              <ul>
-                <li>
+              <!-- <p class="text-danger" style="margin-top: -20px">Type of scrap:</p> -->
+              <!-- <ul>
+                <li> -->
                   <p class="comment-text">
-                    <span v-for="(item, index) in post.items" :key="index">
-                      {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
-                    </span>
+                    <span style="color: black" v-for="(item, index) in post.items" :key="index">
+                <span class=" item bg-success text-white ms-2 ">{{ item.item }}{{ index < post.items.length - 1 ? '' : '' }}</span>
+              </span>
+
                   </p>
-                </li>
-              </ul>
+                <!-- </li>
+              </ul> -->
 
               <div class="row">
                 <div
@@ -365,6 +366,12 @@ body {
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+.item{
+padding: 5px 10px 5px;
+font-size: 12px;
+border-radius: 20px;
+}
+
 .post-header {
   display: flex;
   align-items: center;

@@ -9,6 +9,7 @@
               <div class="inner-all">
                 <ul class="list-unstyled text-center">
                   <li>
+                 
                     <img
                       data-no-retina=""
                       class="img-circle img-responsive img-bordered-primary mt-3"

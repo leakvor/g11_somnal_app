@@ -12,9 +12,8 @@
                 :key="company.id"
                 style="display: flex; flex-direction: row"
               >
-                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}`" alt="Image" />
+                <img :src="`http://127.0.0.1:8000/uploads/${company.profile}`" @click="showCompanyModal(company.id)" alt="Image" />
                 <p class="title" style="size: 5px">{{ company.name }}</p>
-                <button type="submit" @click="showCompanyModal(company.id)" >view</button>
                 <div>
 
                 </div>
@@ -51,14 +50,13 @@
               </div>
             </div>
             <div class="post-content">
-              <p style="color: black">{{ post.title }}</p>
+              <p class="mt-3" style="color: black">{{ post.title }}</p>
               <div class="type-scrap" v-if="post.items.length > 0">
-                <span style="color: red">Type of Scrap:</span>
-                <ul>
+                <!-- <span style="color: red">Type of Scrap:</span> -->
                   <span style="color: black" v-for="(item, index) in post.items" :key="index">
-                    {{ item.item }}{{ index < post.items.length - 1 ? ', ' : '' }}
+                    <span class=" item bg-success text-white me-2">{{ item.item }}{{ index < post.items.length - 1 ? '' : '' }}</span>
                   </span>
-                </ul>
+
               </div>
 
               <div class="images-grid">
@@ -76,7 +74,7 @@
                     <img
                       :src="`http://127.0.0.1:8000/uploads/${post.images[0].image}`"
                       alt="Post Image"
-                      class="post-image-grid"
+                      class="post-image-grid"  @click="openImageModal(post.images, index+1)"
                     />
                   </div>
                   <div
@@ -121,14 +119,14 @@
             </div>
           </div>
         </main>
-        <aside class="col-lg-3 fixed-aside">
-          <div class="card-image" style="width: 100%; height: 200px">
+        <aside class="col-lg-3 fixed-aside ">
+          <div class="card-image " style="width: 100%; height: 200px">
             <img
               src="../../../assets/image/right_aside_image.jpg"
               style="object-fit: cover; width: 100%; height: 100%"
               alt=""
             />
-            <div class="card-content" style="align-items: center">
+            <div class="card-content bg-white p-3" style="align-items: center">
               <h5 style="color: black">See all post!!</h5>
               <ul style="color: black">
                 <li>You are a business owner who buys scrabs.</li>
@@ -141,7 +139,8 @@
     </div>
 
     <!-- Image Modal -->
-    <div v-if="showModal" class="modal mt-5" @click="closeImageModal">
+    <div v-if="showModal" id="ImageModal" class="modal mt-5" @click="closeImageModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <span class="close" @click="closeImageModal">&times;</span>
       <img class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
       <div class="caption">{{ currentImageIndex + 1 }} / {{ modalImages.length }}</div>
@@ -151,7 +150,7 @@
 
     <!-- Confirm Modal -->
     <div
-      v-if="showModalConfirm"
+      v-if="showModalConfirm" 
       class="modal fade show d-block modal-top"
       tabindex="-1"
       role="dialog"
@@ -335,10 +334,13 @@ export default {
       }
     },
     openImageModal(images, index) {
+      console.log(images, index)
       this.modalImages = images
       this.currentImageIndex = index
       this.currentImage = images[index]
       this.showModal = true
+      $('#ImageModal').modal('show')
+      
     },
 
     nextImage() {
@@ -355,6 +357,7 @@ export default {
       this.modalImages = []
       this.currentImage = null
       this.currentImageIndex = 0
+      $('#ImageModal').modal('hide')
     },
     displayedImages(images) {
       return images.length > 4 ? images.slice(0, 4) : images
@@ -395,6 +398,7 @@ export default {
 </script>
 
 <style scoped>
+
 .container {
   display: flex;
 }
@@ -404,6 +408,11 @@ export default {
   top: 0;
   height: 100vh;
   overflow-y: auto;
+}
+.item{
+padding: 5px 10px 5px;
+font-size: 12px;
+border-radius: 20px;
 }
 
 .profile-card {
@@ -550,25 +559,6 @@ export default {
   font-size: 1.5em;
 }
 
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  padding-top: 60px;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 100%;
-  max-width: 800px;
-}
 
 .close {
   position: absolute;
