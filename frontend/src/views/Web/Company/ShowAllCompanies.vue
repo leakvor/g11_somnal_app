@@ -324,28 +324,31 @@ export default {
 <style scoped>
 #search_company {
   background: white;
-  width: 20%;
+  width: min(100%, 360px);
 }
+
+.list-company {
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(31, 41, 51, 0.08);
+}
+
 .list-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
 }
 .company-card {
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.4s ease-in-out,
-    box-shadow 0.4s ease-in-out,
-    border-color 0.4s ease-in-out;
   position: relative;
   overflow: hidden;
-  border: 3px solid thick;
+  padding-top: 12px;
 }
 .company-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-color: #007bff;
+  border-color: #c9dacb !important;
+}
+
+.company-logo img {
+  height: 170px;
+  object-fit: cover;
 }
 
 .card-body {
@@ -355,6 +358,7 @@ export default {
 .text-title {
   font-size: 1.2rem;
   font-weight: bold;
+  color: #1f2933;
 }
 
 #item-dropdown {
@@ -363,7 +367,7 @@ export default {
 }
 .text-card {
   font-size: 1rem;
-  color: #666;
+  color: #667085;
 }
 .company-action button {
   background: rgb(25, 107, 58);
@@ -426,19 +430,19 @@ export default {
 /* Responsive styles */
 @media (max-width: 1200px) {
   .list-container {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   }
 }
 
 @media (max-width: 992px) {
   .list-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .list-container {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .company-action {

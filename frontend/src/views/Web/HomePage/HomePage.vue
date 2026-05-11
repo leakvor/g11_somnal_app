@@ -350,15 +350,20 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <style scoped>
+.carousel {
+  background: #203129;
+}
+
 .carousel-item img {
-  /* height: 600px; */
-  object-fit: contain;
+  height: clamp(240px, 45vw, 520px);
+  object-fit: cover;
   object-position: center;
-  filter: brightness(70%);
+  filter: brightness(82%);
 }
 
 .buy {
-  background: #ff8c00;
+  background: #f59e0b;
+  border: 0;
 }
 
 .list-container {
@@ -376,42 +381,34 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 .company-card {
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out,
-    border-color 0.3s ease-in-out;
-  position: relative;
   overflow: hidden;
-  border: 2px solid thick;
+  height: 100%;
 }
 
 .company-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-color: #007bff;
+  border-color: #c9dacb !important;
 }
 .text-break {
-  font-size: 18px;
+  font-size: 0.95rem;
+  color: #667085;
 }
 
 /* Aoutor slider of company card */
 .slider-container {
   width: 100%;
   overflow: hidden;
+  padding: 0 16px 8px;
 }
 
 .slider {
   display: flex;
   width: 100%;
   gap: 1rem;
-  animation: scroll 5s linear infinite;
+  animation: scroll 18s linear infinite;
 }
 
 .slider-item {
-  min-width: calc(100% / 4);
-  min-width: calc(100% / 4);
+  min-width: 260px;
   box-sizing: border-box;
   padding: 0 0.5rem;
 }
@@ -428,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 @keyframes scroll {
   100% {
-    transform: translateX(-30%);
+    transform: translateX(-45%);
   }
   0% {
     transform: translateX(0);
@@ -437,32 +434,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 @media (max-width: 1200px) {
   .slider-item {
-    min-width: calc(100% / 5);
+    min-width: 250px;
   }
   
 }
 
 @media (max-width: 992px) {
   .button-group{
-    position: absolute;
-    top: 63%;
-    left: 3.4%;
-    margin: 5px;
+    position: static;
+    justify-content: center !important;
+    padding: 18px 12px 0 !important;
   }
   .slider-item {
-    min-width: calc(100% / 4);
+    min-width: 240px;
   }
 }
 
 @media (max-width: 768px) {
   .slider-item {
-    min-width: calc(100% / 4);
+    min-width: 220px;
   }
 }
 
 @media (max-width: 576px) {
   .slider-item {
-    min-width: calc(100% / 2);
+    min-width: 82%;
   }
 }
 
@@ -476,8 +472,8 @@ document.addEventListener('DOMContentLoaded', () => {
 @media (min-width: 1200px) {
   .button-group {
     position: absolute;
-    top: 63%;
-    left: 15%;
+    top: 420px;
+    left: 8%;
     margin: 5px;
   }
   .list-container {
@@ -487,13 +483,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 @media (max-width: 1199px) {
   .button-group {
-    position: absolute;
-    top: 26%;
-    left: 3.2%;
-    margin: 5px;
+    position: static;
+    justify-content: center !important;
+    padding: 18px 12px 0 !important;
   }
   .carousel-item img {
-    height: 100%;
+    height: clamp(220px, 42vw, 420px);
   }
 
   .list-container {
@@ -503,20 +498,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 @media (max-width: 767px) {
   .button-group {
-    position: absolute;
-    top: 20%;
-    margin: 5px;
-    font-size: 5px;
+    gap: 8px;
+    flex-wrap: wrap;
   }
   .button-group button {
-    font-size: 10px;
-    height: 30px;
+    font-size: 14px;
+    height: auto;
   }
   .button-group button i {
-    font-size: 10px;
+    font-size: 18px;
   }
   .carousel-item img {
-    height: 200px;
+    height: 230px;
   }
 
   .list-container {
@@ -528,8 +521,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   .company-card img {
-    width: 70px;
-    height: 70px;
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
   }
 
   .company-card .company-info h5 {
@@ -540,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 @media (max-width: 391px) {
   .button-group {
-    top: 22%;
+    padding-top: 14px !important;
   }
 }
 </style>

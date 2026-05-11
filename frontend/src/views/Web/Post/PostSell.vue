@@ -85,7 +85,7 @@
 
 <script>
 import NavBar from '@/Components/NavBar.vue'
-import PostCard from '../Web/Post/PostCard.vue'
+import PostCard from './PostCard.vue'
 import axios from 'axios'
 
 

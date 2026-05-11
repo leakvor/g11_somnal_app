@@ -61,20 +61,26 @@
                 >
               </span>
             </div>
-            <div class="images-grid m-3">
-              <div v-for="(image, index) in post.images.slice(0, 3)" :key="index" class="grid-item">
+            <div
+              v-if="post.images.length > 0"
+              class="post-album m-3"
+              :class="albumGridClass(post.images.length)"
+            >
+              <div
+                v-for="(image, index) in displayedImages(post.images)"
+                :key="image.image_id || image.image || index"
+                class="album-item"
+                @click="openImageModal(post.images, index)"
+              >
                 <img
-                  class="img-fluid shadow rounded"
                   :src="`http://127.0.0.1:8000/uploads/${image.image}`"
                   :alt="`Image ${index + 1}`"
-                  @click="openImageModal(post.images, index)"
                 />
                 <div
-                  v-if="index === 2 && post.images.length > 3"
-                  class="more-overlay"
-                  @click="openImageModal(post.images, 3)"
+                  v-if="index === 3 && post.images.length > 4"
+                  class="album-overlay"
                 >
-                  +{{ post.images.length - 3 }} more
+                  +{{ post.images.length - 4 }}
                 </div>
               </div>
             </div>
@@ -103,7 +109,7 @@
 
     <div v-if="showModal" class="modal mt-5" @click="closeImageModal">
       <span class="close" @click="closeImageModal">&times;</span>
-      <img class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
+      <img v-if="currentImage" class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
       <div class="caption">{{ currentImageIndex + 1 }} / {{ modalImages.length }}</div>
       <a class="prev" @click.stop="prevImage">&#10094;</a>
       <a class="next" @click.stop="nextImage">&#10095;</a>
@@ -154,6 +160,21 @@ export default {
     nextImage() {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.modalImages.length
       this.currentImage = this.modalImages[this.currentImageIndex]
+    },
+    displayedImages(images) {
+      return images.length > 4 ? images.slice(0, 4) : images
+    },
+    albumGridClass(imageCount) {
+      if (imageCount === 1) {
+        return 'album-single'
+      }
+      if (imageCount === 2) {
+        return 'album-two'
+      }
+      if (imageCount === 3) {
+        return 'album-three'
+      }
+      return 'album-many'
     }
   }
 }
@@ -164,7 +185,7 @@ body {
   background-color: #eee;
 }
 .time {
-  font-size: 9px !important;
+  font-size: 0.78rem !important;
 }
 li {
   list-style-type: none;
@@ -187,9 +208,11 @@ li {
 .options {
   position: absolute;
   background-color: white;
-  border: 1px solid #ccc;
-  padding: 5px;
+  border: 1px solid #dfe7dc;
+  padding: 6px;
   z-index: 100;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(31, 41, 51, 0.12);
 }
 .options button {
   display: block;
@@ -226,6 +249,8 @@ li {
   display: block;
   width: 100%;
   max-width: 800px;
+  max-height: calc(100vh - 120px);
+  object-fit: contain;
 }
 .close {
   position: absolute;
@@ -273,51 +298,89 @@ li {
   margin-bottom: 10px;
   margin-left: 10px;
 }
-.images-grid {
-  display: flex;
-  position: relative;
-  gap: 10px;
+.post-album {
+  display: grid;
+  gap: 4px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #eef2ed;
 }
-.grid-item {
-  flex: 1 1 calc(25% - 8px);
-  box-sizing: border-box;
+
+.album-item {
   position: relative;
-}
-.grid-item img {
   width: 100%;
-  height: 85%;
+  overflow: hidden;
+  background: #dde6dc;
+  cursor: pointer;
 }
-.more-overlay {
-  height: 85%;
+
+.album-item img {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.18s ease;
+}
+
+.album-item:hover img {
+  transform: scale(1.025);
+}
+
+.album-single {
+  display: block;
+  background: transparent;
+}
+
+.album-single .album-item {
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+}
+
+.album-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-two .album-item {
+  aspect-ratio: 1 / 1;
+}
+
+.album-three {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-three .album-item {
+  aspect-ratio: 1 / 1;
+}
+
+.album-three .album-item:first-child {
+  grid-row: span 2;
+  aspect-ratio: auto;
+}
+
+.album-many {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-many .album-item {
+  aspect-ratio: 1 / 1;
+}
+
+.album-overlay {
+  position: absolute;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 25px;
-  cursor: pointer;
-  border-radius: 5px;
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  font-weight: 800;
 }
 @media (max-width: 767px) {
-  .grid-item {
-    flex: 1 1 calc(50% - 8px);
-  }
-}
-
-@media (max-width: 479px) {
-  .grid-item {
-    flex: 1 1 100%;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .grid-item {
-    flex: 1 1 calc(25% - 8px);
+  .post-album {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
 </style>

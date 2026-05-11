@@ -17,27 +17,30 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        $admin = User::create([
-            'name'=>'Admin',
+        $admin = User::updateOrCreate([
             'email'=>'admin@gmail.com',
+        ], [
+            'name'=>'Admin',
             'phone'=>'098 989 8399',
             'password'=>bcrypt('password'),
             'profile' => 'user.avif',
             'role_id' => 1
         ]);
         
-        $writer = User::create([
-            'name'=>'User',
+        $writer = User::updateOrCreate([
             'email'=>'user@gmail.com',
+        ], [
+            'name'=>'User',
             'phone'=>'098 989 8391',
             'password'=>bcrypt('password'),
             'role_id' => 2
             
         ]);
         
-        $company = User::create([
-            'name'=>'Company',
+        $company = User::updateOrCreate([
             'email'=>'company@gmail.com',
+        ], [
+            'name'=>'Company',
             'phone'=>'098 989 8392',
             'password'=>bcrypt('password'),
             'role_id' => 3
@@ -46,65 +49,65 @@ class AdminSeeder extends Seeder
         
 
 
-        $admin_role = Role::create(['name' => 'admin']);
-        $writer_role = Role::create(['name' => 'user']);
-        $company_role = Role::create(['name' => 'company']);
+        $admin_role = Role::firstOrCreate(['name' => 'admin']);
+        $writer_role = Role::firstOrCreate(['name' => 'user']);
+        $company_role = Role::firstOrCreate(['name' => 'company']);
 
-        $permission = Permission::create(['name' => 'Post access']);
-        $permission = Permission::create(['name' => 'Post edit']);
-        $permission = Permission::create(['name' => 'Post create']);
-        $permission = Permission::create(['name' => 'Post delete']);
+        Permission::firstOrCreate(['name' => 'Post access']);
+        Permission::firstOrCreate(['name' => 'Post edit']);
+        Permission::firstOrCreate(['name' => 'Post create']);
+        Permission::firstOrCreate(['name' => 'Post delete']);
 
-        $permission = Permission::create(['name' => 'Role access']);
-        $permission = Permission::create(['name' => 'Role edit']);
-        $permission = Permission::create(['name' => 'Role create']);
-        $permission = Permission::create(['name' => 'Role delete']);
+        Permission::firstOrCreate(['name' => 'Role access']);
+        Permission::firstOrCreate(['name' => 'Role edit']);
+        Permission::firstOrCreate(['name' => 'Role create']);
+        Permission::firstOrCreate(['name' => 'Role delete']);
 
-        $permission = Permission::create(['name' => 'User access']);
-        $permission = Permission::create(['name' => 'User edit']);
-        $permission = Permission::create(['name' => 'User create']);
-        $permission = Permission::create(['name' => 'User delete']);
+        Permission::firstOrCreate(['name' => 'User access']);
+        Permission::firstOrCreate(['name' => 'User edit']);
+        Permission::firstOrCreate(['name' => 'User create']);
+        Permission::firstOrCreate(['name' => 'User delete']);
         
-        $permission = Permission::create(['name' => 'Revenue access']);
+        Permission::firstOrCreate(['name' => 'Revenue access']);
 
-        $permission = Permission::create(['name' => 'Permission access']);
-        $permission = Permission::create(['name' => 'Permission edit']);
-        $permission = Permission::create(['name' => 'Permission create']);
-        $permission = Permission::create(['name' => 'Permission delete']);
+        Permission::firstOrCreate(['name' => 'Permission access']);
+        Permission::firstOrCreate(['name' => 'Permission edit']);
+        Permission::firstOrCreate(['name' => 'Permission create']);
+        Permission::firstOrCreate(['name' => 'Permission delete']);
 
-        $permission = Permission::create(['name' => 'item access']);
-        $permission = Permission::create(['name' => 'item edit']);
-        $permission = Permission::create(['name' => 'item create']);
-        $permission = Permission::create(['name' => 'item delete']);
-        $permission = Permission::create(['name' => 'item update']);
+        Permission::firstOrCreate(['name' => 'item access']);
+        Permission::firstOrCreate(['name' => 'item edit']);
+        Permission::firstOrCreate(['name' => 'item create']);
+        Permission::firstOrCreate(['name' => 'item delete']);
+        Permission::firstOrCreate(['name' => 'item update']);
 
-        $permission = Permission::create(['name' => 'category access']);
-        $permission = Permission::create(['name' => 'category edit']);
-        $permission = Permission::create(['name' => 'category create']);
-        $permission = Permission::create(['name' => 'category delete']);
-        $permission = Permission::create(['name' => 'category update']);
+        Permission::firstOrCreate(['name' => 'category access']);
+        Permission::firstOrCreate(['name' => 'category edit']);
+        Permission::firstOrCreate(['name' => 'category create']);
+        Permission::firstOrCreate(['name' => 'category delete']);
+        Permission::firstOrCreate(['name' => 'category update']);
 
-        $permission = Permission::create(['name' => 'Company access']);
-        $permission = Permission::create(['name' => 'Company create']);
-        $permission = Permission::create(['name' => 'Company edit']);
-        $permission = Permission::create(['name' => 'Company delete']);
+        Permission::firstOrCreate(['name' => 'Company access']);
+        Permission::firstOrCreate(['name' => 'Company create']);
+        Permission::firstOrCreate(['name' => 'Company edit']);
+        Permission::firstOrCreate(['name' => 'Company delete']);
 
-        $permission = Permission::create(['name' => 'OptionPaid access']);
-        $permission = Permission::create(['name' => 'OptionPaid create']);
-        $permission = Permission::create(['name' => 'OptionPaid edit']);
-        $permission = Permission::create(['name' => 'OptionPaid delete']);
+        Permission::firstOrCreate(['name' => 'OptionPaid access']);
+        Permission::firstOrCreate(['name' => 'OptionPaid create']);
+        Permission::firstOrCreate(['name' => 'OptionPaid edit']);
+        Permission::firstOrCreate(['name' => 'OptionPaid delete']);
         
-        $permission = Permission::create(['name' => 'history access']);
+        Permission::firstOrCreate(['name' => 'history access']);
 
-        $permission = Permission::create(['name' => 'Mail access']);
-        $permission = Permission::create(['name' => 'Mail edit']);
+        Permission::firstOrCreate(['name' => 'Mail access']);
+        Permission::firstOrCreate(['name' => 'Mail edit']);
 
         
 
-        $admin->assignRole($admin_role);
-        $writer->assignRole($writer_role);
-        $company->assignRole($company_role);
+        $admin->syncRoles([$admin_role]);
+        $writer->syncRoles([$writer_role]);
+        $company->syncRoles([$company_role]);
 
-        $admin_role->givePermissionTo(Permission::all());
+        $admin_role->syncPermissions(Permission::all());
     }
 }

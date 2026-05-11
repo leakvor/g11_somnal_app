@@ -242,6 +242,6 @@ const router = createRouter({
 //   }
 // })
 
-// export default { router, simpleAcl }
-export default { router}
+// export { router, simpleAcl }
+export default router
 

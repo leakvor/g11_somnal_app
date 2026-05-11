@@ -155,19 +155,40 @@ export default {
 }
 
 .favorit .card {
-  width: 22%;
-  height: 80%;
-  padding: 2%;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+}
+
+.favorit {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px !important;
 }
 .card img {
   height: 150px;
   object-fit: cover;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.des {
+  color: #667085;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.input-group {
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 @media (min-width: 320px) and (max-width: 568px) {
   .card img {
-    width: 40%;
-    height: 10%;
+    width: 100%;
+    height: 150px;
   }
   .adjay .card {
     width: 200px;
@@ -181,7 +202,7 @@ export default {
     background-color: black;
   }
   .card {
-    width: 98%;
+    width: 100%;
     margin: auto;
   }
   .card-title {

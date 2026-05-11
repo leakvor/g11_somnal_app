@@ -343,6 +343,39 @@ body {
   margin-top: 20px;
   background-color: #f0f2f5;
 }
+
+.container {
+  max-width: 860px;
+}
+
+.box {
+  overflow: hidden;
+}
+
+.box-title {
+  background: #fff;
+}
+
+.osahan-post-header {
+  background: #fff !important;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.osahan-post-header:hover {
+  background: #f6fbf4 !important;
+}
+
+.text-truncate {
+  white-space: normal;
+  line-height: 1.45;
+}
+
+.text-muted {
+  font-size: 0.85rem;
+}
+
 .dropdown-list-image {
   position: relative;
   height: 2.5rem;
@@ -353,18 +386,18 @@ body {
   width: 2.5rem;
 }
 .btn-light {
-  color: #2cdd9b;
-  background-color: #e5f7f0;
-  border-color: #d8f7eb;
+  color: #177245;
+  background-color: #eaf5ef;
+  border-color: #d8eadf;
 }
 .post-container {
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
   max-width: 600px;
   margin: 20px auto;
   background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 .item{
 padding: 5px 10px 5px;
@@ -447,7 +480,25 @@ li p {
   transform: scale(1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
+
+.gallery-img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  width: 100%;
+}
+
 h6 {
   color: black;
+}
+
+@media (max-width: 576px) {
+  .container {
+    margin-bottom: 120px !important;
+  }
+
+  .osahan-post-header {
+    align-items: flex-start !important;
+    gap: 12px;
+  }
 }
 </style>

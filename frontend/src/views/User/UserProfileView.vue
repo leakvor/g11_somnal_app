@@ -313,15 +313,38 @@ export default {
 }
 .panel {
   position: relative;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 20px;
 }
 
 .update-pf {
-  border: 3px solid #c2c2c2;
-  width: 40px;
-  height: 40px;
-  right: 17%;
-  bottom: 50%;
+  border: 3px solid #fff;
+  width: 44px;
+  height: 44px;
+  right: calc(50% - 94px);
+  top: 178px;
   cursor: pointer;
+  box-shadow: 0 8px 22px rgba(31, 41, 51, 0.18);
+}
+
+.panel-body p,
+.panel-body h5 {
+  overflow-wrap: anywhere;
+}
+
+.panel-body hr {
+  border-color: #dfe7dc;
+  opacity: 1;
+}
+
+.modal-body input {
+  border-radius: 8px;
+}
+
+.modal-body img {
+  border-radius: 8px;
 }
 
 @media (max-width: 767px) {
@@ -330,8 +353,8 @@ export default {
     max-width: 100%;
   }
   .update-pf {
-    right: 25%;
-    bottom: 47%;
+    right: calc(50% - 94px);
+    top: 178px;
     width: 35px;
     height: 35px;
     cursor: pointer;
@@ -349,8 +372,8 @@ export default {
     max-width: 33.33%;
   }
   .update-pf {
-    right: 10%;
-    bottom: 50%;
+    right: calc(50% - 94px);
+    top: 178px;
     width: 35px;
     height: 35px;
     cursor: pointer;

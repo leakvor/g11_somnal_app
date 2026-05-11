@@ -79,6 +79,9 @@ data() {
     }
   },
   methods: {
+    searchCategories() {
+      return this.filteredCategories;
+    },
     async getCategory(){
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/category/list");
@@ -99,23 +102,56 @@ data() {
 
 <style scoped>
 .input-group {
-  width: 80%;
+  width: min(760px, 100%);
   margin: auto;
 }
 
+.container {
+  padding-top: 24px;
+  padding-bottom: 56px;
+}
+
+.p-10 {
+  padding: 32px 16px;
+}
+
+.p-10 h1 {
+  font-weight: 800;
+  color: #1f2933;
+}
+
+.p-10 p {
+  color: #667085;
+  margin-bottom: 0;
+}
+
+.category {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px !important;
+}
+
 .category .card {
-  width: 22%;
-  padding: 2%;
+  width: 100%;
+  padding: 12px;
+  overflow: hidden;
 }
 .category .card img {
-  width: 230px; 
+  width: 100%;
   height: 150px;
   object-fit: cover;
-  margin: auto;
+  border-radius: 8px;
 }
 .card .link{
-  width: 200px;
-  margin: auto;
+  width: 100%;
+  margin: 0;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  color: #1f2933;
+  font-weight: 700;
 }
 
 @media (max-width:360px){
@@ -124,7 +160,7 @@ data() {
     flex-direction: column;
   }
    .category .card {
-    width: 90%;
+    width: 100%;
     margin: auto;
   }
   .card img{
@@ -150,7 +186,7 @@ data() {
     flex-direction: column;
   }
    .category .card {
-    width: 90%;
+    width: 100%;
     margin: auto;
   }
   .card img{
@@ -172,11 +208,10 @@ data() {
 }
 @media (max-width:1024px){
   .category {
-    display: flex;
-    flex-direction: row;
+    display: grid !important;
   }
    .category .card {
-    width: 45%;
+    width: 100%;
     margin: auto;
     margin-right: 5px;
     margin-left: 5px;
@@ -200,11 +235,10 @@ data() {
 }
 @media (max-width:1114px){
   .category {
-    display: flex;
-    flex-direction: row;
+    display: grid !important;
   }
    .category .card {
-    width: 45%;
+    width: 100%;
     margin: auto;
     margin-right: 5px;
     margin-left: 5px;

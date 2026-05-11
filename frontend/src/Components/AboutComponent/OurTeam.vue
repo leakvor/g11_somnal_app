@@ -37,8 +37,8 @@ export default {
 
 <style scoped>
 .our-team {
-  margin-top: 100px;
-  padding: 30px 0 120px 0;
+  margin-top: 80px;
+  padding: 30px 0 100px 0;
   border-radius: 10px;
   text-align: center;
 }
@@ -68,23 +68,24 @@ export default {
 .team-cards {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
 .team-card {
-  background: #f9f9f9;
-  border-radius: 15px;
+  background: #fff;
+  border: 1px solid #dfe7dc;
+  border-radius: 8px;
   padding: 20px;
   text-align: center;
   width: 250px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 22px rgba(31, 41, 51, 0.09);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .team-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(31, 41, 51, 0.12);
 }
 
 .team-member-img {
@@ -111,14 +112,14 @@ export default {
 }
 
 .style-one {
-  background: #057931;
+  background: #177245;
   color: white;
-  border-bottom: 4px solid #FCA401;
+  border-bottom: 0;
 }
 
 .style-two {
-  background: #FCA401;
+  background: #f59e0b;
   color: white;
-  border-bottom: 4px solid #057931;
+  border-bottom: 0;
 }
 </style>

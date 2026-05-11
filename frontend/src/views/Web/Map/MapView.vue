@@ -291,26 +291,29 @@ function resetMap() {
 .button-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .distance-input-wrapper {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .btn {
-  background-color: orange;
+  background-color: #177245;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 16px;
   cursor: pointer;
 }
 
 .btn:hover {
-  background-color: darkorange;
+  background-color: #0f5c36;
 }
 
 .form-label {
@@ -318,7 +321,7 @@ function resetMap() {
 }
 
 .form-control {
-  width: auto;
+  width: 140px;
   display: inline-block;
 }
 
@@ -333,8 +336,12 @@ hr {
 }
 .container{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(31, 41, 51, 0.09);
+  padding: 16px;
 }
 .custom-div-icon {
   background-color: #000;
@@ -344,17 +351,19 @@ hr {
 }
 #suggestions-list {
   position: absolute;
-  top: 40px;
+  top: 58px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: 1px solid #dfe7dc;
+  padding: 6px;
   list-style: none;
   margin: 0;
-  width: 300px;
+  width: min(420px, calc(100% - 32px));
   z-index: 1000;
   color: black;
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(31, 41, 51, 0.14);
 }
 
 #suggestions-list li {
@@ -371,18 +380,38 @@ hr {
 
 #map {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 158px);
+  min-height: 520px;
+  margin-top: 16px;
 }
 
 input[type='text'] {
   position: absolute;
-  top: 10px;
+  top: 14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  width: 300px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: min(420px, calc(100% - 32px));
+  padding: 11px 14px;
+  border: 1px solid #dfe7dc;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(31, 41, 51, 0.12);
+}
+
+@media (max-width: 768px) {
+  .button-input-wrapper {
+    align-items: stretch;
+  }
+
+  .button-input-wrapper .btn,
+  .distance-input-wrapper,
+  .form-control {
+    width: 100%;
+  }
+
+  #map {
+    height: calc(100vh - 240px);
+    min-height: 460px;
+  }
 }
 </style>

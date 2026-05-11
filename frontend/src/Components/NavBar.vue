@@ -631,6 +631,7 @@ export default {
       emailLoginError: '',
       passwordError: '',
       resetCode: '',
+      resetEmail: '',
       newPassword: '',
       resetCodeError: '',
       newPasswordError: '',
@@ -641,10 +642,14 @@ export default {
       isError: false,
       confirmPassword: '',
       passwordReset: false,
+      passwordResetMessage: '',
+      resetLinkSent: false,
       apiError: '',
       confirmPasswordError: '',
       showEmailNotification: false,
-      user_info: null
+      user_info: null,
+      totalUnseen: 0,
+      intervalId: null
     }
   },
   computed: {
@@ -784,6 +789,11 @@ export default {
     $('#registerModal').on('hidden.bs.modal', this.clearModal)
     $('#forgotPasswordModal').on('hidden.bs.modal', this.clearModal)
     $('#resetCodeModal').on('hidden.bs.modal', this.clearModal)
+
+    this.listChatIsRead()
+    if (this.authStore.isAuthenticatedUser || this.authStore.isAuthenticatedCompany) {
+      this.fetchUser()
+    }
   },
   methods: {
     async fetchUser() {
@@ -942,137 +952,23 @@ export default {
       this.passwordReset = false
       this.apiError = ''
     },
-    mounted() {
-      const navLinks = document.querySelectorAll('.nav-link')
-      navLinks.forEach((navLink) => {
-        navLink.addEventListener('click', (event) => {
-          navLinks.forEach((link) => link.classList.remove('active'))
-          event.currentTarget.classList.add('active')
+    async listChatIsRead() {
+      try {
+        const token = localStorage.getItem('access_token')
+        if (!token) {
+          this.totalUnseen = 0
+          return
+        }
 
-          if (window.innerWidth <= 995) {
-            const navbarToggle = document.querySelector('.navbar-toggler')
-            const navbarNav = document.getElementById('navbarNav')
-            if (navbarNav.classList.contains('show')) {
-              navbarToggle.click()
-            }
+        const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
         })
-      })
-      // Clear input fields and error messages when modal is closed
-      $('#loginModal').on('hidden.bs.modal', () => {
-        this.clearModal()
-      })
-      $('#registerModal').on('hidden.bs.modal', () => {
-        this.clearModal()
-      })
-
-      this.listChatIsRead()
-      this.fetchUser()
-    },
-    methods: {
-      async register() {
-        try {
-          const response = await axios.post('http://127.0.0.1:8000/api/register', {
-            name: this.name,
-            phone: this.phone,
-            email: this.email,
-            password: this.password,
-            role_id: this.role_id
-          })
-          console.log(response.data)
-          $('#registerModal').modal('hide')
-          this.name = ''
-          this.phone = ''
-          this.email = ''
-          this.password = ''
-          this.alertMessage = 'Register successfully.'
-          $('#alertModal').modal('show')
-          this.isSuccess = true
-          this.isError = false
-
-          setTimeout(() => {
-            $('#alertModal').modal('hide')
-          }, 2000)
-        } catch (error) {
-          console.error('Error logging in:', error)
-          $('#registerModal').modal('hide')
-          this.name = ''
-          this.phone = ''
-          this.email = ''
-          this.password = ''
-
-          this.alertMessage = 'Please try to register again.'
-          $('#alertModal').modal('show')
-
-          this.isSuccess = false
-          this.isError = true
-          setTimeout(() => {
-            $('#alertModal').modal('hide')
-          }, 2000)
-        }
-      },
-      async login() {
-        try {
-          const response = await axios.post('http://127.0.0.1:8000/api/login', {
-            email: this.email,
-            password: this.password
-          })
-          const data = response.data
-          this.authStore.login(data)
-
-          console.log(response.data)
-          $('#loginModal').modal('hide')
-          this.email = ''
-          this.password = ''
-          this.alertMessage = 'Login successfully.'
-          $('#alertModal').modal('show')
-
-          this.isSuccess = true
-          this.isError = false
-          setTimeout(() => {
-            $('#alertModal').modal('hide')
-          }, 2000)
-        } catch (error) {
-          $('#loginModal').modal('hide')
-          this.email = ''
-          this.password = ''
-
-          this.isSuccess = false
-          this.isError = true
-          this.alertMessage = 'Please try to login again.'
-          $('#alertModal').modal('show')
-
-          setTimeout(() => {
-            $('#alertModal').modal('hide')
-          }, 2000)
-        }
-      },
-      togglePasswordVisibility(passwordFieldId) {
-        const passwordField = document.getElementById(passwordFieldId)
-        passwordField.type = passwordField.type === 'password' ? 'text' : 'password'
-      },
-      clearModal() {
-        this.name = ''
-        this.phone = ''
-        this.email = ''
-        this.password = ''
-        this.nameError = ''
-        this.phoneError = ''
-        this.emailError = ''
-        this.passwordError = ''
-      },
-      async listChatIsRead() {
-        try {
-          const token = localStorage.getItem('access_token')
-          const response = await axios.get('http://127.0.0.1:8000/api/chat/list/message/isRead', {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          })
-          this.totalUnseen = response.data.total
-        } catch (error) {
-          console.error('Error listing chat isRead:', error)
-        }
+        this.totalUnseen = response.data.total || 0
+      } catch (error) {
+        this.totalUnseen = 0
+        console.error('Error listing chat isRead:', error)
       }
     }
   }

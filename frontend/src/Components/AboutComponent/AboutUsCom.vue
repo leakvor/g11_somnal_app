@@ -25,16 +25,17 @@
   <style scoped>
   
   .about-us {
-    padding: 10% 20px; /* 10% top and bottom padding, 20px left and right padding */
+    padding: clamp(80px, 12vw, 150px) 20px;
     margin-top: 30px;
     text-align: center;
     background-image: url('@/assets/background.jpg');
     background-size: cover;
     background-position: center;
     color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 32px rgba(31, 41, 51, 0.12);
     position: relative;
     overflow: hidden;
+    border-radius: 8px;
   }
   
   .about-us::before {
@@ -54,7 +55,7 @@
   }
   
   .about-us h2 {
-    font-size: 36px;
+    font-size: clamp(2rem, 5vw, 3.4rem);
     margin-bottom: 20px;
     font-weight: bold;
   }
@@ -62,7 +63,24 @@
   .about-us p {
     font-size: 18px;
     line-height: 1.6;
-    max-width: 600px;
+    max-width: 720px;
     margin: 0 auto;
+  }
+
+  .p-3 {
+    background: #fff;
+    border: 1px solid #dfe7dc;
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(31, 41, 51, 0.09);
+  }
+
+  .p-3 h2 {
+    color: #177245;
+    font-weight: 800;
+  }
+
+  .p-3 p {
+    color: #4b5563;
+    line-height: 1.75;
   }
   </style>

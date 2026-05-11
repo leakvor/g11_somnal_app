@@ -59,54 +59,25 @@
 
               </div>
 
-              <div class="images-grid">
-                <template v-if="post.images.length === 1">
+              <div
+                v-if="post.images.length > 0"
+                class="post-album"
+                :class="albumGridClass(post.images.length)"
+              >
+                <div
+                  v-for="(image, index) in displayedImages(post.images)"
+                  :key="image.image_id || image.image || index"
+                  class="album-item"
+                  @click="openImageModal(post.images, index)"
+                >
                   <img
-                    style="width: 100%; height: auto; cursor: pointer"
-                    :src="`http://127.0.0.1:8000/uploads/${post.images[0].image}`"
-                    alt="Post Image"
-                    class="post-image"
-                    @click="openImageModal(post.images, 0)"
+                    :src="`http://127.0.0.1:8000/uploads/${image.image}`"
+                    :alt="`Post image ${index + 1}`"
                   />
-                </template>
-                <template v-else-if="post.images.length === 3">
-                  <div class="image-container full-width">
-                    <img
-                      :src="`http://127.0.0.1:8000/uploads/${post.images[0].image}`"
-                      alt="Post Image"
-                      class="post-image-grid"  @click="openImageModal(post.images, index+1)"
-                    />
+                  <div v-if="index === 3 && post.images.length > 4" class="album-overlay">
+                    +{{ post.images.length - 4 }}
                   </div>
-                  <div
-                    class="image-container half-width"
-                    v-for="(image, index) in post.images.slice(1)"
-                    :key="index"
-                  >
-                    <img
-                      :src="`http://127.0.0.1:8000/uploads/${image.image}`"
-                      alt="Post Image"
-                      class="post-image-grid"
-                      @click="openImageModal(post.images, index + 1)"
-                    />
-                  </div>
-                </template>
-                <template v-else>
-                  <div
-                    v-for="(image, index) in displayedImages(post.images)"
-                    :key="index"
-                    class="image-container"
-                    @click="openImageModal(post.images, index)"
-                  >
-                    <img
-                      :src="`http://127.0.0.1:8000/uploads/${image.image}`"
-                      alt="Post Image"
-                      class="post-image-grid"
-                    />
-                    <div v-if="index === 3 && post.images.length > 4" class="overlay">
-                      +{{ post.images.length - 4 }}
-                    </div>
-                  </div>
-                </template>
+                </div>
               </div>
 
               <button
@@ -142,7 +113,7 @@
     <div v-if="showModal" id="ImageModal" class="modal mt-5" @click="closeImageModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <span class="close" @click="closeImageModal">&times;</span>
-      <img class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
+      <img v-if="currentImage" class="modal-content" :src="`http://127.0.0.1:8000/uploads/${currentImage.image}`" />
       <div class="caption">{{ currentImageIndex + 1 }} / {{ modalImages.length }}</div>
       <a class="prev" @click.stop="prevImage">&#10094;</a>
       <a class="next" @click.stop="nextImage">&#10095;</a>
@@ -362,6 +333,18 @@ export default {
     displayedImages(images) {
       return images.length > 4 ? images.slice(0, 4) : images
     },
+    albumGridClass(imageCount) {
+      if (imageCount === 1) {
+        return 'album-single'
+      }
+      if (imageCount === 2) {
+        return 'album-two'
+      }
+      if (imageCount === 3) {
+        return 'album-three'
+      }
+      return 'album-many'
+    },
     changePage(page) {
       if (page > 0 && page <= this.totalPages) {
         this.currentPage = page
@@ -402,13 +385,14 @@ export default {
 <style scoped>
 
 .container {
-  display: flex;
+  display: block;
 }
 
 .fixed-aside {
-  position: fixed;
-  top: 0;
-  height: 100vh;
+  position: sticky;
+  top: 92px;
+  height: fit-content;
+  max-height: calc(100vh - 110px);
   overflow-y: auto;
 }
 .item{
@@ -418,10 +402,9 @@ border-radius: 20px;
 }
 
 .profile-card {
-  padding: 20px;
-  background-color: #f8f9fa;
+  padding: 16px;
+  background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-image {
@@ -444,10 +427,9 @@ border-radius: 20px;
 
 .post-card {
   margin-bottom: 20px;
-  padding: 15px;
+  padding: 18px;
   background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .post-header {
@@ -460,45 +442,13 @@ border-radius: 20px;
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover;
 }
 
 .user-info h5,
 .user-info span {
   display: block;
   margin: 0;
-}
-
-.images-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.image-container {
-  position: relative;
-}
-
-.post-image-grid {
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  border-radius: 5px;
 }
 
 @media (min-width: 992px) {
@@ -508,47 +458,77 @@ border-radius: 20px;
   }
 }
 
-.images-grid {
+.post-album {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
+  gap: 4px;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #eef2ed;
 }
 
-.image-container {
+.album-item {
   position: relative;
   width: 100%;
-  padding-top: 100%; /* 1:1 Aspect Ratio */
   overflow: hidden;
-  border-radius: 5px; /* Optional: for rounded corners */
+  background: #dde6dc;
+  cursor: pointer;
 }
 
-.image-container img {
+.album-item img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.18s ease;
 }
 
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.album-item:hover img {
+  transform: scale(1.025);
 }
 
-.full-width {
-  grid-column: span 2;
-  width: 100%;
-  padding-top: 50%; /* Aspect ratio for the full-width image */
+.album-single {
+  display: block;
+  background: transparent;
 }
 
-.half-width {
-  width: 100%;
-  padding-top: 100%; /* 1:1 Aspect Ratio for half-width images */
+.album-single .album-item {
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
 }
 
-.overlay {
+.album-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-two .album-item {
+  aspect-ratio: 1 / 1;
+}
+
+.album-three {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-three .album-item {
+  aspect-ratio: 1 / 1;
+}
+
+.album-three .album-item:first-child {
+  grid-row: span 2;
+  aspect-ratio: auto;
+}
+
+.album-many {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.album-many .album-item {
+  aspect-ratio: 1 / 1;
+}
+
+.album-overlay {
   position: absolute;
   top: 0;
   right: 0;
@@ -557,9 +537,10 @@ border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.58);
   color: #fff;
-  font-size: 1.5em;
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  font-weight: 800;
 }
 
 
@@ -613,12 +594,12 @@ border-radius: 20px;
 }
 
 .card {
-  border: 1px solid white;
-  padding: 20px;
-  margin-bottom: 20px;
+  border: 0;
+  padding: 12px;
+  margin-bottom: 12px;
   border-radius: 8px;
-  background: none;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  background: #f7faf6 !important;
+  cursor: pointer;
 }
 
 .card img {
@@ -645,6 +626,12 @@ border-radius: 20px;
 @media (max-width:1104px){
   .fixed-aside{
     display: none;
+  }
+
+  main.col-lg-6 {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
   }
 }
 </style>

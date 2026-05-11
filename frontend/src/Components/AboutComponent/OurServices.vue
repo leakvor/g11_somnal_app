@@ -77,18 +77,19 @@ li,p,span{
   color:black;
 }
   .our-services {
-    padding: 100px 80px 0px 80px;
+    padding: 72px 0 0;
     text-align: start;
   }
   
   .our-services-title {
-    background: #FCA401;
-    color: white;
+    background: transparent;
+    color: #177245;
     width: fit-content;
     border-radius: 5px;
-    border-bottom: 4px solid #057931;
-    padding: 5px 10px;
+    border-bottom: 3px solid #f59e0b;
+    padding: 0 0 8px;
     margin-bottom: 30px;
+    font-weight: 800;
   }
   
   .service-cards {
@@ -100,16 +101,13 @@ li,p,span{
   .service-card {
     flex: 1;
     max-width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   .service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
   }
   
   .service-card img {
@@ -119,9 +117,9 @@ li,p,span{
   }
   
   .service-card .card-body {
-    background-color: #f9f9f9;
+    background-color: #fff;
     padding: 20px;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 8px 8px;
   }
   
   .why-choose-us {
@@ -130,28 +128,28 @@ li,p,span{
   }
   
   .why-choose-us h2 {
-    background:  #057931;
-    color: white;
+    background: transparent;
+    color: #177245;
     width: fit-content;
     border-radius: 5px;
-    border-bottom: 4px solid #FCA401 ;
-    padding: 5px 10px;
+    border-bottom: 3px solid #f59e0b;
+    padding: 0 0 8px;
+    font-weight: 800;
   }
   
   .why-choose-us ul {
     padding: 40px;
     text-align: left;
     max-width: 100%;
-    border-radius: 10px;
-    background: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #dfe7dc;
+    box-shadow: 0 8px 22px rgba(31, 41, 51, 0.09);
     margin-top: 33px;
 
   }
   .why-choose-us ul:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: none;
   }
   
   .why-choose-us ul li {
@@ -175,7 +173,7 @@ li,p,span{
   /* media 996 */
   @media (max-width: 996px) {
     .our-services {
-      padding: 100px 40px 0px 40px;
+      padding: 56px 0 0;
     }
     .service-card {
       flex: 1 0 100%;
